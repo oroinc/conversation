@@ -1,0 +1,36 @@
+{% block oro_conversation_target_select_widget %}
+    {% import '@OroUI/macros.html.twig' as UI %}
+    <div id="{{ id }}-el"
+         data-page-component-module="oroconversation/js/app/components/target-select-component"
+         data-page-component-options="{{ {
+             inputSelector: '#'~id
+         }|json_encode }}">
+        <div class="input-append">
+            {{ form_widget(form) }}
+            {{ UI.clientButton({
+                'dataUrl': path(form.vars.configs.dialog_route),
+                'aCss': 'no-hash',
+                'iCss': 'fa-bars hide-text',
+                'dataAttributes': { 'purpose': 'open-dialog-widget'},
+                'widget' : {
+                    'type' : 'dialog',
+                    'multiple' : false,
+                    'options' : {
+                        'alias': 'source-dialog',
+                        'dialogOptions' : {
+                            'title' : form.vars.configs.dialog_title|trans,
+                            'allowMaximize': true,
+                            'allowMinimize': true,
+                            'modal': true,
+                            'dblclick': 'maximize',
+                            'maximizedHeightDecreaseBy': 'minimize-bar',
+                            'width': 1000,
+                            'minWidth': 'expanded',
+                            'height': 600
+                        }
+                    }
+                }
+            }) }}
+        </div>
+    </div>
+{% endblock %}

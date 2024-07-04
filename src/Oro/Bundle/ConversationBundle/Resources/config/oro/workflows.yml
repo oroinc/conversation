@@ -1,0 +1,2 @@
+imports:
+    - { resource: 'workflows/conversation_flow.yml' } # Workflow for Conversation entity

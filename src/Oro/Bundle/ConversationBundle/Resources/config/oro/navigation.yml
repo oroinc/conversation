@@ -1,0 +1,21 @@
+navigation:
+    menu_config:
+        items:
+            conversation_list:
+                label: 'oro.conversation.entity_plural_label'
+                route: 'oro_conversation_index'
+                position: 10
+                extras:
+                    routes: ['oro_conversation_update', 'oro_conversation_create', 'oro_conversation_view']
+                    description: 'oro.conversation.menu.conversations_list.description'
+        tree:
+            application_menu:
+                children:
+                    activities_tab:
+                        children:
+                            conversation_list: ~
+    titles:
+        oro_conversation_index: ~
+        oro_conversation_view: '%entity.name%'
+        oro_conversation_create: oro.ui.create_entity
+        oro_conversation_update: '%entity.name% - Edit'

@@ -1,0 +1,9 @@
+placeholders:
+    items:
+        oro_add_conversation_button:
+            template: '@@OroConversation/Conversation/activityButton.html.twig'
+            acl: oro_conversation_create
+
+        oro_add_conversation_link:
+            template: '@@OroConversation/Conversation/activityLink.html.twig'
+            acl: oro_conversation_create

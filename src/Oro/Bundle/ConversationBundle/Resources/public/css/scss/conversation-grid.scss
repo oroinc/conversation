@@ -1,0 +1,33 @@
+/* @theme: admin.oro; */
+
+.conversation-grid {
+    .row-3cells,
+    .row-4cells {
+        .grid-header-cell-body,
+        .grid-body-cell-body {
+            width: 70%;
+            max-width: 70%;
+        }
+    }
+
+    .row-5cells {
+        .grid-header-cell-body,
+        .grid-body-cell-body {
+            width: 55%;
+            max-width: 55%;
+        }
+    }
+
+    .row-6cells {
+        .grid-body-cell-from {
+            width: 13%;
+            max-width: 13%;
+        }
+
+        .grid-header-cell-body,
+        .grid-body-cell-body {
+            width: 50%;
+            max-width: 50%;
+        }
+    }
+}

@@ -1,0 +1,24 @@
+entity_config:
+    conversation_participant:
+        entity:
+            form:
+                block_config:
+                    conversations:
+                        title:              oro.conversation.conversationparticipant.entity_label
+                        priority:           0
+            items:
+                # indicates whether the entity can be a conversation participant or not
+                enabled: # boolean
+                    options:
+                        require_schema_update: true
+                        priority:           10
+                    form:
+                        type:               Oro\Bundle\EntityExtendBundle\Form\Type\AssociationChoiceType
+                        options:
+                            block:          conversations
+                            required:       true
+                            label:          oro.conversation.conversationparticipant.enabled
+                            association_class: Oro\Bundle\ConversationBundle\Entity\ConversationParticipant
+                immutable: # boolean
+                    options:
+                        auditable:          false

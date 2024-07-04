@@ -1,0 +1,61 @@
+/* @theme: admin.oro; */
+
+.conversation-message {
+    width: $conversation-message-width;
+    .my-author {
+        text-align: right;
+    }
+    .message-body-hover {
+        width: $conversation-message-body-hover-width;
+        .message-body {
+            display: inline-block;
+            padding-top: $conversation-message-body-padding-top;
+            padding-left: $conversation-message-body-padding-left;
+            padding-right: $conversation-message-body-padding-right;
+            border-radius: $conversation-message-body-border-radius;
+        }
+        .own-message-body {
+            background: $conversation-message-own-body-background;
+            color: $conversation-message-own-body-color;
+        }
+        .common-message-body {
+            background: $conversation-message-common-body-background;
+            color: $conversation-message-common-body-color;
+        }
+        .my-message-body {
+            float: right;
+        }
+    }
+}
+
+.conversation-message-avatar {
+    .user-icon {
+        background-color: $conversation-message-avatar-background;
+        .icon {
+            position: $conversation-message-avatar-icon-position;
+            left: $conversation-message-avatar-icon-left;
+            top: $conversation-message-avatar-icon-top;
+            width: $conversation-message-avatar-icon-width;
+            height: $conversation-message-avatar-icon-height;
+            text-align: $conversation-message-avatar-icon-text-align;
+            color: $conversation-message-avatar-icon-color;
+            line-height: $conversation-message-avatar-icon-line-height;
+            font-size: $conversation-message-avatar-icon-font-size;
+        }
+        .acronym {
+            position: $conversation-message-avatar-acronym-position;
+            left: $conversation-message-avatar-acronym-left;
+            top: $conversation-message-avatar-acronym-top;
+            width: $conversation-message-avatar-acronym-width;
+            height: $conversation-message-avatar-acronym-height;
+            .acronym-chars {
+                text-align: $conversation-message-avatar-acronym-chars-text-align;
+                vertical-align: $conversation-message-avatar-acronym-chars-vertical-align;
+                line-height: $conversation-message-avatar-acronym-chars-line-height;
+                font-size: $conversation-message-avatar-acronym-chars-font-size;
+                font-weight: $conversation-message-avatar-acronym-chars-font-weight;
+                opacity: $conversation-message-avatar-acronym-chars-opacity;
+            }
+        }
+    }
+}

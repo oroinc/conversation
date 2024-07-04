@@ -1,0 +1,17 @@
+workflows:
+    conversation_flow:
+        steps:
+            active:
+                order: 10
+                allowed_transitions:
+                    - set_inactive
+                    - close
+            inactive:
+                order: 20
+                allowed_transitions:
+                    - activate
+                    - close
+            closed:
+                order: 30
+                allowed_transitions:
+                    - reopen

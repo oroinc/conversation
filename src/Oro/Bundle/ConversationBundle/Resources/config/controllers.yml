@@ -1,0 +1,19 @@
+services:
+    _defaults:
+        public: true
+
+    Oro\Bundle\ConversationBundle\Controller\ConversationController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: 'oro_conversation.manager.conversation' }
+
+    Oro\Bundle\ConversationBundle\Controller\ConversationMessageController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: 'oro_conversation.manager.conversation_message' }
+            - { name: container.service_subscriber, id: 'oro_conversation.manager.conversation_participant' }
+            - { name: container.service_subscriber, id: 'oro_conversation.form.handler.participant_autocomplete' }

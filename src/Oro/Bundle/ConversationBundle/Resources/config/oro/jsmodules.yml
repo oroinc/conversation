@@ -1,0 +1,3 @@
+dynamic-imports:
+    oroconversation:
+        - oroconversation/js/app/components/target-select-component

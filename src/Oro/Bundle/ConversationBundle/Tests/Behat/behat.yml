@@ -1,0 +1,14 @@
+oro_behat_extension:
+    suites:
+        OroConversationBundle:
+            contexts:
+                - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+                - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\FixturesContext
+                - Oro\Bundle\UserBundle\Tests\Behat\Context\FeatureContext
+                - Oro\Bundle\DataGridBundle\Tests\Behat\Context\GridContext
+                - Oro\Bundle\FormBundle\Tests\Behat\Context\FormContext
+                - Oro\Bundle\UIBundle\Tests\Behat\Context\ContextSelectorContext
+                - Oro\Bundle\NavigationBundle\Tests\Behat\Context\FeatureContext
+                - Oro\Bundle\ActivityListBundle\Tests\Behat\Context\ActivityContext
+            paths:
+                - '@OroConversationBundle/Tests/Behat/Features'

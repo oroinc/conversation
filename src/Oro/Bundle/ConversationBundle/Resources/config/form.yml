@@ -1,0 +1,26 @@
+services:
+    Oro\Bundle\ConversationBundle\Form\Type\ConversationType:
+        arguments:
+            - '@doctrine'
+            - '@oro_entity.routing_helper'
+            - '@request_stack'
+        tags:
+            - { name: form.type, alias: oro_conversation }
+
+    Oro\Bundle\ConversationBundle\Form\Type\ConversationTargetSelectType:
+        arguments:
+            - '@oro_entity.entity_reference_to_string_transformer'
+            - '@oro_conversation.participant_info.provider'
+        tags:
+            - { name: form.type, alias: oro_conversation_target_select }
+
+    Oro\Bundle\ConversationBundle\Form\ConversationFormTemplateDataProvider:
+        public: false
+        arguments:
+            - '@router'
+        tags:
+            - { name: oro_form.form_template_data_provider, alias: oro_conversation_update }
+
+    Oro\Bundle\ConversationBundle\Form\Handler\ConversationMessageHandler:
+        arguments:
+            - "@oro_conversation.manager.conversation_message"

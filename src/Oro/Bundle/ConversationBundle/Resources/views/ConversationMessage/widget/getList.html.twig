@@ -1,0 +1,81 @@
+{% import '@OroUI/macros.html.twig' as UI %}
+<div class="widget-content">
+    <div class="grid-toolbar">
+        <div class="pagination">
+                <button id="previous-messages-button-{{ conversation.id }}"
+                        class="btn pagination-previous"
+                        title="{{ 'oro.activitylist.pagination.older'|trans }}"
+                        {% if hasMore != true %}disabled{% endif %}
+                        type="button"
+                >
+                    <span class="fa-chevron-left" aria-hidden="true"></span>
+                    {{ 'oro.activitylist.pagination.older'|trans }}
+                </button>
+                <button id="next-messages-button-{{ conversation.id }}"
+                        class="btn icon-end pagination-next"
+                        title="{{ 'oro.activitylist.pagination.newer'|trans }}"
+                        {% if page == 1 %}disabled{% endif %}
+                        type="button"
+                >
+                    {{ 'oro.activitylist.pagination.newer'|trans }}
+                    <span class="fa-chevron-right" aria-hidden="true"></span>
+                </button>
+        </div>
+        <div class="actions-panel">
+            {{ UI.clientLink({
+                'id': 'refresh-messages-button-' ~ conversation.id,
+                'aCss': 'action btn btn-icon',
+                'iCss': 'fa-refresh',
+                'label': ' ' ~ ('Refresh'|trans)
+            }) }}
+        </div>
+        <script>
+            loadModules(['jquery', 'oroui/js/mediator', 'routing'],
+                function($, mediator, routing){
+                    $('#next-messages-button-{{ conversation.id }}').on('click', function(e) {
+                        e.preventDefault();
+                        mediator.execute('widgets:getByAliasAsync', 'conversation_messages_{{ conversation.id }}', function(widget) {
+                            widget.setUrl(
+                                routing.generate('oro_conversation_messages_list', {
+                                    id: {{ conversation.id }},
+                                    page: {{ page - 1 }}
+                                })
+                            );
+                            widget.loadContent();
+                        });
+                    });
+                    $('#previous-messages-button-{{ conversation.id }}').on('click', function(e) {
+                        e.preventDefault();
+                        mediator.execute('widgets:getByAliasAsync', 'conversation_messages_{{ conversation.id }}', function(widget) {
+                            widget.setUrl(
+                                routing.generate('oro_conversation_messages_list', {
+                                    id: {{ conversation.id }},
+                                    page: {{ page + 1 }}
+                                })
+                            );
+                            widget.loadContent();
+                        });
+                    });
+                    $('#refresh-messages-button-{{ conversation.id }}').on('click', function(e) {
+                        e.preventDefault();
+                        mediator.execute('widgets:getByAliasAsync', 'conversation_messages_{{ conversation.id }}', function(widget) {
+                            widget.setUrl(
+                                routing.generate('oro_conversation_messages_list', {
+                                    id: {{ conversation.id }}
+                                })
+                            );
+                            widget.loadContent();
+                        });
+                    });
+                });
+        </script>
+    </div>
+    <ul class="comments-view-body comments-block">
+        {% for message in messages %}
+        <li class="comment-item">
+            {% set template = '@OroConversation/ConversationMessage/widget/' ~ message.object.getType().id ~ '.html.twig' %}
+            {{ include(template)  }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
