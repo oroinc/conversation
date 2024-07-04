@@ -1,0 +1,10 @@
+{% set participant = record.getValue('participant') %}
+{%  if participant is not null and participant.getConversationParticipantTarget() is not null %}
+    {% set target = participant.getConversationParticipantTarget() %}
+    {{ target|oro_conversation_participant_type }}
+    {% if is_granted('VIEW', target) %}
+        <a class="user" href="{{ oro_entity_object_view_link(target) }}">{{ target|oro_format_name }}</a>
+    {% else %}
+        {{ target|oro_format_name }}
+    {% endif %}
+{% endif %}

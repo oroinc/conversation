@@ -1,0 +1,11 @@
+{% set sourceEntityId = record.getValue('sourceEntityId') %}
+{% set sourceEntityClass = record.getValue('sourceEntityClass') %}
+{% if sourceEntityId %}
+        {% set sourceEntity = oro_entity_reference(sourceEntityClass, sourceEntityId) %}
+        {{ sourceEntity|oro_conversation_entity_type }}
+        {% if is_granted('VIEW', sourceEntity) %}
+            <a class="user" href="{{ oro_entity_object_view_link(sourceEntity) }}">{{ sourceEntity|oro_format_name }}</a>
+        {% else %}
+            {{ sourceEntity|oro_format_name }}
+        {% endif %}
+{% endif %}

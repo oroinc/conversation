@@ -1,0 +1,4 @@
+oro_conversation_bundle:
+    resource:     "@OroConversationBundle/Controller"
+    type:         annotation
+    prefix:       /conversation

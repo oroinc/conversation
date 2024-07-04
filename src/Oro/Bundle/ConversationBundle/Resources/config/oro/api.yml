@@ -1,0 +1,7 @@
+api:
+    entities:
+        Extend\Entity\EV_Conversation_Message_Type:
+            documentation_resource: '@OroConversationBundle/Resources/doc/api/conversation.md'
+
+        Extend\Entity\EV_Conversation_Status:
+            documentation_resource: '@OroConversationBundle/Resources/doc/api/conversation.md'

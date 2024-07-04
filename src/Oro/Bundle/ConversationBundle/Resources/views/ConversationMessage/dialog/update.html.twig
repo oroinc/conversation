@@ -1,0 +1,31 @@
+{% if savedId is defined and savedId%}
+    {% set messageText = update|default(false) ? 'Message updated successfully' : 'Message created successfully' %}
+    {% set widgetResponse = {
+        widget: {
+            message: messageText|trans,
+            triggerSuccess: true,
+            remove: true
+        }
+    } %}
+
+    {{ widgetResponse|json_encode|raw }}
+{% else %}
+    <div class="widget-content">
+        {% form_theme form with ['@OroForm/Form/fields.html.twig', _self] %}
+
+        <div class="form-container">
+            <form id="{{ form.vars.id }}" name="{{ form.vars.name }}" action="{{ app.request.uri }}" method="post">
+                <fieldset class="form form-horizontal">
+                    {{ form_row(form.body) }}
+                    {{ form_row(form.participant) }}
+                    {{ form_rest(form) }}
+                    <div class="widget-actions form-actions" style="display: none;">
+                        <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                        <button class="btn btn-success" type="submit">{{ 'Save'|trans }}</button>
+                    </div>
+                </fieldset>
+            </form>
+            {{ oro_form_js_validation(form) }}
+        </div>
+    </div>
+{% endif %}

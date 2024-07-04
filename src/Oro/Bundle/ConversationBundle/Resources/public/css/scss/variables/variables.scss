@@ -1,0 +1,34 @@
+/* @theme: admin.oro; */
+
+$conversation-message-width: 80%;
+$conversation-message-body-hover-width: 100%;
+$conversation-message-body-padding-top: 10px;
+$conversation-message-body-padding-left: 10px;
+$conversation-message-body-padding-right: 10px;
+$conversation-message-body-border-radius: 16px;
+$conversation-message-own-body-background: #e9f9fd;
+$conversation-message-own-body-color: #0c809e;
+$conversation-message-common-body-background: #e3e3e4;
+$conversation-message-common-body-color: #000;
+
+$conversation-message-avatar-background: #e3e3e4;
+$conversation-message-avatar-icon-position: absolute;
+$conversation-message-avatar-icon-left: 0;
+$conversation-message-avatar-icon-top: 0;
+$conversation-message-avatar-icon-width: 100%;
+$conversation-message-avatar-icon-height: 100%;
+$conversation-message-avatar-icon-text-align: center;
+$conversation-message-avatar-icon-color: #fff;
+$conversation-message-avatar-icon-line-height: 32px;
+$conversation-message-avatar-icon-font-size: 27px;
+$conversation-message-avatar-acronym-position: absolute;
+$conversation-message-avatar-acronym-left: 0;
+$conversation-message-avatar-acronym-top: 0;
+$conversation-message-avatar-acronym-width: 100%;
+$conversation-message-avatar-acronym-height: 100%;
+$conversation-message-avatar-acronym-chars-text-align: center;
+$conversation-message-avatar-acronym-chars-vertical-align: middle;
+$conversation-message-avatar-acronym-chars-line-height: 32px;
+$conversation-message-avatar-acronym-chars-font-size: 16px;
+$conversation-message-avatar-acronym-chars-font-weight: bold;
+$conversation-message-avatar-acronym-chars-opacity: .7;

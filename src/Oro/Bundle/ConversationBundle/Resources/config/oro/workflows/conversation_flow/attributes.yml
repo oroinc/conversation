@@ -1,0 +1,3 @@
+workflows:
+    conversation_flow:
+        attributes: ~

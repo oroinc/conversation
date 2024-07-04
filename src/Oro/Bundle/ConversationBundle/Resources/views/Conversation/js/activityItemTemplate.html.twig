@@ -1,0 +1,84 @@
+{% extends '@OroActivityList/ActivityList/js/activityItemTemplate.html.twig' %}
+{% import '@OroActivity/macros.html.twig' as AC %}
+
+{% set entityClass = 'Oro\\Bundle\\ConversationBundle\\Entity\\Conversation' %}
+{% set entityName = oro_entity_config_value(entityClass, 'label')|trans %}
+
+{% block activityDetails %}
+    {{ entityName }}
+    <% var template = (verb == 'create')
+    ? {{ 'oro.conversation.activity_item.created_by'|trans|json_encode|raw }}
+    : {{ 'oro.conversation.activity_item.changed_by'|trans|json_encode|raw }};
+    %>
+    <%= _.template(template, { interpolate: /\{\{(.+?)\}\}/g })({
+    user: owner_url ? '<a class="user" href="' + owner_url + '">' +  _.escape(owner) + '</a>' :  '<span class="user">' + _.escape(owner) + '</span>',
+    date: '<i class="date">' + createdAt + '</i>',
+    editor: editor_url ? '<a class="user" href="' + editor_url + '">' +  _.escape(editor) + '</a>' : _.escape(editor),
+    editor_date: '<i class="date">' + updatedAt + '</i>'
+    }) %>
+{% endblock %}
+
+{% block activityShortMessage %}
+    <% if (!_.isUndefined(data.statusId) && data.statusId) { %>
+    <div class="activity-short-message">
+        <% if (data.statusId === 'closed') { %>
+        <div class="badge badge-pill badge-disabled status-disabled"><span class="icon-status-disabled fa-circle" aria-hidden="true"></span>
+            <%- data.statusName %></div>
+        <% } else if (data.statusId === 'in_progress') { %>
+        <div class="badge badge-pill badge-tentatively status-tentatively"><span class="icon-status-tentatively fa-circle" aria-hidden="true"></span>
+            <%- data.statusName %></div>
+        <% } else { %>
+        <div class="badge badge-pill badge-enabled status-enabled"><span class="icon-status-enabled fa-circle" aria-hidden="true"></span>
+            <%- data.statusName %></div>
+        <% } %>
+    </div>
+    <% } %>
+    {{ parent() }}
+{% endblock %}
+
+{% block activityActions %}
+    {% import '@OroActivity/macros.html.twig' as AC %}
+
+    {% set action %}
+        {# Add button for add context in the activity list item #}
+        <% if (editable) { %>
+        {{ AC.activity_context_link() }}
+        <% } %>
+    {% endset %}
+    {% set actions = [action] %}
+
+    {% set action %}
+        <a href="<%- routing.generate('oro_conversation_view', {'id': relatedActivityId}) %>"
+           class="dropdown-item"
+           title="{{ 'oro.conversation.view'|trans({'{{ entity }}': entityName}) }}"><span
+                    class="fa-eye hide-text" aria-hidden="true">{{ 'oro.conversation.view'|trans({'{{ entity }}': entityName}) }}</span>
+            {{ 'oro.conversation.view'|trans({'{{ entity }}': entityName}) }}
+        </a>
+    {% endset %}
+    {% set actions = actions|merge([action]) %}
+
+    {% set action %}
+        <% if (editable) { %>
+        <a href="#" class="dropdown-item action item-edit-button"
+           title="{{ 'oro.conversation.update'|trans({'{{ entity }}': entityName}) }}"
+           data-action-extra-options="{{ {dialogOptions: {width: 1000}}|json_encode }}">
+            <span class="fa-pencil-square-o hide-text" aria-hidden="true">{{ 'oro.conversation.update'|trans({'{{ entity }}': entityName}) }}</span>
+            {{ 'oro.conversation.update'|trans({'{{ entity }}': entityName}) }}
+        </a>
+        <% } %>
+    {% endset %}
+    {% set actions = actions|merge([action]) %}
+
+    {% set action %}
+        <% if (removable) { %>
+        <a href="#" class="dropdown-item action item-remove-button"
+           title="{{ 'oro.conversation.delete'|trans({'{{ entity }}': entityName}) }}">
+            <span class="fa-trash-o hide-text" aria-hidden="true">{{ 'oro.conversation.delete'|trans({'{{ entity }}': entityName}) }}</span>
+            {{ 'oro.conversation.delete'|trans({'{{ entity }}': entityName}) }}
+        </a>
+        <% } %>
+    {% endset %}
+    {% set actions = actions|merge([action]) %}
+
+    {{ parent() }}
+{% endblock %}

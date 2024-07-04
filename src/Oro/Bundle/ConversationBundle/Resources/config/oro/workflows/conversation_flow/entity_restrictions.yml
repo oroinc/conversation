@@ -1,0 +1,23 @@
+workflows:
+    conversation_flow:
+        entity_restrictions:
+            conversation_status_creation:
+                attribute: conversation
+                field: status
+                mode: disallow
+                values:
+                    # 'active' is allowed to be sure at least one option is available to create a Conversation
+                    - 'inactive'
+                    - 'closed'
+            conversation_status_active:
+                attribute: conversation
+                field: status
+                step: active
+            conversation_status_inactive:
+                attribute: conversation
+                field: status
+                step: inactive
+            conversation_status_closed:
+                attribute: conversation
+                field: status
+                step: closed

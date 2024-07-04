@@ -1,0 +1,27 @@
+workflows:
+    conversation_flow:
+        transitions:
+            set_inactive:
+                step_to: inactive
+                #is_unavailable_hidden: true
+                frontend_options:
+                    icon: 'fa-stop'
+                transition_definition: inactivate_definition
+            activate:
+                step_to: active
+                #is_unavailable_hidden: true
+                frontend_options:
+                    icon: 'fa-play'
+                transition_definition: activate_definition
+            close:
+                step_to: closed
+                #is_unavailable_hidden: true
+                frontend_options:
+                    icon: 'fa-check'
+                transition_definition: close_definition
+            reopen:
+                step_to: active
+                #is_unavailable_hidden: true
+                frontend_options:
+                    icon: 'fa-pencil-square-o'
+                transition_definition: reopen_definition

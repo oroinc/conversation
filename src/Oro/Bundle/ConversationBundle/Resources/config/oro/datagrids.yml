@@ -1,0 +1,189 @@
+datagrids:
+    conversations-grid:
+        extended_entity_name: 'Oro\Bundle\ConversationBundle\Entity\Conversation'
+        acl_resource: oro_conversation_view
+        source:
+            type: orm
+            query:
+                select:
+                    - conversation.id
+                    - conversation.name
+                    - cs.id as status
+                    - cs.name as statusLabel
+                    - conversation.createdAt
+                    - conversation.updatedAt
+                    - conversation.sourceEntityId
+                    - conversation.sourceEntityClass
+                    - CONCAT_WS(' ', own.firstName, own.lastName) as ownerName
+                    - own.id as owner
+                from:
+                    - { table: 'Oro\Bundle\ConversationBundle\Entity\Conversation', alias: conversation }
+                join:
+                    inner:
+                        - { join: conversation.status, alias: cs }
+                        - { join: conversation.owner, alias: own }
+        inline_editing:
+            enable: true
+        columns:
+            name:
+                label:         oro.conversation.name.label
+            source:
+                label: oro.conversation.source.label
+                type: twig
+                frontend_type: html
+                template: '@OroConversation/Conversation/Datagrid/source.html.twig'
+            ownerName:
+                label: oro.conversation.owner.label
+                inline_editing:
+                    enable: true
+                    editor:
+                        view: oroform/js/app/views/editor/related-id-relation-editor-view
+                        view_options:
+                            value_field_name: owner
+                    autocomplete_api_accessor:
+                        class: orouser/js/tools/acl-users-search-api-accessor
+                        permission_check_entity_name: Oro_Bundle_ConversationBundle_Entity_Conversation
+            status:
+                label:         oro.conversation.status.label
+                frontend_type: select
+                choices: "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('conversation_status')"
+                translatable_options: false
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+            contexts: []
+        sorters:
+            columns:
+                name:
+                    data_name: conversation.name
+                status:
+                    data_name: cs.priority
+                ownerName:
+                    data_name: ownerName
+                createdAt:
+                    data_name: conversation.createdAt
+                updatedAt:
+                    data_name: conversation.updatedAt
+            default:
+                createdAt: ASC
+        filters:
+            columns:
+                name:
+                    type:      string
+                    data_name: conversation.name
+                status:
+                    type:      enum
+                    data_name: conversation.status
+                    enum_code: conversation_status
+                owner:
+                    type: choice-tree
+                    label: oro.conversation.owner.label
+                    data_name: conversation.owner
+                    autocomplete_alias: assigned_to_organization_users
+                    renderedPropertyName: 'fullName'
+                    className: 'Oro\Bundle\UserBundle\Entity\User'
+                createdAt:
+                    type:      datetime
+                    data_name: conversation.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: conversation.updatedAt
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      oro_conversation_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      oro_conversation_update
+                params:     [ id ]
+        actions:
+            view:
+                type:          navigate
+                acl_resource:  oro_conversation_view
+                label:         oro.grid.action.view
+                icon:          eye
+                link:          view_link
+                rowAction:     true
+            update:
+                type:          navigate
+                acl_resource:  oro_conversation_update
+                label:         oro.grid.action.update
+                icon:          edit
+                link:          update_link
+        options:
+            entity_pagination: true
+            contexts:
+                enabled: true
+
+    conversation-messages-grid:
+        extended_entity_name: 'Oro\Bundle\ConversationBundle\Entity\ConversationMessage'
+        acl_resource: oro_conversation_view
+        source:
+            type: orm
+            query:
+                select:
+                    - partial cm.{ id, participant }
+                    - cm.id
+                    - cm.index
+                    - cm.body
+                    - cm.createdAt
+                    - cm.updatedAt
+                from:
+                    - { table: 'Oro\Bundle\ConversationBundle\Entity\ConversationMessage', alias: cm }
+                join:
+                    left:
+                        - { join: cm.participant, alias: cp }
+                where:
+                    and:
+                        - 'cm.conversation = :conversation_id'
+            bind_parameters:
+                - conversation_id
+        columns:
+            index:
+                label: oro.conversation.conversationmessage.index.label
+            from:
+                label: oro.conversation.conversationmessage.from_participant.label
+                type: twig
+                frontend_type: html
+                template: '@OroConversation/ConversationMessage/Datagrid/participantName.html.twig'
+            body:
+                label: oro.conversation.conversationmessage.body.label
+                type: twig
+                frontend_type: html
+                template: '@OroConversation/ConversationMessage/Datagrid/messageBody.html.twig'
+            createdAt:
+                label: oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label: oro.ui.updated_at
+                frontend_type: datetime
+        sorters:
+            columns:
+                index:
+                    data_name: cm.index
+                body:
+                    data_name: cm.body
+                createdAt:
+                    data_name: cm.createdAt
+                updatedAt:
+                    data_name: cm.updatedAt
+            default:
+                index: DESC
+        filters:
+            columns:
+                body:
+                    type: string
+                    data_name: cm.body
+                createdAt:
+                    type: datetime
+                    data_name: cm.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: cm.updatedAt
+        options:
+            entity_pagination: true

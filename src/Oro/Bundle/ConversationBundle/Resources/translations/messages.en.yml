@@ -1,0 +1,66 @@
+oro:
+    conversation:
+        entity_label: Conversation
+        entity_plural_label: Conversations
+        entity_grid_all_view_label: All %entity_plural_label%
+        id.label: ID
+        name.label: Name
+        status.label: Status
+        messages.label: Messages
+        messages_number.label: Number of messages
+        source_target.label: Started from
+        owner.label: Assigned to
+        organization.label: Organization
+        participants.label: Participants
+        source_entity_class:
+            label: Source Entity Class
+            description: The class of the entity the conversation was started from.
+        source_entity_id:
+            label: Source Entity ID
+            description: The ID of the entity the conversation was started from.
+        start_conversation: Start conversation
+        start_conversation.title: Start conversation for this entity
+        view:   View {{ entity }}
+        update: Update {{ entity }}
+        delete: Delete {{ entity }}
+        activity_item:
+            created_by: created by {{ user }}
+            changed_by: created by {{ user }}, updated by {{ editor }}
+        saved.message: Conversation has been saved
+        source:
+            label: Source
+            placeholder: Choose a source...
+            dialogue.label: Select a Source entity
+
+        conversationmessage:
+            entity_label: Conversation message
+            entity_plural_label: Conversation messages
+            entity_grid_all_view_label: All %entity_plural_label%
+            id.label: ID
+            body:
+                label: Message
+                placeholder: The text message
+            from_participant:
+                label: From
+                placeholder: Select a sender of message...
+                dialogue.label: Select a Sender of Message
+            conversation.label: Conversation
+            participant.label: Participant
+            type.label: Message type
+            index.label: Number
+            action:
+                add: Add Message
+            item.added: added on
+            messages.label: Messages
+            saved.message: Message has been saved
+
+        conversationparticipant:
+            entity_label: Conversation participant
+            entity_plural_label: Conversation participants
+            entity_grid_all_view_label: All %entity_plural_label%
+            id.label: ID
+            enabled: Use entity as conversation participant
+            last_read_message_index.label: Last read message
+            last_read_date.label: Last read date
+            conversation.label: Conversation
+            last_read_message.label: Last read message

@@ -1,0 +1,115 @@
+services:
+    oro_conversation.manager.conversation:
+        class: Oro\Bundle\ConversationBundle\Manager\ConversationManager
+        public: true
+        arguments:
+            - '@oro_entity.routing_helper'
+            - '@request_stack'
+            - '@oro_entity.entity_name_resolver'
+            - '@oro_conversation.helper.entity_config_helper'
+
+    oro_conversation.manager.conversation_message:
+        class: Oro\Bundle\ConversationBundle\Manager\ConversationMessageManager
+        public: true
+        arguments:
+            - '@doctrine'
+            - '@oro_entity_extend.enum_value_provider'
+            - '@oro_conversation.manager.conversation_participant'
+            - '@oro_conversation.participant_info.provider'
+            - '@security.authorization_checker'
+            - '@oro_activity.manager'
+
+    oro_conversation.manager.conversation_participant:
+        class: Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager
+        public: true
+        arguments:
+            - '@doctrine'
+            - '@oro_security.token_accessor'
+            - '@oro_entity_extend.association_manager'
+
+    oro_conversation.entity_field.participant_extension:
+        class: Oro\Bundle\ConversationBundle\EntityExtend\ConversationParticipantEntityFieldExtension
+        tags:
+            - { name: oro_entity_extend.entity_field_extension, priority: 30 }
+
+    oro_conversation.migration.extension.participant:
+        class: Oro\Bundle\ConversationBundle\Migration\Extension\ConversationParticipantExtension
+        tags:
+            - { name: oro_migration.extension, extension_name: conversation_participant }
+
+    oro_conversation.entity_config_dumper.extension.participant:
+        class: Oro\Bundle\ConversationBundle\Tools\ConversationParticipantEntityConfigDumperExtension
+        parent: oro_entity_extend.entity_config_dumper.extension.association
+        tags:
+            - { name: oro_entity_extend.entity_config_dumper_extension }
+
+    oro_conversation.entity_config.conversation_participant:
+        class: Oro\Bundle\ConversationBundle\EntityConfig\ConversationParticipantConfiguration
+        tags:
+            - oro_entity_config.validation.entity_config
+
+    oro_conversation.activity_list.provider:
+        class: Oro\Bundle\ConversationBundle\Provider\ConversationActivityListProvider
+        arguments:
+            - "@oro_entity.doctrine_helper"
+            - "@oro_activity.association_helper"
+        tags:
+            - { name: oro_activity_list.provider, class: Oro\Bundle\ConversationBundle\Entity\Conversation }
+
+    oro_conversation.form.handler.participant_autocomplete:
+        class: Oro\Bundle\ConversationBundle\Autocomplete\ParticipantSearchHandler
+        arguments:
+            - '@translator'
+            - '@oro_search.index'
+            - '@oro_activity.manager'
+            - '@oro_entity_config.config_manager'
+            - '@oro_entity.entity_class_name_helper'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_entity.entity_name_resolver'
+            - '@event_dispatcher'
+            - '@oro_conversation.manager.conversation_participant'
+
+    oro_conversation.helper.entity_config_helper:
+        class: Oro\Bundle\ConversationBundle\Helper\EntityConfigHelper
+        public: false
+        arguments:
+            - '@oro_entity_config.config_manager'
+            - '@translator'
+
+    oro_conversation.participant_info.provider:
+        class: Oro\Bundle\ConversationBundle\Participant\ParticipantInfoProvider
+        arguments:
+            - ~ # service locator for participant info providers
+            - '@oro_conversation.participant_info.common_provider'
+
+    oro_conversation.participant_info.common_provider:
+        class: Oro\Bundle\ConversationBundle\Participant\CommonParticipantInfo
+        arguments:
+            - '@oro_entity.entity_name_resolver'
+            - '@oro_security.token_accessor'
+            - '@oro_conversation.helper.entity_config_helper'
+
+    oro_conversation.participant_info.user_provider:
+        class: Oro\Bundle\ConversationBundle\Participant\UserParticipantInfo
+        arguments:
+            - '@oro_attachment.provider.picture_sources'
+            - '@oro_entity.entity_name_resolver'
+            - '@oro_security.token_accessor'
+            - '@oro_conversation.helper.entity_config_helper'
+        tags:
+            - { name: oro_conversation.participant_info_provider, class: Oro\Bundle\UserBundle\Entity\User }
+
+    oro_conversation.twig.conversation_extension:
+        class: Oro\Bundle\ConversationBundle\Twig\ConversationExtension
+        arguments:
+            - '@oro_platform.twig.service_locator'
+        tags:
+            - { name: twig.extension }
+
+    oro_conversation.acl.voter.manage_messages:
+        class: Oro\Bundle\ConversationBundle\Acl\Voter\ManageConversationMessagesVoter
+        arguments:
+            - '@oro_workflow.manager'
+            - '@doctrine'
+        tags:
+            - { name: security.voter }

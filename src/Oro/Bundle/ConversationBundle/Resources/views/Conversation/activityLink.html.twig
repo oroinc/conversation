@@ -1,0 +1,28 @@
+{% import '@OroUI/macros.html.twig' as UI %}
+
+{{ UI.clientLink({
+    'dataUrl': path('oro_conversation_create', oro_action_params(entity, 'activity')),
+    'aCss': 'dropdown-item no-hash',
+    'iCss': 'fa-commenting-o',
+    'dataId': entity.id,
+    'label': 'oro.conversation.start_conversation'|trans,
+    'title': 'oro.conversation.start_conversation.title'|trans,
+    'widget' : {
+        'type' : 'dialog',
+        'multiple' : true,
+        'reload-grid-name': 'user-conversations-grid',
+        'refresh-widget-alias': 'activity-list-widget',
+        'options' : {
+            'alias': 'conversation-dialog',
+            'dialogOptions' : {
+                'title' : 'oro.conversation.start_conversation'|trans,
+                'allowMaximize': true,
+                'allowMinimize': true,
+                'dblclick': 'maximize',
+                'maximizedHeightDecreaseBy': 'minimize-bar',
+                'width': 1000,
+                'minWidth': 'expanded'
+            }
+        }
+    }
+}) }}

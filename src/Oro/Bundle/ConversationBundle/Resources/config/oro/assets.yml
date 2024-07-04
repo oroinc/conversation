@@ -1,0 +1,7 @@
+css:
+    inputs:
+        # Variables
+        - 'bundles/oroconversation/css/scss/variables/variables.scss'
+
+        # Styles
+        - 'bundles/oroconversation/css/scss/main.scss'

@@ -1,0 +1,49 @@
+{% set avatar %}
+<div class="comment-title conversation-message-avatar">
+    {% if message.participant.avatarImage.src is defined and message.participant.avatarImage.src%}
+        {% include '@OroAttachment/Twig/picture.html.twig' with {
+            sources: message.participant.avatarImage.sources,
+            img_attrs: {
+                src: message.participant.avatarImage.src,
+                class: "share-info__img"
+            }
+        } %}
+    {% else %}
+        <div class="share-info__img user-icon">
+            {% if message.participant.avatarIcon %}
+                <span class="context-icon {{ message.participant.avatarIcon }} icon" aria-hidden="true"></span>
+            {% endif %}
+            {% if message.participant.titleAcronym %}
+                <div class="acronym">
+                    <div class="acronym-chars">{{ message.participant.titleAcronym }}</div>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endset %}
+
+{% if 'left' == message.participant.position %}
+    {{ avatar }}
+{% endif %}
+<div class="comment-content conversation-message">
+    {% if message.object.participant is not null  %}
+        <div class="comment-author-info {% if 'right' == message.participant.position %}my-author{% endif %}">
+            {{ message.participant.type }} <a class="user" href="{{ oro_entity_object_view_link(message.object.participant.getConversationParticipantTarget()) }}">{{ message.participant.title }}</a>
+            {{ 'oro.conversation.conversationmessage.item.added'|trans }}
+            <span class="date">{{ message.object.createdAt|oro_format_datetime }}</span>
+        </div>
+    {% else %}
+        <div class="comment-author-info"></div>
+    {% endif %}
+    <div class="message-body-hover">
+        <div class = "message-body
+            {% if message.participant.isOwnMessage %}own-message-body{% else %}common-message-body{% endif %}
+            {% if 'right' == message.participant.position %}my-message-body{% endif %}">
+            {{ message.object.body|raw }}
+        </div>
+    </div>
+</div>
+{% if 'right' == message.participant.position %}
+    {{ avatar }}
+{% endif %}

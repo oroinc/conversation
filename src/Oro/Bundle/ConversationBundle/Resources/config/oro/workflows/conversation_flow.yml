@@ -1,0 +1,14 @@
+imports:
+    - { resource: 'conversation_flow/steps.yml' }
+    - { resource: 'conversation_flow/attributes.yml' }
+    - { resource: 'conversation_flow/transitions.yml' }
+    - { resource: 'conversation_flow/transition_definitions.yml' }
+    - { resource: 'conversation_flow/entity_restrictions.yml' }
+
+workflows:
+    conversation_flow:
+        entity: Oro\Bundle\ConversationBundle\Entity\Conversation
+        entity_attribute: conversation
+        start_step: active
+        defaults:
+            active: true

@@ -1,0 +1,36 @@
+{
+    "name": "oro/conversation",
+    "description": "Oro Conversation capabilities for Oro Commerce",
+    "type": "symfony-bundle",
+    "keywords": ["Oro", "Conversation", "Chat"],
+    "homepage": "https://github.com/oroinc/conversation",
+    "license": "Commercial",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://oroinc.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Oro\\Bundle\\ConversationBundle\\": "src/Oro/Bundle/ConversationBundle"
+        },
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "require": {
+        "oro/platform": "6.1.*"
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "6.1-dev"
+        }
+    }
+}

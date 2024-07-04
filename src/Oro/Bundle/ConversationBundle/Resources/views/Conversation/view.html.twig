@@ -1,0 +1,134 @@
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import "@OroActivity/macros.html.twig" as AC %}
+{% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
+{% import '@OroUser/macros.html.twig' as U %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%entity.name%": entity.name|default('N/A'|trans) }}) %}
+
+{% block navButtons %}
+    {% if is_granted('EDIT', entity) and is_granted('MANAGE_MESSAGES', entity) %}
+    {{ UI.clientButton({
+        'dataUrl': path(
+            'oro_conversation_message_create', {
+                id: entity.id
+            }),
+        'aCss': 'btn btn-primary no-hash',
+        'iCss': 'fa-paper-plane',
+        'label' : 'oro.conversation.conversationmessage.action.add'|trans,
+        'widget' : {
+            'type' : 'dialog',
+            'multiple' : false,
+            'reload-grid-name' : 'conversation-messages-grid',
+            'options' : {
+                'alias': 'add-message-dialog',
+                'dialogOptions' : {
+                    'title' : 'oro.conversation.conversationmessage.action.add'|trans,
+                    'allowMaximize': false,
+                    'allowMinimize': false,
+                    'modal': true,
+                    'dblclick': 'maximize',
+                    'maximizedHeightDecreaseBy': 'minimize-bar'
+                }
+            }
+        },
+    }) }}
+    {% endif %}
+
+    {% import '@OroActivity/macros.html.twig' as AC %}
+    {% import '@OroUI/macros.html.twig' as UI %}
+
+    {% placeholder view_navButtons with {entity: entity} %}
+    {% if is_granted('EDIT', entity) %}
+        {# Button for add context on the activity list item view page #}
+        {{ AC.addContextButton(entity) }}
+        {{ UI.editButton({
+            'path' : path('oro_conversation_update', { id: entity.id }),
+            'entity_label': 'oro.conversation.entity_label'|trans
+        }) }}
+    {% endif %}
+
+{% endblock navButtons %}
+
+{% block stats %}
+    {% import '@OroActivity/macros.html.twig' as AC %}
+    {# Display contexts targets in the activity view page #}
+    <li class="context-data activity-context-activity-block">
+        {{ AC.activity_contexts(entity) }}
+    </li>
+{% endblock stats %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('oro_conversation_index'),
+        'indexLabel': 'oro.conversation.entity_plural_label'|trans,
+        'entityTitle': entity.name
+    } %}
+    {{ parent() }}
+    <div class="row inline-info">
+        <div class="pull-left-extra">
+            <ul class="inline">
+                <li>{{ 'oro.ui.created_at'|trans }}: {{ entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'|trans }}</li>
+                <li>{{ 'oro.ui.updated_at'|trans }}: {{ entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'|trans }}</li>
+                {% if entity.sourceEntityId %}
+                    <li>{{ 'oro.conversation.source.label'|trans }}:
+                    {% set sourceEntity = oro_entity_reference(entity.sourceEntityClass, entity.sourceEntityId) %}
+                    {{ sourceEntity|oro_conversation_entity_type }}
+                    {% if is_granted('VIEW', sourceEntity) %}
+                        <a class="user" href="{{ oro_entity_object_view_link(sourceEntity) }}">{{ sourceEntity|oro_format_name }}</a>
+                    {% else %}
+                        {{ sourceEntity|oro_format_name }}
+                    {% endif %}
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock pageHeader %}
+
+{% block breadcrumbs %}
+    {% import '@OroUI/macros.html.twig' as UI %}
+
+    {{ parent() }}
+
+    {% if false == has_workflows(entity) %}
+    <span class="page-title__status">
+        {% set status = {
+            'active': 'enabled',
+            'inactive': 'tentatively',
+            'closed': 'disabled'
+        } %}
+        {% if entity.status is not null %}
+            {{ UI.badge(entity.status.name, status[entity.status.id] ? status[entity.status.id] : 'disabled') }}
+        {% endif %}
+    </span>
+    {% endif %}
+{% endblock breadcrumbs %}
+
+{% block content_data %}
+    {% import '@OroUI/macros.html.twig' as UI %}
+
+    {%- set messagesGrid -%}
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ dataGrid.renderGrid('conversation-messages-grid', { conversation_id: entity.id }, { cssClass: 'conversation-grid inner-grid' }) }}
+            </div>
+        </div>
+    {%- endset -%}
+
+    {% set dataBlocks = [
+        {
+            'title': 'oro.conversation.conversationmessage.messages.label'|trans,
+            'subblocks': [
+                {'data' : [messagesGrid]}
+            ]
+        }
+    ] %}
+
+    {% set id = 'conversationView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+
+    {{ parent() }}
+{% endblock content_data %}

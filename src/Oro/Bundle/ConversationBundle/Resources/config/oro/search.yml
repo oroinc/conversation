@@ -1,0 +1,13 @@
+search:
+    Oro\Bundle\ConversationBundle\Entity\Conversation:
+        alias:                          oro_conversation
+        route:
+            name:                       oro_conversation_view
+            parameters:
+                id:                     id
+        search_template:                '@OroConversation/Conversation/searchResult.html.twig'
+        fields:
+            -
+                name:                   name
+                target_type:            text
+                target_fields:          [name]
