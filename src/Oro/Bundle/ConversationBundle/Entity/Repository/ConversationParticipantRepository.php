@@ -27,9 +27,10 @@ class ConversationParticipantRepository extends EntityRepository
             'conversationParticipant'
         );
 
+        $andWhereRestriction = sprintf('participant.%s = :target', $targets[$entityClass]);
         return $this->createQueryBuilder('participant')
             ->where('participant.conversation = :conversation')
-            ->andWhere(sprintf('participant.%s = :target', $targets[$entityClass]))
+            ->andWhere($andWhereRestriction)
             ->setParameter('conversation', $conversation)
             ->setParameter('target', $target)
             ->setMaxResults(1)
