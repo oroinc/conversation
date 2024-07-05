@@ -1,0 +1,8 @@
+trusted_data:
+    variables:
+        Oro\Bundle\ConversationBundle\Entity\Repository\ConversationMessageRepository:
+            getMessages:
+                order: true
+        Oro\Bundle\ConversationBundle\Entity\Repository\ConversationParticipantRepository:
+            findParticipantForConversation:
+                andWhereRestriction: true
