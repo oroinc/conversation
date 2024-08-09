@@ -18,7 +18,8 @@
         "exclude-from-classmap": ["/Tests/"]
     },
     "require": {
-        "oro/platform": "6.0.*"
+        "oro/platform": "~6.0.3",
+        "oro/commerce": "~6.0.3"
     },
     "repositories": {
         "oro": {
