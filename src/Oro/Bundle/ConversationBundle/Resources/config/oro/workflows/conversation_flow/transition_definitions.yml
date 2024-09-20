@@ -5,29 +5,29 @@ workflows:
                 actions:
                     - '@request_enum_entity': # set status "Active" to conversation
                         enum_code: conversation_status
-                        identifier: active
+                        identifier: conversation_status.active
                         attribute: $conversation.status
             inactivate_definition:
                 actions:
                     - '@request_enum_entity': # set status "Inactive" to conversation
                         enum_code: conversation_status
-                        identifier: inactive
+                        identifier: conversation_status.inactive
                         attribute: $conversation.status
             activate_definition:
                 actions:
                     - '@request_enum_entity': # set status "Active" to conversation
                           enum_code: conversation_status
-                          identifier: active
+                          identifier: conversation_status.active
                           attribute: $conversation.status
             close_definition:
                 actions:
                     - '@request_enum_entity': # set status "Closed" to conversation
                         enum_code: conversation_status
-                        identifier: closed
+                        identifier: conversation_status.closed
                         attribute: $conversation.status
             reopen_definition:
                 actions:
                     - '@request_enum_entity': # set status "Active" to conversation
                         enum_code: conversation_status
-                        identifier: active
+                        identifier: conversation_status.active
                         attribute: $conversation.status

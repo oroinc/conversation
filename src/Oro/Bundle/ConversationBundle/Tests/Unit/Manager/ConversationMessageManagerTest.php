@@ -15,7 +15,7 @@ use Oro\Bundle\ConversationBundle\Participant\ParticipantInfoProvider;
 use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationMessageExtended;
 use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationMessageType;
 use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationParticipantExtended;
-use Oro\Bundle\EntityExtendBundle\Provider\EnumValueProvider;
+use Oro\Bundle\EntityExtendBundle\Provider\EnumOptionsProvider;
 use Oro\Bundle\UserBundle\Entity\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ConversationMessageManagerTest extends TestCase
 {
     private ManagerRegistry|MockObject $doctrine;
-    private EnumValueProvider|MockObject $enumValueProvider;
+    private EnumOptionsProvider|MockObject $enumOptionsProvider;
     private ConversationParticipantManager|MockObject $participantManager;
     private ParticipantInfoProvider|MockObject $participantInfoInfoProvider;
     private AuthorizationCheckerInterface|MockObject $authorizationChecker;
@@ -36,7 +36,7 @@ class ConversationMessageManagerTest extends TestCase
     protected function setUp(): void
     {
         $this->doctrine = $this->createMock(ManagerRegistry::class);
-        $this->enumValueProvider = $this->createMock(EnumValueProvider::class);
+        $this->enumOptionsProvider = $this->createMock(EnumOptionsProvider::class);
         $this->participantManager = $this->createMock(ConversationParticipantManager::class);
         $this->participantInfoInfoProvider = $this->createMock(ParticipantInfoProvider::class);
         $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
@@ -44,7 +44,7 @@ class ConversationMessageManagerTest extends TestCase
 
         $this->conversationMessageManager = new ConversationMessageManager(
             $this->doctrine,
-            $this->enumValueProvider,
+            $this->enumOptionsProvider,
             $this->participantManager,
             $this->participantInfoInfoProvider,
             $this->authorizationChecker,
@@ -189,7 +189,7 @@ class ConversationMessageManagerTest extends TestCase
         $message->setConversation($conversation);
         $message->setBody('Message #1');
 
-        $messageType = new ConversationMessageType(1, ConversationMessage::TYPE_TEXT);
+        $messageType = new ConversationMessageType('test_enum_code', ConversationMessage::TYPE_TEXT, 1);
 
         $user = new User();
         $participant = new ConversationParticipantExtended();
@@ -207,8 +207,8 @@ class ConversationMessageManagerTest extends TestCase
             ->with(ManageConversationMessagesVoter::PERMISSION_NAME, $conversation)
             ->willReturn(true);
 
-        $this->enumValueProvider->expects(self::once())
-            ->method('getEnumValueByCode')
+        $this->enumOptionsProvider->expects(self::once())
+            ->method('getEnumOptionByCode')
             ->with(ConversationMessage::MESSAGE_TYPE_ENUM_CODE, ConversationMessage::TYPE_TEXT)
             ->willReturn($messageType);
 

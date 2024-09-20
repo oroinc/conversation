@@ -3,18 +3,18 @@
 namespace Oro\Bundle\ConversationBundle\Tests\Unit\Fixture;
 
 use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
-use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
+use Oro\Bundle\EntityExtendBundle\Entity\EnumOptionInterface;
 
 class ConversationMessageExtended extends ConversationMessage
 {
-    private ?AbstractEnumValue $type = null;
+    private ?EnumOptionInterface $type = null;
 
-    public function getType(): ?AbstractEnumValue
+    public function getType(): ?EnumOptionInterface
     {
         return $this->type;
     }
 
-    public function setType(AbstractEnumValue $type): void
+    public function setType(EnumOptionInterface $type): void
     {
         $this->type = $type;
     }

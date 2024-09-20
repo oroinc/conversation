@@ -73,7 +73,7 @@
     <ul class="comments-view-body comments-block">
         {% for message in messages %}
         <li class="comment-item">
-            {% set template = '@OroConversation/ConversationMessage/widget/' ~ message.object.getType().id ~ '.html.twig' %}
+            {% set template = '@OroConversation/ConversationMessage/widget/' ~ message.object.getType().getInternalId() ~ '.html.twig' %}
             {{ include(template)  }}
         </li>
         {% endfor %}

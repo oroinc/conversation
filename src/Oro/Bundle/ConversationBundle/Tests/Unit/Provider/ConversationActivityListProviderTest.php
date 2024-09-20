@@ -89,7 +89,7 @@ class ConversationActivityListProviderTest extends TestCase
 
     public function testGetData(): void
     {
-        $status = new ConversationStatus(1, 'Open');
+        $status = new ConversationStatus('conversation_status_code', 'Open', 1);
         $conversation = new ConversationExtended();
         $conversation->setStatus($status);
 
@@ -110,7 +110,7 @@ class ConversationActivityListProviderTest extends TestCase
 
         self::assertEquals(
             [
-                'statusId' => 1,
+                'statusId' => 'conversation_status_code.1',
                 'statusName' => 'Open',
             ],
             $this->provider->getData($activityList)

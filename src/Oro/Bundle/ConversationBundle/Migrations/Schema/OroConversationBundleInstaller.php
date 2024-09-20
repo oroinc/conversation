@@ -11,9 +11,7 @@ use Oro\Bundle\ConversationBundle\Migration\Extension\ConversationParticipantExt
 use Oro\Bundle\ConversationBundle\Migration\Extension\ConversationParticipantExtensionAwareTrait;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareTrait;
-use Oro\Bundle\EntityExtendBundle\Migration\OroOptions;
-use Oro\Bundle\EntityExtendBundle\Migration\Query\EnumDataValue;
-use Oro\Bundle\EntityExtendBundle\Migration\Query\InsertEnumValuesQuery;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -49,7 +47,7 @@ class OroConversationBundleInstaller implements
         $this->addOroConversationParticipantForeignKeys($schema);
 
         $this->addConversationStatusField($schema, $queries);
-        $this->addConversationMessageTypeField($schema, $queries);
+        $this->addConversationMessageTypeField($schema);
 
         $this->activityExtension->addActivityAssociation($schema, 'oro_conversation', 'oro_order');
         $this->activityExtension->addActivityAssociation($schema, 'oro_conversation', 'oro_rfp_request');
@@ -160,48 +158,39 @@ class OroConversationBundleInstaller implements
 
     private function addConversationStatusField(Schema $schema, QueryBag $queries): void
     {
-        $enumTable = $this->extendExtension->addEnumField(
+        $this->extendExtension->addEnumField(
             $schema,
             'oro_conversation',
             'status',
             'conversation_status'
         );
 
-        $options = new OroOptions();
-        $options->set(
-            'enum',
-            'immutable_codes',
+        $enumOptionIds = array_map(
+            fn ($key) => ExtendHelper::buildEnumOptionId('conversation_status', $key),
             [
                 Conversation::STATUS_ACTIVE,
                 Conversation::STATUS_INACTIVE,
                 Conversation::STATUS_CLOSED,
             ]
         );
-        $enumTable->addOption(OroOptions::KEY, $options);
-
-        $queries->addPostQuery(new InsertEnumValuesQuery($this->extendExtension, 'conversation_status', [
-            new EnumDataValue(Conversation::STATUS_ACTIVE, 'Active', 1, true),
-            new EnumDataValue(Conversation::STATUS_INACTIVE, 'Inactive', 2),
-            new EnumDataValue(Conversation::STATUS_CLOSED, 'Closed', 3)
-        ]));
+        $schema->getTable('oro_conversation')
+            ->addExtendColumnOption('status', 'enum', 'immutable_codes', $enumOptionIds);
     }
 
-    private function addConversationMessageTypeField(Schema $schema, QueryBag $queries): void
+    private function addConversationMessageTypeField(Schema $schema): void
     {
-        $enumTable = $this->extendExtension->addEnumField(
+        $this->extendExtension->addEnumField(
             $schema,
             'oro_conversation_message',
             'type',
             'conversation_message_type'
         );
 
-        $options = new OroOptions();
-        $options->set('enum', 'immutable_codes', [ConversationMessage::TYPE_SYSTEM, ConversationMessage::TYPE_TEXT]);
-        $enumTable->addOption(OroOptions::KEY, $options);
-
-        $queries->addPostQuery(new InsertEnumValuesQuery($this->extendExtension, 'conversation_message_type', [
-            new EnumDataValue(ConversationMessage::TYPE_SYSTEM, 'System', 1, true),
-            new EnumDataValue(ConversationMessage::TYPE_TEXT, 'Text', 2)
-        ]));
+        $enumOptionIds = array_map(
+            fn ($key) => ExtendHelper::buildEnumOptionId('conversation_message_type', $key),
+            [ConversationMessage::TYPE_SYSTEM, ConversationMessage::TYPE_TEXT]
+        );
+        $schema->getTable('oro_conversation_message')
+            ->addExtendColumnOption('type', 'enum', 'immutable_codes', $enumOptionIds);
     }
 }

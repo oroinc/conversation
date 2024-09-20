@@ -14,7 +14,7 @@ use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
-use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
+use Oro\Bundle\EntityExtendBundle\Entity\EnumOptionInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -23,8 +23,8 @@ use Oro\Bundle\UserBundle\Entity\User;
 /**
  * Represents the conversations.
  *
- * @method AbstractEnumValue getStatus()
- * @method Conversation setStatus(AbstractEnumValue $status)
+ * @method EnumOptionInterface getStatus()
+ * @method Conversation setStatus(EnumOptionInterface $status)
  *
  * @mixin OroConversationBundle_Entity_Conversation
  */
@@ -64,6 +64,7 @@ class Conversation implements
     use ExtendEntityTrait;
     use ExtendActivity;
 
+    public const STATUS_CODE = 'conversation_status';
     public const STATUS_ACTIVE = 'active';
     public const STATUS_INACTIVE = 'inactive';
     public const STATUS_CLOSED = 'closed';

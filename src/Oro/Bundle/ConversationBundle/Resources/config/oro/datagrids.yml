@@ -8,8 +8,6 @@ datagrids:
                 select:
                     - conversation.id
                     - conversation.name
-                    - cs.id as status
-                    - cs.name as statusLabel
                     - conversation.createdAt
                     - conversation.updatedAt
                     - conversation.sourceEntityId
@@ -20,7 +18,6 @@ datagrids:
                     - { table: 'Oro\Bundle\ConversationBundle\Entity\Conversation', alias: conversation }
                 join:
                     inner:
-                        - { join: conversation.status, alias: cs }
                         - { join: conversation.owner, alias: own }
         inline_editing:
             enable: true
@@ -46,7 +43,7 @@ datagrids:
             status:
                 label:         oro.conversation.status.label
                 frontend_type: select
-                choices: "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('conversation_status')"
+                choices: "@oro_entity_extend.enum_options_provider->getEnumChoicesByCode('conversation_status')"
                 translatable_options: false
             createdAt:
                 label:         oro.ui.created_at
@@ -60,7 +57,7 @@ datagrids:
                 name:
                     data_name: conversation.name
                 status:
-                    data_name: cs.priority
+                    data_name: status
                 ownerName:
                     data_name: ownerName
                 createdAt:
@@ -76,7 +73,7 @@ datagrids:
                     data_name: conversation.name
                 status:
                     type:      enum
-                    data_name: conversation.status
+                    data_name: status
                     enum_code: conversation_status
                 owner:
                     type: choice-tree

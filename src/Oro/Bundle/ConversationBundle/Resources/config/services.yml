@@ -13,7 +13,7 @@ services:
         public: true
         arguments:
             - '@doctrine'
-            - '@oro_entity_extend.enum_value_provider'
+            - '@oro_entity_extend.enum_options_provider'
             - '@oro_conversation.manager.conversation_participant'
             - '@oro_conversation.participant_info.provider'
             - '@security.authorization_checker'

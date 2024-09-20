@@ -9,15 +9,15 @@ use Oro\Bundle\ConversationBundle\Entity\Repository\ConversationMessageRepositor
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
-use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
+use Oro\Bundle\EntityExtendBundle\Entity\EnumOptionInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * Represents the conversation message.
  *
- * @method AbstractEnumValue getType()
- * @method Conversation setType(AbstractEnumValue $type)
+ * @method EnumOptionInterface getType()
+ * @method Conversation setType(EnumOptionInterface $type)
  * @mixin OroConversationBundle_Entity_ConversationMessage
  */
 #[ORM\Entity(repositoryClass: ConversationMessageRepository::class)]
@@ -28,6 +28,7 @@ class ConversationMessage implements DatesAwareInterface, ExtendEntityInterface
     use DatesAwareTrait;
     use ExtendEntityTrait;
 
+    public const TYPE_CODE = 'conversation_message_type';
     public const TYPE_SYSTEM = 'system';
     public const TYPE_TEXT = 'text';
 

@@ -9,7 +9,7 @@ use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
 use Oro\Bundle\ConversationBundle\Entity\ConversationParticipant;
 use Oro\Bundle\ConversationBundle\Participant\ParticipantInfoProvider;
-use Oro\Bundle\EntityExtendBundle\Provider\EnumValueProvider;
+use Oro\Bundle\EntityExtendBundle\Provider\EnumOptionsProvider;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ConversationMessageManager
 {
     private ManagerRegistry $doctrine;
-    private EnumValueProvider $enumValueProvider;
+    private EnumOptionsProvider $enumOptionsProvider;
     private ConversationParticipantManager $participantManager;
     private ParticipantInfoProvider $participantInfoInfoProvider;
     private AuthorizationCheckerInterface $authorizationChecker;
@@ -27,14 +27,14 @@ class ConversationMessageManager
 
     public function __construct(
         ManagerRegistry $doctrine,
-        EnumValueProvider $enumValueProvider,
+        EnumOptionsProvider $enumOptionsProvider,
         ConversationParticipantManager $participantManager,
         ParticipantInfoProvider $participantInfoInfoProvider,
         AuthorizationCheckerInterface $authorizationChecker,
         ActivityManager $activityManager
     ) {
         $this->doctrine = $doctrine;
-        $this->enumValueProvider = $enumValueProvider;
+        $this->enumOptionsProvider = $enumOptionsProvider;
         $this->participantManager = $participantManager;
         $this->participantInfoInfoProvider = $participantInfoInfoProvider;
         $this->authorizationChecker = $authorizationChecker;
@@ -137,7 +137,7 @@ class ConversationMessageManager
             return;
         }
 
-        $messageType = $this->enumValueProvider->getEnumValueByCode(
+        $messageType = $this->enumOptionsProvider->getEnumOptionByCode(
             ConversationMessage::MESSAGE_TYPE_ENUM_CODE,
             ConversationMessage::TYPE_TEXT
         );
