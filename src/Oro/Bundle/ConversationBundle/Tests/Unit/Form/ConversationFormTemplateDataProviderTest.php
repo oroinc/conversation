@@ -20,6 +20,7 @@ class ConversationFormTemplateDataProviderTest extends TestCase
 
     private ConversationFormTemplateDataProvider $formTemplateDataProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->router = $this->createMock(RouterInterface::class);

@@ -10,6 +10,7 @@ use Oro\Bundle\EntityExtendBundle\Migration\Fixture\AbstractEnumFixture;
  */
 class LoadConversationMessageTypes extends AbstractEnumFixture
 {
+    #[\Override]
     protected function getData(): array
     {
         return [
@@ -18,11 +19,13 @@ class LoadConversationMessageTypes extends AbstractEnumFixture
         ];
     }
 
+    #[\Override]
     protected function getDefaultValue(): ?string
     {
         return ConversationMessage::TYPE_SYSTEM;
     }
 
+    #[\Override]
     protected function getEnumCode(): string
     {
         return ConversationMessage::TYPE_CODE;

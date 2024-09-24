@@ -27,6 +27,7 @@ class ConversationActivityListProviderTest extends TestCase
 
     private ConversationActivityListProvider $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);

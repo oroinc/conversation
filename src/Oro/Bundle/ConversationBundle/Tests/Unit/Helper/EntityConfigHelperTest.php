@@ -16,6 +16,7 @@ class EntityConfigHelperTest extends TestCase
 
     private EntityConfigHelper $entityConfigHelper;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->configManager = $this->createMock(ConfigManager::class);

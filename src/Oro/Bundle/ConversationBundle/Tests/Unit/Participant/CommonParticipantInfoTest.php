@@ -26,6 +26,7 @@ class CommonParticipantInfoTest extends TestCase
     private User $user;
     private CommonParticipantInfo $participantInfo;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->nameResolver = $this->createMock(EntityNameResolver::class);

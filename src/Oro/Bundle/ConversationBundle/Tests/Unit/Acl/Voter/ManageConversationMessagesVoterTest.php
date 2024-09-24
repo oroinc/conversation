@@ -21,6 +21,7 @@ class ManageConversationMessagesVoterTest extends TestCase
 
     private ManageConversationMessagesVoter $voter;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->workflowManager = $this->createMock(WorkflowManager::class);

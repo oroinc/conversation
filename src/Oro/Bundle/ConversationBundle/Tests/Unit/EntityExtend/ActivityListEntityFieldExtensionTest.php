@@ -12,6 +12,7 @@ class ActivityListEntityFieldExtensionTest extends TestCase
 {
     private ActivityListEntityFieldExtension $extension;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->extension = new ActivityListEntityFieldExtension();

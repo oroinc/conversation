@@ -22,6 +22,7 @@ class ConversationParticipantManagerTest extends TestCase
 
     private ConversationParticipantManager $conversationParticipantManager;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->doctrine = $this->createMock(ManagerRegistry::class);

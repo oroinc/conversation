@@ -21,6 +21,7 @@ class ConversationManagerTest extends TestCase
 
     private ConversationManager $manager;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityRoutingHelper = $this->createMock(EntityRoutingHelper::class);

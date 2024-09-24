@@ -19,6 +19,7 @@ class UserParticipantInfoTest extends TestCase
     private PictureSourcesProviderInterface|MockObject $pictureSourcesProvider;
     private UserParticipantInfo $userParticipantInfo;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->pictureSourcesProvider = $this->createMock(PictureSourcesProviderInterface::class);

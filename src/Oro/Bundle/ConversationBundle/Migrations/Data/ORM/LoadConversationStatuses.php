@@ -10,6 +10,7 @@ use Oro\Bundle\EntityExtendBundle\Migration\Fixture\AbstractEnumFixture;
  */
 class LoadConversationStatuses extends AbstractEnumFixture
 {
+    #[\Override]
     protected function getData(): array
     {
         return [
@@ -19,11 +20,13 @@ class LoadConversationStatuses extends AbstractEnumFixture
         ];
     }
 
+    #[\Override]
     protected function getDefaultValue(): ?string
     {
         return Conversation::STATUS_ACTIVE;
     }
 
+    #[\Override]
     protected function getEnumCode(): string
     {
         return Conversation::STATUS_CODE;

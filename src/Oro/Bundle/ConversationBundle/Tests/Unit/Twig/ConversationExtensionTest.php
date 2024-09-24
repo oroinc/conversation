@@ -14,6 +14,7 @@ class ConversationExtensionTest extends TestCase
     private ContainerInterface $container;
     private ConversationExtension $extension;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->container = $this->createMock(ContainerInterface::class);

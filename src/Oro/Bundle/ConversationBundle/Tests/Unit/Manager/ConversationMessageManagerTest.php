@@ -33,6 +33,7 @@ class ConversationMessageManagerTest extends TestCase
 
     private ConversationMessageManager $conversationMessageManager;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->doctrine = $this->createMock(ManagerRegistry::class);

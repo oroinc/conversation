@@ -16,6 +16,7 @@ class ParticipantInfoProviderTest extends TestCase
 
     private ParticipantInfoProvider $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->userParticipantInfoProvider = $this->createMock(ParticipantInfoInterface::class);

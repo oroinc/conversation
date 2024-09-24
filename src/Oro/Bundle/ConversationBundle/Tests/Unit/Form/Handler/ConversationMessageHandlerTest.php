@@ -16,6 +16,7 @@ class ConversationMessageHandlerTest extends TestCase
 
     private ConversationMessageHandler $handler;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->conversationMessageManager = $this->createMock(ConversationMessageManager::class);
