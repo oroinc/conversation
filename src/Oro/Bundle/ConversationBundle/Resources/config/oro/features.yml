@@ -2,20 +2,27 @@ features:
     conversation:
         label: oro.conversation.feature.label
         description: oro.conversation.feature.description
+        toggle: oro_conversation.enable_conversation
         allow_if_all_abstain: true
         routes:
             - oro_conversation_index
             - oro_conversation_view
             - oro_conversation_create
             - oro_conversation_update
+            - oro_conversation_frontend_conversation_index
         entities:
             - Oro\Bundle\ConversationBundle\Entity\Conversation
             - Oro\Bundle\ConversationBundle\Entity\ConversationMessage
             - Oro\Bundle\ConversationBundle\Entity\ConversationParticipant
             - Extend\Entity\EV_Conversation_Status
             - Extend\Entity\EV_Conversation_Message_Type
-        navigation_items:
-            - application_menu.activities_tab.conversation_list
-            - usermenu.oro_conversation_my_conversations
+        api_resources:
+            - Oro\Bundle\ConversationBundle\Entity\Conversation
+            - Oro\Bundle\ConversationBundle\Entity\ConversationMessage
+            - Oro\Bundle\ConversationBundle\Entity\ConversationParticipant
+            - Extend\Entity\EV_Conversation_Status
+            - Extend\Entity\EV_Conversation_Message_Type
         workflows:
             - conversation_flow
+        operations:
+            - oro_conversation_add_new_conversation

@@ -10,5 +10,8 @@ workflows:
         entity: Oro\Bundle\ConversationBundle\Entity\Conversation
         entity_attribute: conversation
         start_step: active
+        applications:
+            - default
+            - commerce
         defaults:
             active: true

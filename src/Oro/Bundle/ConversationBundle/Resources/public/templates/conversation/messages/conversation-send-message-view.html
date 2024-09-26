@@ -1,0 +1,12 @@
+<% let oroui = _.macros('oroui') %>
+<form method="post">
+    <div class="conversation__send-message-inner">
+        <div role="textbox" class="textarea textarea--full conversation__send-message-field" aria-label="<%- _.__('oro.conversation.text_field.placeholder') %>" data-placeholder="<%- _.__('oro.conversation.text_field.placeholder') %>" contenteditable="true"></div>
+        <button type="submit" class="btn">
+            <%= oroui.renderIcon({
+                name: 'send'
+            }) %>
+            <%- _.__('oro.conversation.send') %>
+        </button>
+    </div>
+</form>

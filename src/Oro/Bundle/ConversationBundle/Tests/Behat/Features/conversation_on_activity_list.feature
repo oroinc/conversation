@@ -1,4 +1,5 @@
 @fixture-OroUserBundle:users.yml
+@fixture-OroCustomerBundle:CustomerUserFixture.yml
 
 Feature: Conversation on activity list
   In order to manage the activity lists
@@ -12,8 +13,9 @@ Feature: Conversation on activity list
     And follow "More actions"
     And follow "Start conversation"
     And I fill form with:
-      | NAME     | Some test conversation |
-      | Context  | [admin, charlie] |
+      | NAME          | Some test conversation |
+      | Customer User | Amanda Cole            |
+      | Context       | [admin, charlie]       |
     And I press "Save"
     Then I should see "Saved successfully" flash message
     And should see "Some test conversation" conversation in activity list
@@ -21,7 +23,7 @@ Feature: Conversation on activity list
   Scenario: View conversation activity list item
     When I collapse "Some test conversation" in activity list
     Then I should see Name Some test conversation text in activity
-    And I should see Assigned To John Doe text in activity
+    And I should see Owner John Doe text in activity
 
   Scenario: Add new message
     When I click "Add Message"

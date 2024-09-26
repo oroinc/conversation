@@ -16,7 +16,7 @@ class ConversationParticipantRepository extends EntityRepository
 {
     public function findParticipantForConversation(
         AssociationManager $associationManager,
-        Conversation $conversation,
+        Conversation|int $conversation,
         object $target
     ): ?ConversationParticipant {
         $entityClass = ClassUtils::getClass($target);

@@ -1,0 +1,13 @@
+<div class="conversation__title-container">
+    <h3 class="conversation__title"><%- name %></h3>
+    <% if (sourceTitle) { %>
+        <h5 class="conversation__source"><a href="<%- sourceUrl %>"><%- sourceTitle %></a></h5>
+    <% } %>
+</div>
+<div class="conversation__main-inner" data-role="conversation-main">
+    <div class="conversation__body" data-role="messages-body">
+        <div class="conversation__intersection-sentinel" data-role="loading-sentinel"></div>
+    </div>
+
+    <div class="conversation__loading" data-role="loading"></div>
+</div>

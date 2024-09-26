@@ -4,20 +4,22 @@ services:
         public: true
         arguments:
             - '@oro_entity.routing_helper'
-            - '@request_stack'
             - '@oro_entity.entity_name_resolver'
             - '@oro_conversation.helper.entity_config_helper'
+            - '@oro_customer.owner.frontend_ownership_metadata_provider'
+            - '@property_accessor'
+            - '@doctrine'
+            - '@oro_conversation.provider.storefront_conversation_provider'
+            - '@oro_api.entity_alias_resolver_registry'
 
     oro_conversation.manager.conversation_message:
         class: Oro\Bundle\ConversationBundle\Manager\ConversationMessageManager
         public: true
         arguments:
             - '@doctrine'
-            - '@oro_entity_extend.enum_value_provider'
             - '@oro_conversation.manager.conversation_participant'
             - '@oro_conversation.participant_info.provider'
             - '@security.authorization_checker'
-            - '@oro_activity.manager'
 
     oro_conversation.manager.conversation_participant:
         class: Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager
@@ -26,6 +28,7 @@ services:
             - '@doctrine'
             - '@oro_security.token_accessor'
             - '@oro_entity_extend.association_manager'
+            - '@oro_conversation.participant_info.provider'
 
     oro_conversation.entity_field.participant_extension:
         class: Oro\Bundle\ConversationBundle\EntityExtend\ConversationParticipantEntityFieldExtension
@@ -56,6 +59,11 @@ services:
         tags:
             - { name: oro_activity_list.provider, class: Oro\Bundle\ConversationBundle\Entity\Conversation }
 
+    oro_conversation.provider.storefront_conversation_provider:
+        arguments:
+            - '@router'
+        class: Oro\Bundle\ConversationBundle\Provider\StorefrontConversationProvider
+
     oro_conversation.form.handler.participant_autocomplete:
         class: Oro\Bundle\ConversationBundle\Autocomplete\ParticipantSearchHandler
         arguments:
@@ -71,7 +79,6 @@ services:
 
     oro_conversation.helper.entity_config_helper:
         class: Oro\Bundle\ConversationBundle\Helper\EntityConfigHelper
-        public: false
         arguments:
             - '@oro_entity_config.config_manager'
             - '@translator'
@@ -113,3 +120,47 @@ services:
             - '@doctrine'
         tags:
             - { name: security.voter }
+
+    oro_conversation.listener.participant_last_message_listener:
+        class: Oro\Bundle\ConversationBundle\EventListener\ParticipantLastMessageListener
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    oro_conversation.listener.conversation_save_listener:
+        class: Oro\Bundle\ConversationBundle\EventListener\ConversationSaveListener
+        arguments:
+            - '@oro_entity.routing_helper'
+            - '@oro_activity.manager'
+            - '@oro_conversation.manager.conversation'
+            - '@oro_conversation.manager.conversation_participant'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\ConversationBundle\Entity\Conversation', event: prePersist }
+
+    oro_conversation.listener.conversation_message_save_listener:
+        class: Oro\Bundle\ConversationBundle\EventListener\ConversationMessageSaveListener
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_ui.html_tag_helper'
+            - '@oro_activity.manager'
+            - '@oro_entity_extend.enum_value_provider'
+            - '@oro_conversation.manager.conversation_participant'
+            - '@oro_security.token_accessor'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\ConversationBundle\Entity\ConversationMessage', event: prePersist }
+
+    oro_conversation.configuration.provider.operations:
+        class: Oro\Bundle\ConversationBundle\Action\Configuration\ConfigurationProviderDecorator
+        decorates: oro_action.configuration.provider.operations
+        arguments:
+            - '@.inner'
+            - '@oro_conversation.provider.storefront_conversation_provider'
+            - '@oro_theme.provider.theme_configuration'
+            - '@oro_layout.theme_manager'
+
+    oro_conversation.participant_exclusion_provider:
+        class: Oro\Bundle\ConversationBundle\Provider\ParticipantExclusionProvider
+        public: false
+        arguments:
+            - '@oro_entity_config.config_manager'
+        tags:
+            - { name: oro_entity.exclusion_provider.api }

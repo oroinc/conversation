@@ -1,4 +1,5 @@
 @fixture-OroUserBundle:users.yml
+@fixture-OroCustomerBundle:CustomerUserFixture.yml
 
 Feature: Manage conversation messages
   In order to manage Conversations
@@ -10,8 +11,9 @@ Feature: Manage conversation messages
     And I go to Activities/Conversations
     When I press "Create Conversation"
     And I fill form with:
-      | Name     | Some conversation |
-      | Context  | [charlie] |
+      | Name          | Some conversation |
+      | Customer User | Amanda Cole       |
+      | Context       | [charlie]         |
     And I press "Save and Close"
     Then I should see "Conversation has been saved" flash message
 

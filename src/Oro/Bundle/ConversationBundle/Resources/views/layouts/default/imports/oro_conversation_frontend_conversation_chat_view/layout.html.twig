@@ -1,0 +1,23 @@
+{% block __oro_conversation_frontend_conversation_chat_view__conversation_main_container_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " conversation",
+        'data-page-component-view': {
+            view: 'oroconversation/js/app/views/conversation-view',
+            title: title|trans
+        }
+    }) %}
+
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block __oro_conversation_frontend_conversation_chat_view__conversation_main_container_loading_widget %}
+    {% include "@OroUI/view_loading.html.twig" %}
+{% endblock %}
+
+{% block __oro_conversation_frontend_conversation_chat_view__conversation_header_widget %}
+    <div class="conversation__header">
+        <h2 class="conversation__header-title">{{ title|trans }}</h2>
+    </div>
+{% endblock %}

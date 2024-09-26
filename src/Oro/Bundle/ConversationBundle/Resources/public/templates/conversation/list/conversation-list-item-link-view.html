@@ -1,0 +1,10 @@
+<a href="<%- href %>" class="conversation__list-item-title"><%- name %></a>
+<% if (lastMassage) { %>
+    <span class="conversation__list-item-body"><%= lastMassage.attributes.plainBody %></span>
+<% } %>
+<% const count = getUnreadMessagesCount() %>
+<% if (count) { %>
+    <span class="conversation__list-item-additional">
+        <span class="badge"><%- count < 10 ? count : '9+' %></span>
+    </span>
+<% } %>

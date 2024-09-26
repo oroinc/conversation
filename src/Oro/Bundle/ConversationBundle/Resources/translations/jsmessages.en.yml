@@ -1,0 +1,9 @@
+oro:
+    conversation:
+        new_conversation: 'New Conversation'
+        send: 'Send'
+        text_field:
+            placeholder: 'Type your message here'
+        unread_messages: Unread Messages
+        ask_new_question: 'Ask New Question'
+        no_data: 'There are no conversations'

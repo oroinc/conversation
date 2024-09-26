@@ -1,0 +1,18 @@
+layout:
+    actions:
+        - '@setBlockTheme':
+            themes: '@OroConversation/layouts/default/imports/oro_conversation_frontend_conversation_chat_view/layout.html.twig'
+
+        - '@addTree':
+            items:
+                __conversation_main_container:
+                    blockType: container
+                __conversation_main_container_loading:
+                    blockType: block
+                __conversation_header:
+                    blockType: block
+            tree:
+                __root:
+                    __conversation_main_container:
+                        __conversation_header: ~
+                        __conversation_main_container_loading: ~

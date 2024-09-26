@@ -1,0 +1,211 @@
+data:
+    -
+        type: conversationmessages
+        id: '<toString(@conversationmessage-1-1->id)>'
+        attributes:
+            index: 1
+            body: '<p>Message 1</p>'
+            createdAt: '@conversationmessage-1-1->createdAt->format("Y-m-d\TH:i:s\Z")'
+            updatedAt: '@conversationmessage-1-1->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        relationships:
+            conversation:
+                data:
+                    type: conversations
+                    id: '<toString(@conversation-1->id)>'
+            participant:
+                data:
+                    type: conversationparticipants
+                    id: '<toString(@participant-1-admin->id)>'
+            conversationMessageType:
+                data:
+                    type: conversationmessagestypes
+                    id: text
+    -
+        type: conversationmessages
+        id: '<toString(@conversationmessage-1-2->id)>'
+        attributes:
+            index: 2
+            body: '<p>Message 2</p>'
+            createdAt: '@conversationmessage-1-2->createdAt->format("Y-m-d\TH:i:s\Z")'
+            updatedAt: '@conversationmessage-1-2->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        relationships:
+            conversation:
+                data:
+                    type: conversations
+                    id: '<toString(@conversation-1->id)>'
+            participant:
+                data:
+                    type: conversationparticipants
+                    id: '<toString(@participant-1-grzegorz.brzeczyszczykiewicz@example.com->id)>'
+            conversationMessageType:
+                data:
+                    type: conversationmessagestypes
+                    id: text
+    -
+        type: conversationmessages
+        id: '<toString(@conversationmessage-1-3->id)>'
+        attributes:
+            index: 3
+            body: '<p>Message 3</p>'
+            createdAt: '@conversationmessage-1-3->createdAt->format("Y-m-d\TH:i:s\Z")'
+            updatedAt: '@conversationmessage-1-3->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        relationships:
+            conversation:
+                data:
+                    type: conversations
+                    id: '<toString(@conversation-1->id)>'
+            participant:
+                data:
+                    type: conversationparticipants
+                    id: '<toString(@participant-1-admin->id)>'
+            conversationMessageType:
+                data:
+                    type: conversationmessagestypes
+                    id: text
+    -
+        type: conversationmessages
+        id: '<toString(@conversationmessage-1-4->id)>'
+        attributes:
+            index: 4
+            body: '<p>Message 4</p>'
+            createdAt: '@conversationmessage-1-4->createdAt->format("Y-m-d\TH:i:s\Z")'
+            updatedAt: '@conversationmessage-1-4->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        relationships:
+            conversation:
+                data:
+                    type: conversations
+                    id: '<toString(@conversation-1->id)>'
+            participant:
+                data:
+                    type: conversationparticipants
+                    id: '<toString(@participant-1-grzegorz.brzeczyszczykiewicz@example.com->id)>'
+            conversationMessageType:
+                data:
+                    type: conversationmessagestypes
+                    id: text
+    -
+        type: conversationmessages
+        id: '<toString(@conversationmessage-1-5->id)>'
+        attributes:
+            index: 5
+            body: '<p>Message 5</p>'
+            createdAt: '@conversationmessage-1-5->createdAt->format("Y-m-d\TH:i:s\Z")'
+            updatedAt: '@conversationmessage-1-5->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        relationships:
+            conversation:
+                data:
+                    type: conversations
+                    id: '<toString(@conversation-1->id)>'
+            participant:
+                data:
+                    type: conversationparticipants
+                    id: '<toString(@participant-1-admin->id)>'
+            conversationMessageType:
+                data:
+                    type: conversationmessagestypes
+                    id: text
+    -
+        type: conversationmessages
+        id: '<toString(@conversationmessage-1-6->id)>'
+        attributes:
+            index: 6
+            body: '<p>Message 6</p>'
+            createdAt: '@conversationmessage-1-6->createdAt->format("Y-m-d\TH:i:s\Z")'
+            updatedAt: '@conversationmessage-1-6->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        relationships:
+            conversation:
+                data:
+                    type: conversations
+                    id: '<toString(@conversation-1->id)>'
+            participant:
+                data:
+                    type: conversationparticipants
+                    id: '<toString(@participant-1-grzegorz.brzeczyszczykiewicz@example.com->id)>'
+            conversationMessageType:
+                data:
+                    type: conversationmessagestypes
+                    id: text
+    -
+        type: conversationmessages
+        id: '<toString(@conversationmessage-1-7->id)>'
+        attributes:
+            index: 7
+            body: '<p>Message 7</p>'
+            createdAt: '@conversationmessage-1-7->createdAt->format("Y-m-d\TH:i:s\Z")'
+            updatedAt: '@conversationmessage-1-7->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        relationships:
+            conversation:
+                data:
+                    type: conversations
+                    id: '<toString(@conversation-1->id)>'
+            participant:
+                data:
+                    type: conversationparticipants
+                    id: '<toString(@participant-1-admin->id)>'
+            conversationMessageType:
+                data:
+                    type: conversationmessagestypes
+                    id: text
+    -
+        type: conversationmessages
+        id: '<toString(@conversationmessage-1-8->id)>'
+        attributes:
+            index: 8
+            body: '<p>Message 8</p>'
+            createdAt: '@conversationmessage-1-8->createdAt->format("Y-m-d\TH:i:s\Z")'
+            updatedAt: '@conversationmessage-1-8->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        relationships:
+            conversation:
+                data:
+                    type: conversations
+                    id: '<toString(@conversation-1->id)>'
+            participant:
+                data:
+                    type: conversationparticipants
+                    id: '<toString(@participant-1-grzegorz.brzeczyszczykiewicz@example.com->id)>'
+            conversationMessageType:
+                data:
+                    type: conversationmessagestypes
+                    id: text
+    -
+        type: conversationmessages
+        id: '<toString(@conversationmessage-1-9->id)>'
+        attributes:
+            index: 9
+            body: '<p>Message 9</p>'
+            createdAt: '@conversationmessage-1-9->createdAt->format("Y-m-d\TH:i:s\Z")'
+            updatedAt: '@conversationmessage-1-9->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        relationships:
+            conversation:
+                data:
+                    type: conversations
+                    id: '<toString(@conversation-1->id)>'
+            participant:
+                data:
+                    type: conversationparticipants
+                    id: '<toString(@participant-1-admin->id)>'
+            conversationMessageType:
+                data:
+                    type: conversationmessagestypes
+                    id: text
+    -
+        type: conversationmessages
+        id: '<toString(@conversationmessage-1-10->id)>'
+        attributes:
+            index: 10
+            body: '<p>Message 10</p>'
+            createdAt: '@conversationmessage-1-10->createdAt->format("Y-m-d\TH:i:s\Z")'
+            updatedAt: '@conversationmessage-1-10->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        relationships:
+            conversation:
+                data:
+                    type: conversations
+                    id: '<toString(@conversation-1->id)>'
+            participant:
+                data:
+                    type: conversationparticipants
+                    id: '<toString(@participant-1-grzegorz.brzeczyszczykiewicz@example.com->id)>'
+            conversationMessageType:
+                data:
+                    type: conversationmessagestypes
+                    id: text

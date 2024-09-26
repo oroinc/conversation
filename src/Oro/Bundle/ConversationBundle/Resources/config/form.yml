@@ -23,4 +23,9 @@ services:
 
     Oro\Bundle\ConversationBundle\Form\Handler\ConversationMessageHandler:
         arguments:
-            - "@oro_conversation.manager.conversation_message"
+            - '@oro_conversation.manager.conversation_message'
+            - '@doctrine'
+
+    Oro\Bundle\ConversationBundle\Form\Handler\ConversationHandler:
+        arguments:
+            - '@doctrine'

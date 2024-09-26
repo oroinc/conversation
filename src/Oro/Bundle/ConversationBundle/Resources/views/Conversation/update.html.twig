@@ -48,7 +48,6 @@
     <span class="page-title__status">
         {% set status = {
             'active': 'enabled',
-            'inactive': 'tentatively',
             'closed': 'disabled'
         } %}
         {% if entity.status is not null %}
@@ -61,6 +60,7 @@
     {% set id = 'conversation-form' %}
 
     {%  set formFields = [
+            form_row(form.customerUser),
             form_row(form.name),
             form_row(form.source)
         ]|merge(oro_form_additional_data_rows(form))

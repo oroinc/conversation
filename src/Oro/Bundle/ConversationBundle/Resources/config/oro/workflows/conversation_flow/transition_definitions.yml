@@ -7,18 +7,6 @@ workflows:
                         enum_code: conversation_status
                         identifier: active
                         attribute: $conversation.status
-            inactivate_definition:
-                actions:
-                    - '@request_enum_entity': # set status "Inactive" to conversation
-                        enum_code: conversation_status
-                        identifier: inactive
-                        attribute: $conversation.status
-            activate_definition:
-                actions:
-                    - '@request_enum_entity': # set status "Active" to conversation
-                          enum_code: conversation_status
-                          identifier: active
-                          attribute: $conversation.status
             close_definition:
                 actions:
                     - '@request_enum_entity': # set status "Closed" to conversation

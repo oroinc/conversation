@@ -1,0 +1,5 @@
+styles:
+    inputs:
+        - 'bundles/oroconversation/default/scss/config/conversation-config.scss'
+
+        - 'bundles/oroconversation/default/scss/conversation.scss'

@@ -1,0 +1,31 @@
+/* @theme: default; */
+
+$conversation-main-border: 1px solid get-color('neutral', 'grey2') !default;
+
+$conversation-list-item-border: 1px solid get-color('neutral', 'grey2') !default;
+
+$conversation-list-item-hover-background-color: get-color('neutral', 'grey1') !default;
+$conversation-list-item-active-background-color: get-color('primary', 'light') !default;
+$conversation-list-item-closed-background-color: get-color('primary', 'disabled') !default;
+
+$conversation-message-width: 870px !default;
+$conversation-message-container-width: 870px !default;
+
+$conversation-message-background-color: get-color('primary', 'light') !default;
+$conversation-message-body-border-radius: $border-radius !default;
+$conversation-message-offset-start: 170px !default;
+
+$conversation-message-initials-background-color: get-color('alternative', 'light') !default;
+
+$conversation-message-own-initials-background-color: rgba($conversation-message-background-color, .5) !default;
+$conversation-message-own-initials-color: get-color('text', 'secondary') !default;
+$conversation-message-own-background-color: get-color('primary', 'main') !default;
+$conversation-message-own-color: get-color('text', 'inverse') !default;
+
+$conversation-send-message-inner-background-color: get-color('neutral', 'white') !default;
+
+$conversation-message-additional-color: get-color('neutral', 'grey3') !default;
+
+$conversation-message-date-background-color: get-color('warning', 'light') !default;
+$conversation-message-date-color: get-color('text', 'secondary') !default;
+$conversation-message-date-placeholder-size: 28px !default;

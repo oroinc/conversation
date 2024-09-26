@@ -1,0 +1,24 @@
+layout:
+    imports:
+        -
+            id: oro_customer_page
+        -
+            id: oro_conversation_frontend_conversation_chat_view
+            root: page_content
+            namespace: order_conversation
+
+    actions:
+        - '@setOption':
+            id: page_title
+            optionName: defaultValue
+            optionValue: false
+
+        - '@setOption':
+            id: order_conversation_conversation_main_container
+            optionName: vars.title
+            optionValue: 'oro.conversation.page_title'
+
+        - '@setOption':
+            id: order_conversation_conversation_header
+            optionName: vars.title
+            optionValue: 'oro.conversation.page_title'

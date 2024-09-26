@@ -2,11 +2,19 @@
 
 namespace Oro\Bundle\ConversationBundle\Manager;
 
+use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\ApiBundle\Provider\EntityAliasResolverRegistry;
+use Oro\Bundle\ApiBundle\Request\RequestType;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Helper\EntityConfigHelper;
+use Oro\Bundle\ConversationBundle\Provider\StorefrontConversationProviderInterface;
+use Oro\Bundle\CustomerBundle\Entity\CustomerUser;
+use Oro\Bundle\CustomerBundle\Owner\Metadata\FrontendOwnershipMetadata;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * Manager class for conversation entity.
@@ -14,41 +22,133 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class ConversationManager
 {
     private EntityRoutingHelper $entityRoutingHelper;
-    private RequestStack $requestStack;
     private EntityNameResolver $entityNameResolver;
     private EntityConfigHelper $entityConfigHelper;
+    private OwnershipMetadataProviderInterface $metadataProvider;
+    private PropertyAccessor $propertyAccessor;
+    private ManagerRegistry $doctrine;
+    private StorefrontConversationProviderInterface $storefrontConversationProvider;
+    private EntityAliasResolverRegistry  $aliasResolverRegistry;
 
     public function __construct(
         EntityRoutingHelper $entityRoutingHelper,
-        RequestStack $requestStack,
         EntityNameResolver $entityNameResolver,
-        EntityConfigHelper $entityConfigHelper
+        EntityConfigHelper $entityConfigHelper,
+        OwnershipMetadataProviderInterface $metadataProvider,
+        PropertyAccessor $propertyAccessor,
+        ManagerRegistry $doctrine,
+        StorefrontConversationProviderInterface $storefrontConversationProvider,
+        EntityAliasResolverRegistry  $aliasResolverRegistry
     ) {
         $this->entityRoutingHelper = $entityRoutingHelper;
-        $this->requestStack = $requestStack;
         $this->entityNameResolver = $entityNameResolver;
         $this->entityConfigHelper = $entityConfigHelper;
+        $this->metadataProvider = $metadataProvider;
+        $this->propertyAccessor = $propertyAccessor;
+        $this->doctrine = $doctrine;
+        $this->storefrontConversationProvider = $storefrontConversationProvider;
+        $this->aliasResolverRegistry = $aliasResolverRegistry;
     }
 
-    public function create(): Conversation
+    public function createConversation(?string $sourceEntityClass = null, ?int $sourceEntityId = null): Conversation
     {
         $conversation = new Conversation();
-
-        $request = $this->requestStack->getCurrentRequest();
-        if ($request) {
-            $targetEntityClass = $this->entityRoutingHelper->getEntityClassName($request);
-            $targetEntityId = $this->entityRoutingHelper->getEntityId($request);
-
-            if ($targetEntityClass && $targetEntityId) {
-                $sourceEntity = $this->entityRoutingHelper->getEntity($targetEntityClass, $targetEntityId);
-                $conversation->setName(sprintf(
-                    '%s %s',
-                    $this->entityConfigHelper->getLabel($sourceEntity),
-                    $this->entityNameResolver->getName($sourceEntity)
-                ));
+        if ($sourceEntityClass && $sourceEntityId) {
+            $sourceEntity = $this->entityRoutingHelper->getEntity($sourceEntityClass, $sourceEntityId);
+            if ($sourceEntity) {
+                $conversation->setName($this->getConversationName($sourceEntity));
+                $this->setCustomerUserToConversation($conversation, $sourceEntity);
             }
         }
 
         return $conversation;
+    }
+
+    public function saveConversation(Conversation $conversation): Conversation
+    {
+        $em = $this->doctrine->getManagerForClass(Conversation::class);
+        $em->persist($conversation);
+        $em->flush();
+
+        return $conversation;
+    }
+
+    public function getConversationName(object $sourceEntity): ?string
+    {
+        if ($sourceEntity) {
+            return sprintf(
+                '%s %s',
+                $this->entityConfigHelper->getLabel($sourceEntity),
+                $this->entityNameResolver->getName($sourceEntity)
+            );
+        }
+
+        return null;
+    }
+
+    public function getConversationSourceApiInfo(object $sourceEntity, bool $isBackend = false): array
+    {
+        $apiRequestAspects = [RequestType::REST, RequestType::JSON_API];
+        if (!$isBackend) {
+            $apiRequestAspects[] = "frontend";
+        }
+
+        return [
+            'type' => $this->aliasResolverRegistry->getEntityAliasResolver(new RequestType($apiRequestAspects))
+                ->getPluralAlias(ClassUtils::getClass($sourceEntity)),
+            'id' => $sourceEntity->getId(),
+        ];
+    }
+
+    public function hasConversationsBySource(object $sourceEntity): bool
+    {
+        return (bool) $this->doctrine->getManagerForClass(Conversation::class)
+            ->createQueryBuilder()
+            ->from(Conversation::class, 'c')
+            ->select('1')
+            ->where('c.sourceEntityClass = :sourceEntityClass')
+            ->andWhere('c.sourceEntityId = :sourceEntityId')
+            ->setParameter('sourceEntityClass', ClassUtils::getClass($sourceEntity))
+            ->setParameter('sourceEntityId', $sourceEntity->getId())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getScalarResult();
+    }
+
+    public function getSourceTitle(string $sourceEntityClass, int $sourceEntityId): string
+    {
+        return $this->entityNameResolver->getName(
+            $this->entityRoutingHelper->getEntity($sourceEntityClass, $sourceEntityId)
+        );
+    }
+
+    public function getStorefrontSourceUrl(string $sourceEntityClass, int $sourceEntityId): string
+    {
+        return $this->storefrontConversationProvider->getSourceUrl($sourceEntityClass, $sourceEntityId);
+    }
+
+    public function setCustomerUserToConversation(
+        Conversation $conversation,
+        object $sourceEntity
+    ): void {
+        if ($sourceEntity instanceof CustomerUser) {
+            $conversation->setCustomerUser($sourceEntity);
+            $conversation->setCustomer($sourceEntity->getCustomer());
+
+            return;
+        }
+
+        $ownershipMetadata = $this->metadataProvider->getMetadata(ClassUtils::getClass($sourceEntity));
+        if ($ownershipMetadata->getOwnerType() === FrontendOwnershipMetadata::OWNER_TYPE_FRONTEND_USER) {
+            /** @var CustomerUser $customerUser */
+            $customerUser = $this->propertyAccessor->getValue(
+                $sourceEntity,
+                $ownershipMetadata->getOwnerFieldName()
+            );
+            if ($customerUser) {
+                $conversation->setCustomerUser($customerUser);
+                $conversation->setCustomer($customerUser->getCustomer());
+            }
+        }
     }
 }

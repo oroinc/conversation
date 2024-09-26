@@ -1,0 +1,53 @@
+{% extends '@OroAction/Operation/button.html.twig' %}
+
+{% block button %}
+    {% import '@OroUI/macros.html.twig' as UI %}
+    {% import '@OroUI/layouts/renderIcon.html.twig' as renderIcon %}
+    {% set hasConversations = buttonOptions.data.hasConversations %}
+    {% set togglerId = 'conversation-dropdown-'|uniqid %}
+
+    {% set componentOptions = {
+        view: 'oroconversation/js/app/views/conversation-context-dropdown-view',
+        options: buttonOptions.data|merge({
+            autoRender: true
+        })
+    } %}
+
+    {% if hasConversations %}
+        {% set linkLabel = 'oro.conversation.storefront.questions'|trans %}
+
+        <div class="{{ hasConversations ? 'dropdown' : '' }}" {{ UI.renderPageComponentAttributes(componentOptions) }}>
+            <button type="button" class="btn btn btn--neutral"
+                {% if hasConversations %}
+                    data-toggle="dropdown"
+                    id="{{ togglerId }}"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    data-modifiers="{{ {flip: {flipVariationsByContent: true}}|json_encode }}"
+                    data-target="{{ togglerId }}"
+                {% endif %}
+            >
+                {% if app.request.attributes.get('_layout')|default(false) and params.frontendOptions.options.icon is defined %}
+                    {{ renderIcon.icon({
+                        name: params.frontendOptions.options.icon,
+                        extraClass: params.frontendOptions.options.iconSize is defined ? params.frontendOptions.options.iconSize : ''
+                    }) }}
+                {% endif %}
+                {% if not noLinkLabel %}
+                    {{- linkLabel|trim -}}
+                {% endif %}
+                {% if hasConversations %}
+                    {{ renderIcon.icon({
+                        name: 'chevron-down'
+                    }) }}
+                {% endif %}
+            </button>
+
+            {% if hasConversations %}
+                <div class="dropdown-menu" data-role="conversations" aria-labelledby="{{ togglerId }}"></div>
+            {% endif %}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

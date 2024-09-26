@@ -10,5 +10,10 @@ oro_behat_extension:
                 - Oro\Bundle\UIBundle\Tests\Behat\Context\ContextSelectorContext
                 - Oro\Bundle\NavigationBundle\Tests\Behat\Context\FeatureContext
                 - Oro\Bundle\ActivityListBundle\Tests\Behat\Context\ActivityContext
+                - Oro\Bundle\ApplicationBundle\Tests\Behat\Context\CommerceMainContext
+                - Oro\Bundle\OrderBundle\Tests\Behat\Context\OrderContext
             paths:
                 - '@OroConversationBundle/Tests/Behat/Features'
+    elements:
+        SendPopupButton:
+            selector: '.ui-dialog button[type="submit"]'

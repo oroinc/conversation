@@ -1,0 +1,29 @@
+system_configuration:
+    groups:
+        customer_user_interactions:
+            title: oro.conversation.customer_user_interactions.title
+            icon: 'fa-commenting-o'
+        oro_conversation:
+            icon: fa-commenting-o
+            title: oro.conversation.feature.label
+    fields:
+        oro_conversation.enable_conversation:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: oro.conversation.feature_toggle.label
+                tooltip: oro.conversation.feature.description
+                required: false
+            page_reload: true
+    tree:
+        system_configuration:
+            commerce:
+                children:
+                    customer:
+                        children:
+                            customer_user_interactions:
+                                children:
+                                    oro_conversation:
+                                        priority: 70
+                                        children:
+                                            - oro_conversation.enable_conversation

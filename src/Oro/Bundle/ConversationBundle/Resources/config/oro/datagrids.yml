@@ -6,27 +6,41 @@ datagrids:
             type: orm
             query:
                 select:
+                    - partial conversation.{ id }
                     - conversation.id
                     - conversation.name
+                    - conversation.messagesNumber
+                    - lm.createdAt as lastMessageDate
+                    - partial lm.{ id, participant } as lastm
                     - cs.id as status
                     - cs.name as statusLabel
                     - conversation.createdAt
-                    - conversation.updatedAt
                     - conversation.sourceEntityId
                     - conversation.sourceEntityClass
                     - CONCAT_WS(' ', own.firstName, own.lastName) as ownerName
                     - own.id as owner
+                    - CONCAT(customerUser.firstName, ' ', customerUser.lastName) as customerUserName
+                    - customer.name as customerName
                 from:
                     - { table: 'Oro\Bundle\ConversationBundle\Entity\Conversation', alias: conversation }
                 join:
                     inner:
                         - { join: conversation.status, alias: cs }
+                    left:
+                        - { join: conversation.lastMessage, alias: lm }
+                        - { join: lm.participant, alias: part }
                         - { join: conversation.owner, alias: own }
+                        - { join: conversation.customer, alias: customer }
+                        - { join: conversation.customerUser, alias: customerUser }
         inline_editing:
             enable: true
         columns:
             name:
-                label:         oro.conversation.name.label
+                label: oro.conversation.name.label
+            messagesNumber:
+                label: oro.conversation.messages.label
+                inline_editing:
+                    enable: false
             source:
                 label: oro.conversation.source.label
                 type: twig
@@ -43,6 +57,10 @@ datagrids:
                     autocomplete_api_accessor:
                         class: orouser/js/tools/acl-users-search-api-accessor
                         permission_check_entity_name: Oro_Bundle_ConversationBundle_Entity_Conversation
+            customerName:
+                label: oro.conversation.customer.label
+            customerUserName:
+                label: oro.conversation.customer_user.label
             status:
                 label:         oro.conversation.status.label
                 frontend_type: select
@@ -51,24 +69,31 @@ datagrids:
             createdAt:
                 label:         oro.ui.created_at
                 frontend_type: datetime
-            updatedAt:
-                label:         oro.ui.updated_at
-                frontend_type: datetime
-            contexts: []
+            message:
+                label: oro.conversation.last_message.label
+                type: twig
+                frontend_type: html
+                template: '@OroConversation/Conversation/Datagrid/message.html.twig'
         sorters:
             columns:
                 name:
                     data_name: conversation.name
                 status:
                     data_name: cs.priority
+                messagesNumber:
+                    data_name: conversation.messagesNumber
                 ownerName:
                     data_name: ownerName
+                customerName:
+                    data_name: customerName
+                customerUserName:
+                    data_name: customerUserName
                 createdAt:
                     data_name: conversation.createdAt
-                updatedAt:
-                    data_name: conversation.updatedAt
+                message:
+                    data_name: lastMessageDate
             default:
-                createdAt: ASC
+                message: ASC
         filters:
             columns:
                 name:
@@ -78,6 +103,9 @@ datagrids:
                     type:      enum
                     data_name: conversation.status
                     enum_code: conversation_status
+                messagesNumber:
+                    type:      number
+                    data_name: conversation.messagesNumber
                 owner:
                     type: choice-tree
                     label: oro.conversation.owner.label
@@ -85,12 +113,18 @@ datagrids:
                     autocomplete_alias: assigned_to_organization_users
                     renderedPropertyName: 'fullName'
                     className: 'Oro\Bundle\UserBundle\Entity\User'
+                customerName:
+                    type:      string
+                    data_name: customerName
+                customerUserName:
+                    type:      string
+                    data_name: customerUserName
                 createdAt:
                     type:      datetime
                     data_name: conversation.createdAt
-                updatedAt:
+                message:
                     type:      datetime
-                    data_name: conversation.updatedAt
+                    data_name: lastMessageDate
         properties:
             id: ~
             view_link:
@@ -117,8 +151,6 @@ datagrids:
                 link:          update_link
         options:
             entity_pagination: true
-            contexts:
-                enabled: true
 
     conversation-messages-grid:
         extended_entity_name: 'Oro\Bundle\ConversationBundle\Entity\ConversationMessage'

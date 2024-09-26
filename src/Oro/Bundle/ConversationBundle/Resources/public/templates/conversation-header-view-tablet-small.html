@@ -1,0 +1,20 @@
+<% let oroui = _.macros('oroui') %>
+
+<h2 class="conversation__header-title">
+    <% if (id) { %>
+    <button class="btn btn--icon btn--plain" type="button" data-role="back">
+        <%= oroui.renderIcon({
+            name: 'arrow-left',
+            extraClass: 'theme-icon--lg'
+        }) %>
+    </button>
+
+    <span data-role="conversation-name"><%- name %></span>
+    <% } else { %>
+        <%- _.__(title) %>
+    <% } %>
+</h2>
+
+<div class="conversation__actions" data-role="actions"></div>
+
+<div data-role="status-bar"></div>

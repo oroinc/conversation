@@ -1,0 +1,43 @@
+operations:
+    oro_conversation_add_new_conversation:
+        label: oro.conversation.storefront.new_conversation
+        applications: [ commerce ]
+        datagrids: ['noneexisting'] #the action should not be added to grid items
+        routes: [] #set at the ConfigurationProviderDecorator
+        button_options:
+            icon: message-square
+            template: '@OroConversation/Actions/conversations-button.html.twig'
+            data:
+                conversationName: $.conversationName
+                hasConversations: $.hasConversations
+                sourceType: $.source.type
+                sourceId: $.source.id
+                mediatorEvents: ['actions-container:refresh']
+            page_component_module: oroui/js/app/components/view-component
+            page_component_options:
+                view: oroconversation/js/app/views/conversation-add-new-button-view
+                addConversation: true
+                conversationName: $.conversationName
+                hasConversations: $.hasConversations
+                sourceType: $.source.type
+                sourceId: $.source.id
+                mediatorEvents: ['actions-container:refresh']
+        frontend_options:
+            options:
+                icon: message-square
+        preactions:
+            - '@call_service_method':
+                  attribute: $.hasConversations
+                  service: oro_conversation.manager.conversation
+                  method: hasConversationsBySource
+                  method_parameters: [ $.data ]
+            - '@call_service_method':
+                  attribute: $.conversationName
+                  service: oro_conversation.manager.conversation
+                  method: getConversationName
+                  method_parameters: [ $.data ]
+            - '@call_service_method':
+                attribute: $.source
+                service: oro_conversation.manager.conversation
+                method: getConversationSourceApiInfo
+                method_parameters: [ $.data ]

@@ -1,0 +1,9 @@
+<% if (hasConversations) { %>
+    <div class="conversation__content" data-role="conversation-content">
+        <div class="conversation__sidebar" data-role="conversation-sidebar"></div>
+    </div>
+<% } else { %>
+    <div class="no-data show">
+        <span><%- _.__('oro.conversation.no_data') %></span>
+    </div>
+<% } %>

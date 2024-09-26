@@ -2,9 +2,12 @@
 
 namespace Oro\Bundle\ConversationBundle\Tests\Unit\Form\Handler;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
 use Oro\Bundle\ConversationBundle\Form\Handler\ConversationMessageHandler;
 use Oro\Bundle\ConversationBundle\Manager\ConversationMessageManager;
+use Oro\Bundle\UserBundle\Entity\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormInterface;
@@ -14,12 +17,14 @@ class ConversationMessageHandlerTest extends TestCase
 {
     private ConversationMessageManager|MockObject $conversationMessageManager;
 
-    private ConversationMessageHandler $handler;
+    private ConversationMessageHandler|MockObject $handler;
+    private ManagerRegistry|MockObject $doctrine;
 
     protected function setUp(): void
     {
         $this->conversationMessageManager = $this->createMock(ConversationMessageManager::class);
-        $this->handler = new ConversationMessageHandler($this->conversationMessageManager);
+        $this->doctrine = $this->createMock(ManagerRegistry::class);
+        $this->handler = new ConversationMessageHandler($this->conversationMessageManager, $this->doctrine);
     }
 
     public function testProcessOnGetRequest(): void
@@ -62,10 +67,16 @@ class ConversationMessageHandlerTest extends TestCase
 
     public function testProcessOnValidForm(): void
     {
+        $participant = new User();
         $request = new Request();
         $request->setMethod('POST');
 
         $data = new ConversationMessage();
+
+        $participantForm = $this->createMock(FormInterface::class);
+        $participantForm->expects(self::once())
+            ->method('getData')
+            ->willReturn($participant);
 
         $form = $this->createMock(FormInterface::class);
         $form->expects(self::once())
@@ -76,9 +87,25 @@ class ConversationMessageHandlerTest extends TestCase
         $form->expects(self::once())
             ->method('isValid')
             ->willReturn(true);
+        $form->expects(self::once())
+            ->method('get')
+            ->with('participant')
+            ->willReturn($participantForm);
 
         $this->conversationMessageManager->expects(self::once())
-            ->method('saveMessage');
+            ->method('setMessageParticipant')
+            ->with($data, $participant);
+
+        $em = $this->createMock(EntityManager::class);
+        $em->expects(self::once())
+            ->method('persist')
+            ->with($data);
+        $em->expects(self::once())
+            ->method('flush');
+
+        $this->doctrine->expects(self::once())
+            ->method('getManager')
+            ->willReturn($em);
 
         self::assertTrue($this->handler->process($data, $form, $request));
     }

@@ -1,0 +1,45 @@
+<% let uniqueId = _.uniqueId(); %>
+<% let oroui = _.macros('oroui') %>
+<form>
+    <div class="grid">
+        <div class="grid-col-12">
+            <div class="form-row">
+                <label class="label label--full" for="conversation-name-<%- uniqueId %>">Subject<span aria-hidden="true" class="required-symbol">*</span></label>
+                <input
+                    type="text"
+                    id="conversation-name-<%- uniqueId %>"
+                    required="required"
+                    data-validation="<%-JSON.stringify({NotBlank: {},Length: {max: 255}}) %>"
+                    name="conversation-name"
+                    class="form-field-text input input--full"
+                    <% if (conversationName) { %>
+                        value="<%- conversationName %>"
+                    <% } %>
+                >
+            </div>
+        </div>
+
+        <div class="grid-col-12">
+            <div class="form-row">
+                <label class="label label--full" for="conversation-first-message-<%- uniqueId %>">Your Message<span aria-hidden="true" class="required-symbol">*</span></label>
+                <textarea
+                    id="conversation-first-message-<%- uniqueId %>"
+                    required="required"
+                    data-validation="<%-JSON.stringify({NotBlank: {}}) %>"
+                    name="conversation-message"
+                    class="form-field-textarea textarea textarea--full"
+                ></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget-actions form-actions" style="display: none;">
+        <button class="btn btn--outlined" type="reset"><%- _.__('Cancel') %></button>
+        <button class="btn" type="submit">
+            <%= oroui.renderIcon({
+                name: 'send'
+            }) %>
+            <%- _.__('oro.conversation.send') %>
+        </button>
+    </div>
+</form>

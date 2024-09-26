@@ -1,0 +1,6 @@
+<% let oroui = _.macros('oroui') %>
+
+<%= oroui.renderIcon({
+    name: 'message-square'
+}) %>
+<span <% if (hideLabelOnMobile) { %>class="hide-on-mobile-big"<% } %>><%- label %></span>

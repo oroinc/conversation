@@ -1,0 +1,21 @@
+data:
+    type: conversationmessages
+    id: '<toString(@conversationmessage-1-2->id)>'
+    attributes:
+        index: 2
+        body: '<p>Message 2</p>'
+        createdAt: '@conversationmessage-1-2->createdAt->format("Y-m-d\TH:i:s\Z")'
+        updatedAt: '@conversationmessage-1-2->updatedAt->format("Y-m-d\TH:i:s\Z")'
+    relationships:
+        conversation:
+            data:
+                type: conversations
+                id: '<toString(@conversation-1->id)>'
+        participant:
+            data:
+                type: conversationparticipants
+                id: '<toString(@participant-1-grzegorz.brzeczyszczykiewicz@example.com->id)>'
+        conversationMessageType:
+            data:
+                type: conversationmessagestypes
+                id: text
