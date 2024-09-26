@@ -1,4 +1,5 @@
 @fixture-OroUserBundle:users.yml
+@fixture-OroCustomerBundle:CustomerUserFixture.yml
 
 Feature: conversation CRUD
   In order to manage Conversations
@@ -10,23 +11,23 @@ Feature: conversation CRUD
     And I go to Activities/Conversations
     When I press "Create Conversation"
     And I fill form with:
-      | NAME     | Some test conversation |
-      | Context  | [charlie] |
+      | NAME          | Some test conversation |
+      | Customer User | Amanda Cole            |
+      | Context       | [charlie]              |
     And I press "Save and Close"
     Then I should see "Conversation has been saved" flash message
 
   Scenario: View Conversation
     Given I go to Activities/Conversations
     Then I should see following grid:
-      | Name                   | Status   | Contexts      |
-      | Some test conversation | Active   | Charlie Sheen |
+      | Name                   | Messages | Owner    | Customer       | Customer User | Status |
+      | Some test conversation | 0        | John Doe | first customer | Amanda Cole   | Active |
     When I click view "Some test conversation" in grid
     Then I should see "Some test conversation"
     And John Doe should be an owner
-    And I should see "Context Charlie Sheen"
+    And I should see "Context Amanda Cole Charlie Sheen John Doe"
     And I should see "Conversation Flow: Active"
     And I should see "There are no conversation messages"
-    And I should see "Set inactive"
     And I should see "Close"
 
   Scenario: Inline edit conversation in grid
@@ -34,8 +35,8 @@ Feature: conversation CRUD
     When I edit Name as "First conversation"
     And I reload the page
     Then I should see following grid:
-      | Name               | Status   | Contexts      |
-      | First conversation | Active   | Charlie Sheen |
+      | Name               | Messages | Owner    | Customer       | Customer User | Status |
+      | First conversation | 0        | John Doe | first customer | Amanda Cole   | Active |
 
   Scenario: Edit Conversation
     Given I go to Activities/Conversations

@@ -16,7 +16,7 @@ class ConversationParticipantRepository extends EntityRepository
 {
     public function findParticipantForConversation(
         AssociationManager $associationManager,
-        Conversation $conversation,
+        Conversation|int $conversation,
         object $target
     ): ?ConversationParticipant {
         $entityClass = ClassUtils::getClass($target);
@@ -27,10 +27,9 @@ class ConversationParticipantRepository extends EntityRepository
             'conversationParticipant'
         );
 
-        $andWhereRestriction = sprintf('participant.%s = :target', $targets[$entityClass]);
         return $this->createQueryBuilder('participant')
             ->where('participant.conversation = :conversation')
-            ->andWhere($andWhereRestriction)
+            ->andWhere(sprintf('participant.%s = :target', $targets[$entityClass]))
             ->setParameter('conversation', $conversation)
             ->setParameter('target', $target)
             ->setMaxResults(1)

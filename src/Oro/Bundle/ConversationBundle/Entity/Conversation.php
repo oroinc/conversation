@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroConversationBundle_Entity_Conversation;
 use Oro\Bundle\ActivityBundle\Model\ActivityInterface;
 use Oro\Bundle\ActivityBundle\Model\ExtendActivity;
+use Oro\Bundle\CustomerBundle\Entity\CustomerOwnerAwareInterface;
+use Oro\Bundle\CustomerBundle\Entity\Ownership\AuditableFrontendCustomerUserAwareTrait;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
@@ -30,18 +32,24 @@ use Oro\Bundle\UserBundle\Entity\User;
  */
 #[ORM\Entity]
 #[ORM\Table(name: 'oro_conversation')]
+#[ORM\Index(columns: ['source_entity_class', 'source_entity_id'], name: 'conversation_source_idx')]
 #[Config(
     routeName: 'oro_conversation_index',
     routeView: 'oro_conversation_view',
     defaultValues: [
         'entity'    => ['icon' => 'fa-commenting-o'],
-        'security'  => ['type' => 'ACL', 'group_name' => '', 'category' => 'account_management'],
+        'security'  => ['type' => 'ACL', 'group_name' => 'commerce', 'category' => 'account_management'],
         'ownership' => [
-            'owner_type'               => 'USER',
-            'owner_field_name'         => 'owner',
-            'owner_column_name'        => 'user_owner_id',
+            'owner_type' => 'USER',
+            'owner_field_name'  => 'owner',
+            'owner_column_name' => 'user_owner_id',
             'organization_field_name'  => 'organization',
             'organization_column_name' => 'organization_id',
+            'frontend_owner_type' => 'FRONTEND_USER',
+            'frontend_owner_field_name' => 'customerUser',
+            'frontend_owner_column_name' => 'customer_user_id',
+            'frontend_customer_field_name' => 'customer',
+            'frontend_customer_column_name' => 'customer_id'
         ],
         'grouping'  => ['groups' => ['activity']],
         'dataaudit' => ['auditable' => true],
@@ -58,15 +66,16 @@ use Oro\Bundle\UserBundle\Entity\User;
 class Conversation implements
     DatesAwareInterface,
     ActivityInterface,
-    ExtendEntityInterface
+    ExtendEntityInterface,
+    CustomerOwnerAwareInterface
 {
     use DatesAwareTrait;
     use ExtendEntityTrait;
     use ExtendActivity;
+    use AuditableFrontendCustomerUserAwareTrait;
 
     public const STATUS_CODE = 'conversation_status';
     public const STATUS_ACTIVE = 'active';
-    public const STATUS_INACTIVE = 'inactive';
     public const STATUS_CLOSED = 'closed';
 
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
@@ -99,6 +108,11 @@ class Conversation implements
     #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
     private ?int $sourceEntityId = null;
 
+    #[ORM\ManyToOne(targetEntity: ConversationMessage::class)]
+    #[ORM\JoinColumn(name: 'last_message_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
+    private ?ConversationMessage $lastMessage = null;
+
     /**
      * @var Collection<int, ConversationMessage>
      */
@@ -110,7 +124,7 @@ class Conversation implements
     )]
     #[ORM\OrderBy(['index' => Criteria::DESC])]
     #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
-    protected Collection $messages;
+    private ?Collection $messages = null;
 
     /**
      * @var Collection<int, ConversationParticipant>
@@ -122,7 +136,7 @@ class Conversation implements
         orphanRemoval: true
     )]
     #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
-    protected Collection $participants;
+    private ?Collection $participants = null;
 
     public function __construct()
     {
@@ -254,5 +268,15 @@ class Conversation implements
         $this->sourceEntityId = $entityId;
 
         return $this;
+    }
+
+    public function getLastMessage(): ?ConversationMessage
+    {
+        return $this->lastMessage;
+    }
+
+    public function setLastMessage(?ConversationMessage $lastMessage): void
+    {
+        $this->lastMessage = $lastMessage;
     }
 }

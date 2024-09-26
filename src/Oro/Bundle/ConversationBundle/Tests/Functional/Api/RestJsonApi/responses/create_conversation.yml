@@ -1,0 +1,54 @@
+data:
+    type: conversations
+    id: new
+    attributes:
+        name: created-conversation
+        messagesNumber: 0
+    relationships:
+        owner:
+            data:
+                type: users
+                id: '<toString(@user->id)>'
+        organization:
+            data:
+                type: organizations
+                id: '<toString(@organization->id)>'
+        lastMessage:
+            data: null
+        messages:
+            data: []
+        participants:
+            data:
+                -
+                    type: conversationparticipants
+                    id: new
+                -
+                    type: conversationparticipants
+                    id: new
+        customerUser:
+            data:
+                type: customerusers
+                id: '<toString(@grzegorz.brzeczyszczykiewicz@example.com->id)>'
+        customer:
+            data:
+                type: customers
+                id: '<toString(@customer.level_1->id)>'
+        status:
+            data:
+                type: conversationstatuses
+                id: active
+        source:
+            data:
+                type: orders
+                id: '<toString(@simple_order->id)>'
+        activityTargets:
+            data:
+                -
+                    type: users
+                    id: '<toString(@user->id)>'
+                -
+                    type: customerusers
+                    id: '<toString(@grzegorz.brzeczyszczykiewicz@example.com->id)>'
+                -
+                    type: orders
+                    id: '<toString(@simple_order->id)>'

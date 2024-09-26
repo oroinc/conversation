@@ -1,0 +1,19 @@
+data:
+    type: conversationmessages
+    id: new
+    attributes:
+        index: 11
+        body: '<p>Created message</p>'
+    relationships:
+        conversation:
+            data:
+                type: conversations
+                id: '<toString(@conversation-1->id)>'
+        participant:
+            data:
+                type: conversationparticipants
+                id: '<toString(@participant-1-grzegorz.brzeczyszczykiewicz@example.com->id)>'
+        conversationMessageType:
+            data:
+                type: conversationmessagestypes
+                id: text

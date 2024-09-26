@@ -1,0 +1,21 @@
+data:
+    type: conversationparticipants
+    id: '<toString(@participant-5-admin->id)>'
+    attributes:
+        lastReadMessageIndex: 9
+        createdAt: '@participant-5-admin->createdAt->format("Y-m-d\TH:i:s\Z")'
+        updatedAt: '@participant-5-admin->updatedAt->format("Y-m-d\TH:i:s\Z")'
+        isMe: true
+    relationships:
+        conversation:
+            data:
+                type: conversations
+                id: '<toString(@conversation-5->id)>'
+        lastReadMessage:
+            data:
+                type: conversationmessages
+                id: '<toString(@conversationmessage-5-9->id)>'
+        author:
+            data:
+                type: users
+                id: '<toString(@user->id)>'

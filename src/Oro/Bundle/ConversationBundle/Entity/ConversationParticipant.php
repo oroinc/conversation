@@ -44,7 +44,7 @@ class ConversationParticipant implements DatesAwareInterface, ExtendEntityInterf
     #[ORM\Column(name: 'last_read_message_index', type: Types::INTEGER)]
     private ?int $lastReadMessageIndex = 0;
 
-    #[ORM\Column(name: 'last_read_date', type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: 'last_read_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTime $lastReadDate = null;
 
     public function getId(): ?int

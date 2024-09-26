@@ -1,0 +1,5 @@
+dynamic-imports:
+    conversation:
+        - oroconversation/js/app/views/conversation-view
+        - oroconversation/js/app/views/conversation-context-dropdown-view
+        - oroconversation/js/app/views/conversation-add-new-button-view

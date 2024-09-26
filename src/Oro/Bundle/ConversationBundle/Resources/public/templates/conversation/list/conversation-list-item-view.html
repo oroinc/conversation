@@ -1,0 +1,10 @@
+<div class="conversation__list-item-title"><%- name %></div>
+<% if (lastMassage) { %>
+    <div class="conversation__list-item-body"><%= lastMassage.attributes.plainBody %></div>
+<% } %>
+<% const count = getUnreadMessagesCount() %>
+<% if (count) { %>
+<div class="conversation__list-item-additional">
+    <div class="badge"><%- count < 10 ? count : '9+' %></div>
+</div>
+<% } %>

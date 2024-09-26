@@ -8,15 +8,20 @@ oro:
         status.label: Status
         messages.label: Messages
         messages_number.label: Number of messages
-        source_target.label: Started from
-        owner.label: Assigned to
+        source_target.label: Initiated from
+        owner.label: Owner
+        customer_user.label: Customer User
+        customer.label: Customer
         organization.label: Organization
         participants.label: Participants
+        last_message:
+            label: Last message
+            from: from
         source_entity_class:
-            label: Source Entity Class
+            label: Initiated from Entity Class
             description: The class of the entity the conversation was started from.
         source_entity_id:
-            label: Source Entity ID
+            label: Initiated from Entity ID
             description: The ID of the entity the conversation was started from.
         start_conversation: Start conversation
         start_conversation.title: Start conversation for this entity
@@ -24,13 +29,21 @@ oro:
         update: Update {{ entity }}
         delete: Delete {{ entity }}
         activity_item:
-            created_by: created by {{ user }}
-            changed_by: created by {{ user }}, updated by {{ editor }}
+            created_by: owned by {{ user }}
+            changed_by: owned by {{ user }}, updated by {{ editor }}
         saved.message: Conversation has been saved
         source:
-            label: Source
-            placeholder: Choose a source...
-            dialogue.label: Select a Source entity
+            label: Initiated from
+            placeholder: Choose an initiated from...
+            dialogue.label: Select an initiated from entity
+        feature:
+            label: Conversations
+            description: Enables conversations between users and customer users.
+        feature_toggle:
+            label: Enable Conversations
+        storefront:
+            new_conversation: Ask a question
+            questions: Questions
 
         conversationmessage:
             entity_label: Conversation message
@@ -64,3 +77,5 @@ oro:
             last_read_date.label: Last read date
             conversation.label: Conversation
             last_read_message.label: Last read message
+
+        page_title: Conversations

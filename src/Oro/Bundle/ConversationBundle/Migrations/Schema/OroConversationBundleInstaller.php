@@ -32,7 +32,7 @@ class OroConversationBundleInstaller implements
     #[\Override]
     public function getMigrationVersion(): string
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     #[\Override]
@@ -51,6 +51,7 @@ class OroConversationBundleInstaller implements
 
         $this->activityExtension->addActivityAssociation($schema, 'oro_conversation', 'oro_order');
         $this->activityExtension->addActivityAssociation($schema, 'oro_conversation', 'oro_rfp_request');
+        $this->activityExtension->addActivityAssociation($schema, 'oro_conversation', 'oro_sale_quote');
         $this->activityExtension->addActivityAssociation($schema, 'oro_conversation', 'oro_user');
         $this->activityExtension->addActivityAssociation($schema, 'oro_conversation', 'oro_customer_user');
 
@@ -79,15 +80,22 @@ class OroConversationBundleInstaller implements
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('owner_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('customer_user_id', 'integer', ['notnull' => false]);
+        $table->addColumn('last_message_id', 'integer', ['notnull' => false]);
         $table->addColumn('name', 'string', ['length' => 255, 'notnull' => false]);
         $table->addColumn('source_entity_class', 'string', ['length' => 255, 'notnull' => false]);
         $table->addColumn('source_entity_id', 'integer', ['notnull' => false]);
         $table->addColumn('messages_number', 'integer', []);
+        $table->addColumn('customer_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', []);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['owner_id'], 'idx_BA066CE19EB185F4');
         $table->addIndex(['organization_id'], 'idx_BA066CE132C8A1DE');
+        $table->addIndex(['customer_user_id'], 'idx_conv_customer_user');
+        $table->addIndex(['customer_id'], 'idx_conv_customer');
+        $table->addIndex(['last_message_id'], 'idx_conv_last_message');
+        $table->addIndex(['source_entity_class', 'source_entity_id'], 'conversation_source_idx');
     }
 
     private function createOroConversationParticipantTable(Schema $schema): void
@@ -97,7 +105,7 @@ class OroConversationBundleInstaller implements
         $table->addColumn('conversation_id', 'integer', ['notnull' => false]);
         $table->addColumn('last_read_message_id', 'integer', ['notnull' => false]);
         $table->addColumn('last_read_message_index', 'integer', []);
-        $table->addColumn('last_read_date', 'datetime', []);
+        $table->addColumn('last_read_date', 'datetime', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', []);
         $table->setPrimaryKey(['id']);
@@ -137,6 +145,24 @@ class OroConversationBundleInstaller implements
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_customer_user'),
+            ['customer_user_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_customer'),
+            ['customer_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_conversation_message'),
+            ['last_message_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => 'CASCADE']
+        );
     }
 
     private function addOroConversationParticipantForeignKeys(Schema $schema): void
@@ -169,7 +195,6 @@ class OroConversationBundleInstaller implements
             fn ($key) => ExtendHelper::buildEnumOptionId('conversation_status', $key),
             [
                 Conversation::STATUS_ACTIVE,
-                Conversation::STATUS_INACTIVE,
                 Conversation::STATUS_CLOSED,
             ]
         );

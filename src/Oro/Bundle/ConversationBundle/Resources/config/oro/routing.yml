@@ -1,4 +1,11 @@
 oro_conversation_bundle:
-    resource:     "@OroConversationBundle/Controller"
-    type:         annotation
-    prefix:       /conversation
+    resource: "@OroConversationBundle/Controller"
+    type: annotation
+    prefix: /conversation
+
+oro_customer_frontend_conversation:
+    resource: "@OroConversationBundle/Controller/Frontend/ConversationController.php"
+    type: annotation
+    prefix: /customer/conversation
+    options:
+        frontend: true

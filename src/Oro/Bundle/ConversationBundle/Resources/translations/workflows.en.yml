@@ -3,10 +3,8 @@ oro:
         conversation_flow:
             step:
                 active.label: Active
-                inactive.label: Inactive
                 closed.label: Closed
             transition:
-                set_inactive.label: Set inactive
                 activate.label: Activate
                 close.label: Close
                 reopen.label: Reopen

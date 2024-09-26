@@ -19,6 +19,9 @@
                 {% endif %}
             {% endset %}
             {{ UI.renderHtmlProperty('oro.conversation.owner.label'|trans, ownerData) }}
+            {% if entity.customerUser %}
+            {{ UI.renderHtmlProperty('oro.conversation.customer_user.label'|trans, U.render_user_name(entity.customerUser)) }}
+            {% endif %}
             {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'|trans) }}
             {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'|trans) }}
         </div>

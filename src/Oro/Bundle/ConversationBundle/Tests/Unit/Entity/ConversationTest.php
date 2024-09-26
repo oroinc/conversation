@@ -5,6 +5,8 @@ namespace Oro\Bundle\ConversationBundle\Tests\Unit\Entity;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
 use Oro\Bundle\ConversationBundle\Entity\ConversationParticipant;
+use Oro\Bundle\CustomerBundle\Entity\Customer;
+use Oro\Bundle\CustomerBundle\Entity\CustomerUser;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
@@ -22,9 +24,12 @@ class ConversationTest extends TestCase
                 ['name', 'some string'],
                 ['messagesNumber', 132],
                 ['owner', new User()],
+                ['customer', new Customer()],
+                ['customerUser', new CustomerUser()],
                 ['organization', new Organization()],
                 ['sourceEntityClass', \stdClass::class],
                 ['sourceEntityId', 48],
+                ['lastMessage', new ConversationMessage()]
             ]
         );
     }

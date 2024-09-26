@@ -8,12 +8,29 @@ navigation:
                 extras:
                     routes: ['oro_conversation_update', 'oro_conversation_create', 'oro_conversation_view']
                     description: 'oro.conversation.menu.conversations_list.description'
+
+            frontend_conversation_list:
+                label: 'oro.conversation.entity_plural_label'
+                route: 'oro_conversation_frontend_conversation_index'
+                position: 1
+                extras:
+                    routes: ['/^oro_conversation_frontend_conversation_index/']
         tree:
             application_menu:
                 children:
                     activities_tab:
                         children:
                             conversation_list: ~
+            oro_customer_menu:
+                children:
+                    oro_customer_frontend_customer_user_profiles_and_addresses:
+                        children:
+                            frontend_conversation_list: ~
+            oro_customer_menu_refreshing_teal:
+                children:
+                    oro_customer_frontend_customer_user_profiles_and_addresses:
+                        children:
+                            frontend_conversation_list: ~
     titles:
         oro_conversation_index: ~
         oro_conversation_view: '%entity.name%'

@@ -5,6 +5,7 @@ namespace Oro\Bundle\ConversationBundle\Form\Type;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
+use Oro\Bundle\CustomerBundle\Form\Type\CustomerUserSelectType;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -37,6 +38,14 @@ class ConversationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add(
+                'customerUser',
+                CustomerUserSelectType::class,
+                [
+                    'label' => 'oro.conversation.customer_user.label',
+                    'required' => true,
+                ]
+            )
             ->add(
                 'name',
                 TextType::class,

@@ -5,6 +5,7 @@ namespace Oro\Bundle\ConversationBundle\Controller;
 use Oro\Bundle\ActivityBundle\Autocomplete\ContextSearchHandler;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
+use Oro\Bundle\ConversationBundle\Form\Handler\ConversationHandler;
 use Oro\Bundle\ConversationBundle\Form\Type\ConversationType;
 use Oro\Bundle\ConversationBundle\Manager\ConversationManager;
 use Oro\Bundle\DataGridBundle\Provider\MultiGridProvider;
@@ -65,7 +66,15 @@ class ConversationController extends AbstractController
     #[Acl(id: 'oro_conversation_create', type: 'entity', class: Conversation::class, permission: 'CREATE')]
     public function createAction(Request $request): array|RedirectResponse
     {
-        return $this->update($request, $this->container->get('oro_conversation.manager.conversation')->create());
+        $entityRoutingHelper = $this->container->get(EntityRoutingHelper::class);
+
+        return $this->update(
+            $request,
+            $this->container->get('oro_conversation.manager.conversation')->createConversation(
+                $entityRoutingHelper->getEntityClassName($request),
+                $entityRoutingHelper->getEntityId($request)
+            )
+        );
     }
 
     #[Route(path: '/update/{id}', name: 'oro_conversation_update', requirements: ['id' => '\d+'])]
@@ -140,7 +149,7 @@ class ConversationController extends AbstractController
             $this->createForm(ConversationType::class, $conversation),
             $this->container->get(TranslatorInterface::class)->trans('oro.conversation.saved.message'),
             $request,
-            null,
+            $this->container->get(ConversationHandler::class),
             'oro_conversation_update'
         );
     }
@@ -168,7 +177,9 @@ class ConversationController extends AbstractController
             ActivityManager::class,
             MultiGridProvider::class,
             ContextSearchHandler::class,
-            ValidatorInterface::class
+            ValidatorInterface::class,
+            EntityRoutingHelper::class,
+            ConversationHandler::class
         ]);
     }
 }

@@ -4,7 +4,6 @@ namespace Oro\Bundle\ConversationBundle\Form\Type;
 
 use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
 use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
-use Oro\Bundle\FormBundle\Validator\Constraints\HtmlNotBlank;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,12 +28,11 @@ class ConversationMessageType extends AbstractType
             OroResizeableRichTextType::class,
             [
                 'required' => true,
-                'label'    => 'oro.conversation.conversationmessage.body.label',
-                'attr'     => [
+                'label' => 'oro.conversation.conversationmessage.body.label',
+                'attr' => [
                     'placeholder' => 'oro.conversation.conversationmessage.body.placeholder'
                 ],
-                'empty_data' => '',
-                'constraints' => [ new HtmlNotBlank() ]
+                'empty_data' => ''
             ]
         )
         ->add(
@@ -43,7 +41,7 @@ class ConversationMessageType extends AbstractType
             [
                 'required' => false,
                 'mapped' => false,
-                'label'    => 'oro.conversation.conversationmessage.from_participant.label',
+                'label' => 'oro.conversation.conversationmessage.from_participant.label',
                 'error_bubbling' => false,
                 'placeholder' => 'oro.conversation.conversationmessage.from_participant.placeholder',
                 'autocomplete_route_name' => 'oro_conversation_messages_participants_autocomplete_search',
@@ -73,9 +71,6 @@ class ConversationMessageType extends AbstractType
         return 'oro_conversation_message';
     }
 
-    /**
-     * Adds participant value to form.
-     */
     private function addParticipantValueToForm(FormEvent $event): void
     {
         /** @var ConversationMessage $message */

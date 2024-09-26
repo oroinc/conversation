@@ -1,7 +1,110 @@
 api:
+    entity_aliases:
+        Extend\Entity\EV_Conversation_Message_Type:
+            alias: conversationmessagetype
+            plural_alias: conversationmessagestypes
+        Extend\Entity\EV_Conversation_Status:
+            alias: conversationstatus
+            plural_alias: conversationstatuses
+
     entities:
         Extend\Entity\EV_Conversation_Message_Type:
-            documentation_resource: '@OroConversationBundle/Resources/doc/api/conversation.md'
+            documentation_resource: '@OroConversationBundle/Resources/doc/api/conversationmessage.md'
 
         Extend\Entity\EV_Conversation_Status:
             documentation_resource: '@OroConversationBundle/Resources/doc/api/conversation.md'
+
+        Oro\Bundle\ConversationBundle\Entity\Conversation:
+            documentation_resource: '@OroConversationBundle/Resources/doc/api/conversation.md'
+            fields:
+                participants:
+                    form_options:
+                        mapped: false
+                messagesNumber:
+                    form_options:
+                        mapped: false
+                lastMessage:
+                    form_options:
+                        mapped: false
+                source:
+                    data_type: nestedAssociation
+                    fields:
+                        __class__:
+                            property_path: sourceEntityClass
+                        id:
+                            property_path: sourceEntityId
+                messages:
+                    order_by:
+                        id: DESC
+            filters:
+                fields:
+                    source:
+                        type: nestedAssociation
+                        allow_array: true
+                        options:
+                            fieldName: source
+                        data_type: integer
+            subresources:
+                participants:
+                    actions:
+                        update_relationship: false
+                        add_relationship: false
+                        delete_relationship: false
+                lastMessage:
+                    actions:
+                        update_relationship: false
+
+        Oro\Bundle\ConversationBundle\Entity\ConversationMessage:
+            documentation_resource: '@OroConversationBundle/Resources/doc/api/conversationmessage.md'
+            actions:
+                delete: false
+                delete_list: false
+                update: false
+            inner_join_associations: [ conversation ]
+            fields:
+                # this field was added to check access to message by its conversation
+                _conversation_id:
+                    exclude: true
+                    data_type: string
+                    depends_on: [ conversation.id ]
+                index:
+                    form_options:
+                        mapped: false
+
+        Oro\Bundle\ConversationBundle\Entity\ConversationParticipant:
+            documentation_resource: '@OroConversationBundle/Resources/doc/api/conversationparticipant.md'
+            actions:
+                create: false
+                delete: false
+                delete_list: false
+            fields:
+                isMe:
+                    data_type: boolean
+                    property_path: _
+                    depends_on: [ id ]
+                    form_options:
+                        mapped: false
+                lastReadMessageIndex:
+                    form_options:
+                        mapped: false
+                lastReadDate:
+                    form_options:
+                        mapped: false
+                conversation:
+                    form_options:
+                        mapped: false
+                author:
+                    data_type: association:manyToOne:conversationParticipant
+                    form_options:
+                        mapped: false
+            subresources:
+                conversation:
+                    actions:
+                        update_relationship: false
+                        add_relationship: false
+                        delete_relationship: false
+                author:
+                    actions:
+                        update_relationship: false
+                        add_relationship: false
+                        delete_relationship: false

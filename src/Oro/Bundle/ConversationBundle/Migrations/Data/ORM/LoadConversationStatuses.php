@@ -15,7 +15,6 @@ class LoadConversationStatuses extends AbstractEnumFixture
     {
         return [
             Conversation::STATUS_ACTIVE => 'Active',
-            Conversation::STATUS_INACTIVE => 'Inactive',
             Conversation::STATUS_CLOSED => 'Closed',
         ];
     }

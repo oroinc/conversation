@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
- * Denies manage messages for conversation for closed state workflow.
+ * Denies manage messages for closed conversation.
  */
 class ManageConversationMessagesVoter implements VoterInterface
 {

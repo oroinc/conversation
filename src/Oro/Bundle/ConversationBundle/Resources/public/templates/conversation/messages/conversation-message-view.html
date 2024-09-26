@@ -1,0 +1,17 @@
+<% let oroui = _.macros('oroui') %>
+<div class="conversation__message-avatar">
+    <div class="conversation__message-initials"><%- participant.authorAcronym %></div>
+</div>
+<div class="conversation__message-inner">
+    <h5 class="conversation__message-author"><%- participant.author %></h5>
+    <div class="conversation__message-body"><%= body %></div>
+    <div class="conversation__message-additional">
+        <div class="conversation__message-datetime"><%- dateTimeFormatter.formatTime(updatedAt) %></div>
+        <% if (createdAt && participant.isMe) { %>
+            <div class="conversation__message-status"><%= oroui.renderIcon({
+                name: 'double-check',
+                extraClass: 'theme-icon--small'
+            }) %></div>
+        <% } %>
+    </div>
+</div>

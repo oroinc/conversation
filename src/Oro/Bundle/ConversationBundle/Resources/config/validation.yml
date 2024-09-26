@@ -1,0 +1,12 @@
+Oro\Bundle\ConversationBundle\Entity\Conversation:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                  max: 255
+        customerUser:
+            - NotBlank: ~
+Oro\Bundle\ConversationBundle\Entity\ConversationMessage:
+    properties:
+        body:
+            - NotBlank: ~
