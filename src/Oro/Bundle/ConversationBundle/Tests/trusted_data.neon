@@ -6,3 +6,6 @@ trusted_data:
         Oro\Bundle\ConversationBundle\Entity\Repository\ConversationParticipantRepository:
             findParticipantForConversation:
                 andWhereRestriction: true
+        Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager:
+            getParticipantInfoById:
+                targetField: true
