@@ -6,8 +6,8 @@ workflows:
                 field: status
                 mode: disallow
                 values:
-                    # 'active' is allowed to be sure at least one option is available to create a Conversation
-                    - 'closed'
+                    # 'conversation_status.active' is allowed to be sure at least one option is available to create a Conversation
+                    - 'conversation_status.closed'
             conversation_status_active:
                 attribute: conversation
                 field: status
