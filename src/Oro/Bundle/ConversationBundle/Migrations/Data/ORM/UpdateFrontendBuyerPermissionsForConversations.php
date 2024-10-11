@@ -15,18 +15,14 @@ use Oro\Bundle\SecurityBundle\Migrations\Data\ORM\AbstractUpdatePermissions;
 class UpdateFrontendBuyerPermissionsForConversations extends AbstractUpdatePermissions implements
     DependentFixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
+    #[\Override]
+    public function getDependencies(): array
     {
         return [LoadCustomerUserRoles::class];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    #[\Override]
+    public function load(ObjectManager $manager): void
     {
         $aclManager = $this->getAclManager();
         if (!$aclManager->isAclEnabled()) {
