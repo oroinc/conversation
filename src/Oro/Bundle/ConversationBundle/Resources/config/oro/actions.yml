@@ -6,6 +6,7 @@ operations:
         routes: [] #set at the ConfigurationProviderDecorator
         button_options:
             icon: message-square
+            class: btn--neutral text-nowrap
             template: '@OroConversation/Actions/conversations-button.html.twig'
             data:
                 conversationName: $.conversationName
