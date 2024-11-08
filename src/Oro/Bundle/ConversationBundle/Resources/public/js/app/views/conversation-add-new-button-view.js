@@ -33,6 +33,11 @@ const ConversationAddNewButtonView = BaseView.extend({
         ConversationAddNewButtonView.__super__.constructor.apply(this, args);
     },
 
+    initialize(options) {
+        ConversationAddNewButtonView.__super__.initialize.call(this, options);
+        this.$el.trigger('operation-button:init');
+    },
+
     getTemplateData() {
         return {
             ...ConversationAddNewButtonView.__super__.getTemplateData.call(this),
@@ -63,6 +68,15 @@ const ConversationAddNewButtonView = BaseView.extend({
             () => this.trigger('conversation:created')
         );
         this.subview('conversationAddNewDialogWidget').render();
+    },
+
+    dispose: function() {
+        if (this.disposed) {
+            return;
+        }
+
+        this.$el.trigger('operation-button:dispose');
+        ConversationAddNewButtonView.__super__.dispose.call(this);
     }
 });
 

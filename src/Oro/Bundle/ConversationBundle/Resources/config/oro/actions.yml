@@ -14,6 +14,12 @@ operations:
                 sourceType: $.source.type
                 sourceId: $.source.id
                 mediatorEvents: ['actions-container:refresh']
+                responsive-styler: ''
+                input-widget-options:
+                    responsive:
+                        mobile-landscape:
+                            constraint: 'inDropdown'
+                            classes: 'dropdown-item'
             page_component_module: oroui/js/app/components/view-component
             page_component_options:
                 view: oroconversation/js/app/views/conversation-add-new-button-view
