@@ -9,9 +9,9 @@ use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
 use Oro\Bundle\ConversationBundle\EventListener\ConversationMessageSaveListener;
 use Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager;
 use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationMessageExtended;
-use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationMessageType;
 use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationParticipantExtended;
 use Oro\Bundle\EntityExtendBundle\Provider\EnumOptionsProvider;
+use Oro\Bundle\EntityExtendBundle\Tests\Unit\Fixtures\TestEnumValue;
 use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
 use Oro\Bundle\UIBundle\Tools\HtmlTagHelper;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -81,7 +81,7 @@ class ConversationMessageSaveListenerTest extends TestCase
         $message->setConversation($conversation);
         $message->setBody("<script>alert();</script>Message\n #1");
 
-        $messageType = new ConversationMessageType(1, ConversationMessage::TYPE_TEXT, 1);
+        $messageType = new TestEnumValue(ConversationMessage::TYPE_CODE, 'Text', ConversationMessage::TYPE_TEXT);
 
         $user = new User();
         $participant = new ConversationParticipantExtended();
@@ -99,7 +99,7 @@ class ConversationMessageSaveListenerTest extends TestCase
 
         $this->enumOptionsProvider->expects(self::once())
             ->method('getEnumOptionByCode')
-            ->with(ConversationMessage::MESSAGE_TYPE_ENUM_CODE, ConversationMessage::TYPE_TEXT)
+            ->with(ConversationMessage::TYPE_CODE, ConversationMessage::TYPE_TEXT)
             ->willReturn($messageType);
 
         $this->participantManager->expects(self::once())

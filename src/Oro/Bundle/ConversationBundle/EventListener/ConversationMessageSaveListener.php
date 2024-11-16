@@ -89,7 +89,7 @@ class ConversationMessageSaveListener
         }
 
         $messageType = $this->enumOptionsProvider->getEnumOptionByCode(
-            ConversationMessage::MESSAGE_TYPE_ENUM_CODE,
+            ConversationMessage::TYPE_CODE,
             ConversationMessage::TYPE_TEXT
         );
 

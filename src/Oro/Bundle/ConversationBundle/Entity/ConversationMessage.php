@@ -32,8 +32,6 @@ class ConversationMessage implements DatesAwareInterface, ExtendEntityInterface
     public const TYPE_SYSTEM = 'system';
     public const TYPE_TEXT = 'text';
 
-    public const MESSAGE_TYPE_ENUM_CODE = 'conversation_message_type';
-
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]

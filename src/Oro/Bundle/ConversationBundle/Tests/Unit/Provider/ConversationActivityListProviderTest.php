@@ -10,8 +10,8 @@ use Oro\Bundle\ChannelCRMProBundle\Tests\Unit\Fixtures\Organization;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Provider\ConversationActivityListProvider;
 use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationExtended;
-use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationStatus;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\EntityExtendBundle\Tests\Unit\Fixtures\TestEnumValue;
 use Oro\Bundle\UserBundle\Entity\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +24,6 @@ class ConversationActivityListProviderTest extends TestCase
 {
     private DoctrineHelper|MockObject $doctrineHelper;
     private ActivityAssociationHelper $activityAssociationHelper;
-
     private ConversationActivityListProvider $provider;
 
     #[\Override]
@@ -32,6 +31,7 @@ class ConversationActivityListProviderTest extends TestCase
     {
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
         $this->activityAssociationHelper = $this->createMock(ActivityAssociationHelper::class);
+
         $this->provider = new ConversationActivityListProvider(
             $this->doctrineHelper,
             $this->activityAssociationHelper,
@@ -90,7 +90,7 @@ class ConversationActivityListProviderTest extends TestCase
 
     public function testGetData(): void
     {
-        $status = new ConversationStatus('conversation_status_code', 'Open', 1);
+        $status = new TestEnumValue(Conversation::STATUS_CODE, 'Open', Conversation::STATUS_ACTIVE);
         $conversation = new ConversationExtended();
         $conversation->setStatus($status);
 
@@ -111,8 +111,8 @@ class ConversationActivityListProviderTest extends TestCase
 
         self::assertEquals(
             [
-                'statusId' => 'conversation_status_code.1',
-                'statusName' => 'Open',
+                'statusId' => Conversation::STATUS_CODE . '.' . Conversation::STATUS_ACTIVE,
+                'statusName' => 'Open'
             ],
             $this->provider->getData($activityList)
         );
@@ -166,8 +166,8 @@ class ConversationActivityListProviderTest extends TestCase
     {
         self::assertEquals(
             [
-                'itemView'   => 'oro_conversation_widget_info',
-                'itemEdit'   => 'oro_conversation_update'
+                'itemView' => 'oro_conversation_widget_info',
+                'itemEdit' => 'oro_conversation_update'
             ],
             $this->provider->getRoutes(new Conversation())
         );
