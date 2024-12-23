@@ -8,6 +8,7 @@ use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Form\Handler\ConversationHandler;
 use Oro\Bundle\ConversationBundle\Form\Type\ConversationType;
 use Oro\Bundle\ConversationBundle\Manager\ConversationManager;
+use Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager;
 use Oro\Bundle\DataGridBundle\Provider\MultiGridProvider;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\FormBundle\Model\AutocompleteRequest;
@@ -58,6 +59,12 @@ class ConversationController extends AbstractController
     #[Template]
     public function viewAction(Conversation $conversation): array
     {
+        $this->container->get('oro_conversation.manager.conversation_participant')
+            ->setLastReadMessageForParticipantAndSendNotification(
+                $conversation,
+                $this->getUser()
+            );
+
         return ['entity' => $conversation];
     }
 
@@ -142,6 +149,27 @@ class ConversationController extends AbstractController
         ));
     }
 
+    #[Route(path: '/last-user-conversations', name: 'oro_conversation_last_user_conversations')]
+    #[Template('@OroConversation/Notification/button.html.twig')]
+    public function lastMessagesAction(?Request $request = null): array|JsonResponse
+    {
+        $manager = $this->container->get('oro_conversation.manager.conversation_participant');
+        $messages = $manager->getLastConversationsDataForUser();
+        $conversationCount = $manager->getLastConversationsCountForUser();
+
+        if ($request && $request->get('onlyData', false)) {
+            return new JsonResponse([
+                'messages' => $messages,
+                'unreadMessagesCount' => $conversationCount
+            ]);
+        }
+
+        return [
+            'messages' => json_encode($messages),
+            'unreadMessagesCount' => $conversationCount
+        ];
+    }
+
     private function update(Request $request, Conversation $conversation): array|RedirectResponse
     {
         return $this->container->get(UpdateHandlerFacade::class)->update(
@@ -171,6 +199,7 @@ class ConversationController extends AbstractController
     {
         return array_merge(parent::getSubscribedServices(), [
             'oro_conversation.manager.conversation' => ConversationManager::class,
+            'oro_conversation.manager.conversation_participant' => ConversationParticipantManager::class,
             EntityRoutingHelper::class,
             UpdateHandlerFacade::class,
             TranslatorInterface::class,

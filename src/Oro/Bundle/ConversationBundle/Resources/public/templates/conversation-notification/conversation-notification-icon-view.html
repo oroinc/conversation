@@ -1,0 +1,5 @@
+<i class="conversation-icon<% if (unreadMessagesCount > 0) { %>  has-icon-counter highlight<% } %>">
+    <% if (unreadMessagesCount > 0) { %>
+        <span class="item-counter"><%-(unreadMessagesCount > 99 ? '99+' : unreadMessagesCount) %></span>
+    <% } %>
+</i>

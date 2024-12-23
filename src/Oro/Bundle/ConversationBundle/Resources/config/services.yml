@@ -29,6 +29,9 @@ services:
             - '@oro_security.token_accessor'
             - '@oro_entity_extend.association_manager'
             - '@oro_conversation.participant_info.provider'
+            - '@oro_locale.formatter.date_time'
+            - '@oro_conversation.websocket.processor'
+            - '@oro_security.acl_helper'
 
     oro_conversation.entity_field.participant_extension:
         class: Oro\Bundle\ConversationBundle\EntityExtend\ConversationParticipantEntityFieldExtension
@@ -63,6 +66,7 @@ services:
         arguments:
             - '@router'
         class: Oro\Bundle\ConversationBundle\Provider\StorefrontConversationProvider
+        public: true
 
     oro_conversation.form.handler.participant_autocomplete:
         class: Oro\Bundle\ConversationBundle\Autocomplete\ParticipantSearchHandler
@@ -133,8 +137,25 @@ services:
             - '@oro_activity.manager'
             - '@oro_conversation.manager.conversation'
             - '@oro_conversation.manager.conversation_participant'
+            - '@oro_conversation.websocket.processor'
+            - '@?oro_organizationpro.helper'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\ConversationBundle\Entity\Conversation', event: prePersist }
+            - { name: doctrine.event_listener, event: onFlush }
+
+    oro_conversation.websocket.processor:
+        class: Oro\Bundle\ConversationBundle\Model\WebSocket\WebSocketSendProcessor
+        arguments:
+            - '@oro_sync.websocket_client'
+            - '@oro_sync.client.connection_checker'
+
+    oro_conversation.topic.event:
+        class: Oro\Bundle\SyncBundle\Topic\SecuredTopic
+        arguments:
+            - 'oro_conversation.event'
+            - '@gos_web_socket.client.manipulator'
+        tags:
+            - { name: gos_web_socket.topic }
 
     oro_conversation.listener.conversation_message_save_listener:
         class: Oro\Bundle\ConversationBundle\EventListener\ConversationMessageSaveListener
@@ -164,3 +185,17 @@ services:
             - '@oro_entity_config.config_manager'
         tags:
             - { name: oro_entity.exclusion_provider.api }
+
+    oro_conversation.event_listener.conversation_participant_column_listener:
+        class: Oro\Bundle\ConversationBundle\EventListener\ConversationParticipantColumnListener
+        arguments:
+            - '@oro_security.token_accessor'
+            - '@oro_entity_extend.association_manager'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.conversations-grid, method: onBuildBefore }
+
+    oro_conversation.datagrid.conversation_view_list:
+        class: Oro\Bundle\ConversationBundle\Datagrid\ConversationViewList
+        public: true
+        arguments:
+            - '@translator'

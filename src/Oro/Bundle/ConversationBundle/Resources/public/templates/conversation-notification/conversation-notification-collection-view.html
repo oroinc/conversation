@@ -1,0 +1,23 @@
+<div class="content short-conversations-list default-reply-all-action">
+<% if (length > 0) { %>
+    <div class="short-conversations-list__header">
+        <a class="my-conversations" href="<%-userConversationsUrl %>">
+            <%- _.__('oro.conversation.notification.user_conversations.label') %>
+        </a>
+        <% if (countNewMessages) { %>
+            <% if (hasMarkVisibleButton) { %>
+            <button class="mark-visible-as-read btn btn-link">
+                <i class="fa-check-square-o"></i>
+                <%- _.__('oro.conversation.recent_conversations_widget.mark_visible_read.label') %>
+            </button>
+            <% } %>
+        <% } %>
+    </div>
+    <ul class="items"></ul>
+    <% if (moreUnreadMessages) { %>
+    <div class="more-unread">+<%=moreUnreadMessages %> <%- _.__('oro.conversation.notification.more_unread') %></div>
+    <% } %>
+<% } else { %>
+    <div class="empty"><%- _.__('oro.conversation.notification.empty') %></div>
+<% } %>
+</div>

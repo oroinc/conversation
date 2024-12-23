@@ -1,3 +1,5 @@
 dynamic-imports:
     oroconversation:
         - oroconversation/js/app/components/target-select-component
+        - oroconversation/js/app/components/user-menu-conversation-notification-component
+        - oroconversation/js/app/components/conversation-notification-component

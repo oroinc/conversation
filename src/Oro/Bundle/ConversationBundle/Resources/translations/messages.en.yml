@@ -8,18 +8,19 @@ oro:
         status.label: Status
         messages.label: Messages
         messages_number.label: Number of messages
-        source_target.label: Initiated from
+        source_target.label: Initiated From
         owner.label: Owner
         customer_user.label: Customer User
         customer.label: Customer
         organization.label: Organization
         participants.label: Participants
         last_message:
-            label: Last message
+            label: Last Message
             from: from
         source_entity_class:
             label: Initiated from Entity Class
             description: The class of the entity the conversation was started from.
+            null_value: None
         source_entity_id:
             label: Initiated from Entity ID
             description: The ID of the entity the conversation was started from.
@@ -45,6 +46,17 @@ oro:
         storefront:
             new_conversation: Ask a question
             questions: Questions
+        notification:
+            menu_item.hint: Recent Conversation Messages
+        is_mine: My Conversations
+        datagrid:
+            columns:
+                my: My Conversation
+                have_new_messages: New Messages
+            views:
+                my: My Conversations
+        menu:
+            my_conversations: My Conversations
 
         conversationmessage:
             entity_label: Conversation message

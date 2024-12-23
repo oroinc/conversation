@@ -8,6 +8,7 @@ services:
         tags:
             - { name: container.service_subscriber }
             - { name: container.service_subscriber, id: 'oro_conversation.manager.conversation' }
+            - { name: container.service_subscriber, id: 'oro_conversation.manager.conversation_participant' }
 
     Oro\Bundle\ConversationBundle\Controller\ConversationMessageController:
         calls:

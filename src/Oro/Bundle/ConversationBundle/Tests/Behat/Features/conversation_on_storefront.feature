@@ -70,9 +70,9 @@ Feature: conversation on storefront
     When I go to Activities/Conversations
     Then I should see following grid:
       | Name                    | Messages | Initiated from    |
-      | Conversation from order | 1        | Order SimpleOrder |
-      | Order SimpleOrder       | 1        | Order SimpleOrder |
       | conv1                   | 1        |                   |
+      | Order SimpleOrder       | 1        | Order SimpleOrder |
+      | Conversation from order | 1        | Order SimpleOrder |
     When I click view "Conversation from order" in grid
     And I click "Add Message"
     When I fill form with:

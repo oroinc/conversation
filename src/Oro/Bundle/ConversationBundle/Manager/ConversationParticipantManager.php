@@ -6,31 +6,29 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Entity\ConversationParticipant;
+use Oro\Bundle\ConversationBundle\Model\WebSocket\WebSocketSendProcessor;
 use Oro\Bundle\ConversationBundle\Participant\ParticipantInfoProvider;
 use Oro\Bundle\EntityExtendBundle\Entity\Manager\AssociationManager;
 use Oro\Bundle\EntityExtendBundle\Extend\RelationType;
+use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatterInterface;
 use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Manager class for conversation participants entity.
  */
 class ConversationParticipantManager
 {
-    private ManagerRegistry $doctrine;
-    private TokenAccessorInterface $tokenAccessor;
-    private AssociationManager $associationManager;
-    private ParticipantInfoProvider $participantInfoInfoProvider;
-
     public function __construct(
-        ManagerRegistry $doctrine,
-        TokenAccessorInterface $tokenAccessor,
-        AssociationManager $associationManager,
-        ParticipantInfoProvider $participantInfoInfoProvider
+        private ManagerRegistry $doctrine,
+        private TokenAccessorInterface $tokenAccessor,
+        private AssociationManager $associationManager,
+        private ParticipantInfoProvider $participantInfoInfoProvider,
+        private DateTimeFormatterInterface $dateTimeFormatter,
+        private WebSocketSendProcessor $webSocketSendProcessor,
+        private AclHelper $aclHelper,
     ) {
-        $this->doctrine = $doctrine;
-        $this->tokenAccessor = $tokenAccessor;
-        $this->associationManager = $associationManager;
-        $this->participantInfoInfoProvider = $participantInfoInfoProvider;
     }
 
     public function getParticipantTargetClasses(): array
@@ -114,5 +112,77 @@ class ConversationParticipantManager
         }
 
         return [];
+    }
+
+    public function setLastReadMessageForParticipantAndSendNotification(
+        Conversation $conversation,
+        object $participantTarget
+    ): void {
+        $participant = $this->doctrine->getRepository(ConversationParticipant::class)
+            ->findParticipantForConversation(
+                $this->associationManager,
+                $conversation,
+                $participantTarget
+            );
+
+        $lastMessage = $conversation->getLastMessage();
+        if ($participant && $lastMessage) {
+            $participant->setLastReadMessage($lastMessage);
+            $em = $this->doctrine->getManagerForClass(ConversationParticipant::class);
+            $em->persist($participant);
+            $em->flush();
+
+            if ($participantTarget instanceof User) {
+                $this->webSocketSendProcessor->sendForUser(
+                    $participantTarget->getId(),
+                    $this->tokenAccessor->getOrganizationId()
+                );
+            }
+        }
+    }
+
+    public function getLastConversationsDataForUser(int $conversationsCount = 4): array
+    {
+        $resultMessages = [];
+        $conversations = $this->doctrine->getRepository(ConversationParticipant::class)
+            ->getLastConversationsForParticipant(
+                $this->tokenAccessor->getUser(),
+                $this->associationManager,
+                $this->aclHelper,
+                $conversationsCount
+            );
+
+        /** @var Conversation $conversation */
+        foreach ($conversations as $conversation) {
+            $message = $conversation->getMessages()->first();
+            $participant = $message->getParticipant();
+            $participantInfo = [];
+            if ($participant) {
+                $participantInfo = $this->participantInfoInfoProvider->getParticipantInfo(
+                    $participant->getConversationParticipantTarget()
+                );
+            }
+
+            $resultMessages[] = [
+                'id' => $message->getId(),
+                'conversationId' => $conversation->getId(),
+                'conversationName' => $conversation->getName(),
+                'message' => substr(strip_tags($message->getBody()), 0, 50),
+                'fromName' => $participantInfo['title'],
+                'messageTime' => $this->dateTimeFormatter->format($message->getCreatedAt()),
+            ];
+        }
+
+        return $resultMessages;
+    }
+
+    public function getLastConversationsCountForUser(): int
+    {
+        return $this->doctrine->getRepository(ConversationParticipant::class)
+            ->getLastConversationsCountForParticipant(
+                $this->tokenAccessor->getUser(),
+                $this->associationManager,
+                $this->aclHelper
+            );
     }
 }

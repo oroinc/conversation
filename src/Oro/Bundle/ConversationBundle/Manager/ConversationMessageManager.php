@@ -91,6 +91,11 @@ class ConversationMessageManager
 
     public function setMessageParticipant(ConversationMessage $message, object $fromParticipantTarget): void
     {
+        $messageParticipant = $message->getParticipant();
+        if ($messageParticipant && $messageParticipant->getConversationParticipantTarget() === $fromParticipantTarget) {
+            return;
+        }
+
         $participant = $this->participantManager->getOrCreateParticipantObjectForConversation(
             $message->getConversation(),
             $fromParticipantTarget

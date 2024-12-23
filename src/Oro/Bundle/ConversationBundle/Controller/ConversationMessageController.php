@@ -63,9 +63,18 @@ class ConversationMessageController extends AbstractController
     #[AclAncestor(id: 'oro_conversation_view')]
     public function getListAction(Request $request, Conversation $conversation): array|RedirectResponse
     {
+        $page = $request->query->get('page', 1);
+        if ($page === 1) {
+            $this->container->get('oro_conversation.manager.conversation_participant')
+                ->setLastReadMessageForParticipantAndSendNotification(
+                    $conversation,
+                    $this->getUser()
+                );
+        }
+
         return $this->container->get('oro_conversation.manager.conversation_message')->getMessages(
             $conversation,
-            $request->query->get('page', 1),
+            $page,
             $request->query->get('perPage', 5),
             'DESC',
             true
