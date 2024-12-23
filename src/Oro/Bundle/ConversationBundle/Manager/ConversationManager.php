@@ -14,7 +14,7 @@ use Oro\Bundle\CustomerBundle\Owner\Metadata\FrontendOwnershipMetadata;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Manager class for conversation entity.
@@ -25,7 +25,7 @@ class ConversationManager
     private EntityNameResolver $entityNameResolver;
     private EntityConfigHelper $entityConfigHelper;
     private OwnershipMetadataProviderInterface $metadataProvider;
-    private PropertyAccessor $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
     private ManagerRegistry $doctrine;
     private StorefrontConversationProviderInterface $storefrontConversationProvider;
     private EntityAliasResolverRegistry  $aliasResolverRegistry;
@@ -35,7 +35,7 @@ class ConversationManager
         EntityNameResolver $entityNameResolver,
         EntityConfigHelper $entityConfigHelper,
         OwnershipMetadataProviderInterface $metadataProvider,
-        PropertyAccessor $propertyAccessor,
+        PropertyAccessorInterface $propertyAccessor,
         ManagerRegistry $doctrine,
         StorefrontConversationProviderInterface $storefrontConversationProvider,
         EntityAliasResolverRegistry  $aliasResolverRegistry

@@ -10,4 +10,5 @@ interface StorefrontConversationProviderInterface
 {
     public function getAllowedRoutes(): array;
     public function getSourceUrl(string $sourceClassName, int $sourceId): string;
+    public function getSourceChoices(): array;
 }

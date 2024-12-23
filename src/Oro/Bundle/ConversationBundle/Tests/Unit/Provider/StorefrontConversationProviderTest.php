@@ -5,6 +5,7 @@ namespace Oro\Bundle\ConversationBundle\Tests\Unit\Provider;
 use Oro\Bundle\ConversationBundle\Provider\StorefrontConversationProvider;
 use Oro\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\RFPBundle\Entity\Request;
+use Oro\Bundle\SaleBundle\Entity\Quote;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -56,5 +57,18 @@ class StorefrontConversationProviderTest extends TestCase
             ->willReturn('/some/route/order/21');
 
         self::assertEquals('/some/route/order/21', $this->provider->getSourceUrl(Request::class, 21));
+    }
+
+    public function testGetSourceChoices(): void
+    {
+        self::assertEquals(
+            [
+                'oro.conversation.source_entity_class.null_value' => '_empty_',
+                'oro.order.entity_label' => Order::class,
+                'oro.rfp.request.entity_label' => Request::class,
+                'oro.sale.quote.entity_label' => Quote::class
+            ],
+            $this->provider->getSourceChoices()
+        );
     }
 }

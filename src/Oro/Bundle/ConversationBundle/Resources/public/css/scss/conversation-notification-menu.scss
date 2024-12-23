@@ -1,0 +1,65 @@
+/* @theme: admin.oro; */
+
+.conversation-notification-menu {
+    .dropdown-toggle {
+        .conversation-icon {
+            @include fa-icon($conversation-inactive-conversation-icon);
+
+            position: relative;
+            padding-top: 3px;
+            display: inline-block;
+            font-style: normal;
+            font-weight: font-weight('light');
+            font-size: 16px;
+            line-height: 16px;
+
+            .item-counter {
+                background-color: $conversation-item-counter-bg;
+                display: none;
+                color: $conversation-item-counter-text-color;
+            }
+
+            &.has-icon-counter {
+                .item-counter {
+                    display: inline-block;
+                }
+            }
+
+            &.highlight {
+                @include fa-icon($conversation-active-conversation-icon);
+            }
+        }
+    }
+
+    .dropdown-menu {
+        background-color: $conversation-dropdown-bg;
+        width: $conversation-recent-messages-popup-width;
+        padding: 0;
+        outline: none;
+    }
+
+    .new-conversation-notification {
+        position: absolute;
+        top: 100%;
+        right: -18px;
+        display: none;
+        width: 160px;
+        padding: 8px 12px;
+        background: $conversation-dropdown-bg;
+        color: $primary-400;
+        border-radius: 4px;
+        z-index: $zindex-popover;
+        box-shadow: $conversation-dropdown-box-shadow;
+
+        &::after {
+            content: '';
+            display: inline-block;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid $conversation-dropdown-bg;
+            position: absolute;
+            top: -6px;
+            right: 24px;
+        }
+    }
+}

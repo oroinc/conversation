@@ -1,0 +1,6 @@
+ROLE_MANAGER:
+    permissions:
+        entity|Oro\Bundle\ConversationBundle\Entity\Conversation: [VIEW_SYSTEM, CREATE_BASIC, EDIT_DEEP, DELETE_BASIC, ASSIGN_NONE]
+ROLE_USER:
+    permissions:
+        entity|Oro\Bundle\ConversationBundle\Entity\Conversation: [VIEW_SYSTEM, CREATE_BASIC, EDIT_BASIC, DELETE_NONE, ASSIGN_NONE]

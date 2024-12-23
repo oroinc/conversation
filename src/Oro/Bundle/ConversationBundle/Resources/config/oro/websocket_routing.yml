@@ -1,0 +1,10 @@
+conversation_event.event:
+    channel: 'oro/conversation_event/{user_id}/{organization_id}'
+    handler:
+        callback: 'oro_conversation.event'
+    requirements:
+        user_id:
+            pattern: '\d+'
+        organization_id:
+            pattern: '\d+'
+            wildcard: true

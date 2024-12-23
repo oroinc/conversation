@@ -1,0 +1,145 @@
+/* @theme: admin.oro; */
+
+.short-conversations-list {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2px 18px;
+
+        > a {
+            font-size: 12px;
+            line-height: 20px;
+        }
+    }
+
+    .mark-as-read,
+    .mark-visible-as-read {
+        cursor: pointer;
+        height: 19px;
+        font-size: 12px;
+        line-height: 15px;
+        width: 50%;
+        display: block;
+        padding: 0 0 0 ($content-padding-small * .5);
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        [class^='fa-'] {
+            float: left;
+            margin-right: 5px;
+            font-size: 13px;
+            line-height: inherit;
+
+            &::before {
+                margin: 0;
+                line-height: inherit;
+            }
+        }
+    }
+
+    .from-name {
+        float: left;
+    }
+
+    .items {
+        list-style-type: none;
+        margin: 0;
+
+        li {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-top: 1px solid $primary-830;
+            padding: 14px $content-padding-medium 13px;
+
+            .body {
+                padding-right: 20px;
+
+                font-size: $base-font-size--s + 1px;
+            }
+
+            .title,
+            .empty-subject {
+                color: $conversation-default-text-color;
+                width: 100%;
+                line-height: 16px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .info {
+                min-height: 12px;
+
+                // stylelint-disable-next-line selector-max-compound-selectors
+                .title,
+                .empty-subject {
+                    cursor: pointer;
+                }
+            }
+
+            .description {
+                color: $primary-550;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                line-height: 1.69;
+            }
+
+            .footer {
+                font-size: $base-font-size--s;
+                margin-top: 12px;
+                line-height: 1.15;
+
+                // stylelint-disable-next-line selector-max-compound-selectors
+                .reply-action,
+                .reply-all-action,
+                .forward-action {
+                    display: none;
+                    margin-left: 12px;
+                }
+            }
+
+            &.highlight {
+                background: $conversation-highlight-bg;
+                .title {
+                    font-weight: font-weight('bold');
+                }
+
+                .description {
+                    color: $conversation-default-text-color;
+                }
+
+                .from-name {
+                    max-width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+    }
+
+    .notification,
+    .more-unread {
+        display: none;
+    }
+
+    .empty {
+        text-align: center;
+        padding: 10px;
+        color: $primary-400;
+        line-height: 18px;
+    }
+
+    .mark-as-read,
+    .mark-visible-as-read,
+    .forward-action-wrapper {
+        float: right;
+        text-transform: none;
+    }
+}

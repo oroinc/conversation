@@ -17,7 +17,7 @@ use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ConversationManagerTest extends TestCase
 {
@@ -47,7 +47,7 @@ class ConversationManagerTest extends TestCase
             $this->entityNameResolver,
             $this->entityConfigHelper,
             $this->metadataProvider,
-            new PropertyAccessor(),
+            PropertyAccess::createPropertyAccessor(),
             $this->doctrine,
             $this->storefrontConversationProvider,
             $this->aliasResolverRegistry

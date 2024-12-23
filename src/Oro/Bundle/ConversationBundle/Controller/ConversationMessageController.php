@@ -49,7 +49,7 @@ class ConversationMessageController extends AbstractController
 
         return $this->update(
             $request,
-            $this->container->get('oro_conversation.manager.conversation_message')->createMessage($conversation)
+            $this->container->get(ConversationMessageManager::class)->createMessage($conversation)
         );
     }
 
@@ -63,9 +63,15 @@ class ConversationMessageController extends AbstractController
     #[AclAncestor(id: 'oro_conversation_view')]
     public function getListAction(Request $request, Conversation $conversation): array|RedirectResponse
     {
-        return $this->container->get('oro_conversation.manager.conversation_message')->getMessages(
+        $page = $request->query->get('page', 1);
+        if ($page === 1) {
+            $this->container->get(ConversationParticipantManager::class)
+                ->setLastReadMessageForParticipantAndSendNotification($conversation, $this->getUser());
+        }
+
+        return $this->container->get(ConversationMessageManager::class)->getMessages(
             $conversation,
-            $request->query->get('page', 1),
+            $page,
             $request->query->get('perPage', 5),
             'DESC',
             true
@@ -77,8 +83,7 @@ class ConversationMessageController extends AbstractController
     #[AclAncestor('oro_conversation_edit')]
     public function gridDialogAction(): array
     {
-        $targetClasses = $this->container->get('oro_conversation.manager.conversation_participant')
-            ->getParticipantTargetClasses();
+        $targetClasses = $this->container->get(ConversationParticipantManager::class)->getParticipantTargetClasses();
 
         return [
             'gridWidgetName' => 'source-multi-grid-widget',
@@ -105,13 +110,11 @@ class ConversationMessageController extends AbstractController
             'errors'  => []
         ];
 
-        if ($violations = $validator->validate($autocompleteRequest)) {
-            /** @var ConstraintViolation $violation */
-            foreach ($violations as $violation) {
-                $result['errors'][] = $violation->getMessage();
-            }
+        $violations = $validator->validate($autocompleteRequest);
+        /** @var ConstraintViolation $violation */
+        foreach ($violations as $violation) {
+            $result['errors'][] = $violation->getMessage();
         }
-
         if (!empty($result['errors'])) {
             if ($isXmlHttpRequest) {
                 return new JsonResponse($result, $code);
@@ -121,7 +124,7 @@ class ConversationMessageController extends AbstractController
         }
 
         return new JsonResponse(
-            $this->container->get('oro_conversation.form.handler.participant_autocomplete')->search(
+            $this->container->get(ParticipantSearchHandler::class)->search(
                 $autocompleteRequest->getQuery(),
                 $autocompleteRequest->getPage(),
                 $autocompleteRequest->getPerPage(),
@@ -147,9 +150,9 @@ class ConversationMessageController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
-            'oro_conversation.manager.conversation_message' => ConversationMessageManager::class,
-            'oro_conversation.manager.conversation_participant' => ConversationParticipantManager::class,
-            'oro_conversation.form.handler.participant_autocomplete' => ParticipantSearchHandler::class,
+            ConversationMessageManager::class,
+            ConversationParticipantManager::class,
+            ParticipantSearchHandler::class,
             UpdateHandlerFacade::class,
             TranslatorInterface::class,
             ConversationMessageHandler::class,

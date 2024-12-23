@@ -41,4 +41,14 @@ class StorefrontConversationProvider implements StorefrontConversationProviderIn
 
         throw new \InvalidArgumentException('Unknown source class "' . $sourceClassName . '"');
     }
+
+    public function getSourceChoices(): array
+    {
+        return [
+            'oro.conversation.source_entity_class.null_value' => '_empty_',
+            'oro.order.entity_label' => Order::class,
+            'oro.rfp.request.entity_label' => Request::class,
+            'oro.sale.quote.entity_label' => Quote::class
+        ];
+    }
 }

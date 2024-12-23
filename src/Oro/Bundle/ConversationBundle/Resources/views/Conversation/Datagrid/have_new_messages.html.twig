@@ -1,0 +1,5 @@
+{% if record.getValue('have_new_messages') %}
+    <strong>{{ 'Yes'|trans }}</strong>
+{% else %}
+    {{ 'No'|trans }}
+{% endif %}

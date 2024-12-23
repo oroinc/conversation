@@ -7,16 +7,17 @@ services:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
-            - { name: container.service_subscriber, id: 'oro_conversation.manager.conversation' }
+            - { name: container.service_subscriber, id: oro_conversation.manager.conversation, key: Oro\Bundle\ConversationBundle\Manager\ConversationManager }
+            - { name: container.service_subscriber, id: oro_conversation.manager.conversation_participant, key: Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager }
 
     Oro\Bundle\ConversationBundle\Controller\ConversationMessageController:
         calls:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
-            - { name: container.service_subscriber, id: 'oro_conversation.manager.conversation_message' }
-            - { name: container.service_subscriber, id: 'oro_conversation.manager.conversation_participant' }
-            - { name: container.service_subscriber, id: 'oro_conversation.form.handler.participant_autocomplete' }
+            - { name: container.service_subscriber, id: oro_conversation.manager.conversation_message, key: Oro\Bundle\ConversationBundle\Manager\ConversationMessageManager }
+            - { name: container.service_subscriber, id: oro_conversation.manager.conversation_participant, key: Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager }
+            - { name: container.service_subscriber, id: oro_conversation.form.handler.participant_autocomplete, key: Oro\Bundle\ConversationBundle\Autocomplete\ParticipantSearchHandler }
 
     Oro\Bundle\ConversationBundle\Controller\Frontend\ConversationController:
         calls:

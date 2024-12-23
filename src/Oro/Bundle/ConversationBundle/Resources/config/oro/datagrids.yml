@@ -1,6 +1,7 @@
 datagrids:
     conversations-grid:
         extended_entity_name: 'Oro\Bundle\ConversationBundle\Entity\Conversation'
+        views_list: '@oro_conversation.datagrid.conversation_view_list'
         acl_resource: oro_conversation_view
         source:
             type: orm
@@ -29,7 +30,7 @@ datagrids:
                         - { join: conversation.customer, alias: customer }
                         - { join: conversation.customerUser, alias: customerUser }
         inline_editing:
-            enable: true
+                    enable: true
         columns:
             name:
                 label: oro.conversation.name.label
@@ -89,7 +90,7 @@ datagrids:
                 message:
                     data_name: lastMessageDate
             default:
-                message: ASC
+                message: DESC
         filters:
             columns:
                 name:
@@ -121,6 +122,15 @@ datagrids:
                 message:
                     type:      datetime
                     data_name: lastMessageDate
+                source:
+                    type: choice
+                    data_name: conversation.sourceEntityClass
+                    null_value: '_empty_'
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: "@oro_conversation.provider.storefront_conversation_provider->getSourceChoices"
+                            translatable_options: true
         properties:
             id: ~
             view_link:

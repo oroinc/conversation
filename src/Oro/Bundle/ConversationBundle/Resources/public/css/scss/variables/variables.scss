@@ -32,3 +32,15 @@ $conversation-message-avatar-acronym-chars-line-height: 32px;
 $conversation-message-avatar-acronym-chars-font-size: 16px;
 $conversation-message-avatar-acronym-chars-font-weight: bold;
 $conversation-message-avatar-acronym-chars-opacity: .7;
+
+$conversation-active-conversation-icon: $fa-var-commenting !default;
+$conversation-inactive-conversation-icon: $fa-var-commenting-o !default;
+$conversation-item-counter-bg: $extra !default;
+$conversation-item-counter-text-color: $primary-inverse !default;
+$conversation-active-conversation-icon: $fa-var-commenting !default;
+$conversation-inactive-conversation-icon: $fa-var-commenting-o !default;
+$conversation-dropdown-bg: $primary-inverse !default;
+$conversation-recent-messages-popup-width: 285px !default;
+$conversation-dropdown-box-shadow: 0 4px 30px 0 rgba(0 0 0 / 50%) !default;
+$conversation-default-text-color: $primary-200 !default;
+$conversation-highlight-bg: $extra-300 !default;

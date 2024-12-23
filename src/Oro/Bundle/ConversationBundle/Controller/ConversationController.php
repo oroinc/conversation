@@ -8,6 +8,7 @@ use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Form\Handler\ConversationHandler;
 use Oro\Bundle\ConversationBundle\Form\Type\ConversationType;
 use Oro\Bundle\ConversationBundle\Manager\ConversationManager;
+use Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager;
 use Oro\Bundle\DataGridBundle\Provider\MultiGridProvider;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\FormBundle\Model\AutocompleteRequest;
@@ -58,6 +59,9 @@ class ConversationController extends AbstractController
     #[Template]
     public function viewAction(Conversation $conversation): array
     {
+        $this->container->get(ConversationParticipantManager::class)
+            ->setLastReadMessageForParticipantAndSendNotification($conversation, $this->getUser());
+
         return ['entity' => $conversation];
     }
 
@@ -70,7 +74,7 @@ class ConversationController extends AbstractController
 
         return $this->update(
             $request,
-            $this->container->get('oro_conversation.manager.conversation')->createConversation(
+            $this->container->get(ConversationManager::class)->createConversation(
                 $entityRoutingHelper->getEntityClassName($request),
                 $entityRoutingHelper->getEntityId($request)
             )
@@ -116,13 +120,11 @@ class ConversationController extends AbstractController
             'errors' => []
         ];
 
-        if ($violations = $validator->validate($autocompleteRequest)) {
-            /** @var ConstraintViolation $violation */
-            foreach ($violations as $violation) {
-                $result['errors'][] = $violation->getMessage();
-            }
+        $violations = $validator->validate($autocompleteRequest);
+        /** @var ConstraintViolation $violation */
+        foreach ($violations as $violation) {
+            $result['errors'][] = $violation->getMessage();
         }
-
         if (!empty($result['errors'])) {
             if ($isXmlHttpRequest) {
                 return new JsonResponse($result, $code);
@@ -140,6 +142,27 @@ class ConversationController extends AbstractController
             $autocompleteRequest->getPerPage(),
             $autocompleteRequest->isSearchById()
         ));
+    }
+
+    #[Route(path: '/last-user-conversations', name: 'oro_conversation_last_user_conversations')]
+    #[Template('@OroConversation/Notification/button.html.twig')]
+    public function lastMessagesAction(?Request $request = null): array|JsonResponse
+    {
+        $manager = $this->container->get(ConversationParticipantManager::class);
+        $messages = $manager->getLastConversationsDataForUser();
+        $conversationCount = $manager->getLastConversationsCountForUser();
+
+        if ($request && $request->get('onlyData', false)) {
+            return new JsonResponse([
+                'messages' => $messages,
+                'unreadMessagesCount' => $conversationCount
+            ]);
+        }
+
+        return [
+            'messages' => json_encode($messages),
+            'unreadMessagesCount' => $conversationCount
+        ];
     }
 
     private function update(Request $request, Conversation $conversation): array|RedirectResponse
@@ -170,7 +193,8 @@ class ConversationController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
-            'oro_conversation.manager.conversation' => ConversationManager::class,
+            ConversationManager::class,
+            ConversationParticipantManager::class,
             EntityRoutingHelper::class,
             UpdateHandlerFacade::class,
             TranslatorInterface::class,

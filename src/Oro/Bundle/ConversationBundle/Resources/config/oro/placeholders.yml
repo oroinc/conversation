@@ -1,9 +1,16 @@
 placeholders:
+    placeholders:
+        dots_menu:
+            items:
+                dots_menu_messages:
+                    order: 150
+
     items:
         oro_add_conversation_button:
             template: '@@OroConversation/Conversation/activityButton.html.twig'
             acl: oro_conversation_create
-
         oro_add_conversation_link:
             template: '@@OroConversation/Conversation/activityLink.html.twig'
             acl: oro_conversation_create
+        dots_menu_messages:
+            action: Oro\Bundle\ConversationBundle\Controller\ConversationController::lastMessagesAction
