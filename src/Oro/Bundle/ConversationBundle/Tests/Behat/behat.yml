@@ -12,6 +12,7 @@ oro_behat_extension:
                 - Oro\Bundle\ActivityListBundle\Tests\Behat\Context\ActivityContext
                 - Oro\Bundle\ApplicationBundle\Tests\Behat\Context\CommerceMainContext
                 - Oro\Bundle\OrderBundle\Tests\Behat\Context\OrderContext
+                - Oro\Bundle\ConfigBundle\Tests\Behat\Context\FeatureContext
             paths:
                 - '@OroConversationBundle/Tests/Behat/Features'
     elements:

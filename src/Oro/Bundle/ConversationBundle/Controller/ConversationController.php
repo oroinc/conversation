@@ -6,8 +6,10 @@ use Oro\Bundle\ActivityBundle\Autocomplete\ContextSearchHandler;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Form\Handler\ConversationHandler;
+use Oro\Bundle\ConversationBundle\Form\Type\ConversationMessageType;
 use Oro\Bundle\ConversationBundle\Form\Type\ConversationType;
 use Oro\Bundle\ConversationBundle\Manager\ConversationManager;
+use Oro\Bundle\ConversationBundle\Manager\ConversationMessageManager;
 use Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager;
 use Oro\Bundle\DataGridBundle\Provider\MultiGridProvider;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
@@ -62,7 +64,17 @@ class ConversationController extends AbstractController
         $this->container->get(ConversationParticipantManager::class)
             ->setLastReadMessageForParticipantAndSendNotification($conversation, $this->getUser());
 
-        return ['entity' => $conversation];
+        $form = $this->isGranted('MANAGE_MESSAGES', $conversation)
+            ? $this->createForm(
+                ConversationMessageType::class,
+                $this->container->get(ConversationMessageManager::class)->createMessage($conversation)
+            )->createView()
+            : null;
+
+        return [
+            'entity' => $conversation,
+            'form' => $form,
+        ];
     }
 
     #[Route(path: '/create', name: 'oro_conversation_create')]
@@ -193,6 +205,7 @@ class ConversationController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
+            ConversationMessageManager::class,
             ConversationManager::class,
             ConversationParticipantManager::class,
             EntityRoutingHelper::class,

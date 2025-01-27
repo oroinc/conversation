@@ -7,6 +7,7 @@ services:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: oro_conversation.manager.conversation_message, key: Oro\Bundle\ConversationBundle\Manager\ConversationMessageManager }
             - { name: container.service_subscriber, id: oro_conversation.manager.conversation, key: Oro\Bundle\ConversationBundle\Manager\ConversationManager }
             - { name: container.service_subscriber, id: oro_conversation.manager.conversation_participant, key: Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager }
 

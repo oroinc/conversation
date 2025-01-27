@@ -14,6 +14,8 @@ navigation:
                 route_parameters:
                     'conversations-grid[_parameters][view]': 'my_conversations'
                     'conversations-grid[_filter][is_my_conversation][value]': '1'
+                    'conversations-grid[_filter][status][type]': '1'
+                    'conversations-grid[_filter][status][value][0]': 'conversation_status.active'
                 position: 15
 
             frontend_conversation_list:
@@ -22,6 +24,14 @@ navigation:
                 position: 1
                 extras:
                     routes: ['/^oro_conversation_frontend_conversation_index/']
+            frontend_conversation_list_quick_access:
+                label: 'oro.conversation.entity_plural_label'
+                route: 'oro_conversation_frontend_conversation_index'
+                position: 1
+                linkAttributes:
+                    class: 'quick_access'
+                extras:
+                    icon: fa-message
         tree:
             application_menu:
                 children:
@@ -41,6 +51,12 @@ navigation:
                     oro_customer_frontend_customer_user_profiles_and_addresses:
                         children:
                             frontend_conversation_list: ~
+            commerce_quick_access:
+                children:
+                    frontend_conversation_list_quick_access: ~
+            commerce_quick_access_refreshing_teal:
+                children:
+                    frontend_conversation_list_quick_access: ~
     titles:
         oro_conversation_index: ~
         oro_conversation_view: '%entity.name%'

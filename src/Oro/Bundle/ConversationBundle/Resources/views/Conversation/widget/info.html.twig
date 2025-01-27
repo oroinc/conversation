@@ -2,68 +2,66 @@
 {% import "@OroActivity/macros.html.twig" as AC %}
 {% import '@OroUser/macros.html.twig' as U %}
 
-<div class="info responsive-cell">
-    <div class="widget-content form-horizontal box-content row-fluid">
-        <div class="responsive-block">
-            {# Display contexts targets in the activity list item view #}
-            {% if renderContexts is defined and renderContexts %}
-                <div class="activity-context-activity-list">
-                    {{ AC.activity_contexts(entity, target, true) }}
-                </div>
-            {% endif %}
-            {{ UI.renderProperty('oro.conversation.name.label'|trans, entity.name) }}
-            {% set ownerData %}
-                {% if entity.owner %}
-                    {{ U.render_user_name(entity.owner) }}
-                    {{ U.user_business_unit_name(entity.owner) }}
-                {% endif %}
-            {% endset %}
-            {{ UI.renderHtmlProperty('oro.conversation.owner.label'|trans, ownerData) }}
-            {% if entity.customerUser %}
-            {{ UI.renderHtmlProperty('oro.conversation.customer_user.label'|trans, U.render_user_name(entity.customerUser)) }}
-            {% endif %}
-            {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'|trans) }}
-            {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'|trans) }}
-        </div>
-    </div>
-</div>
-
-<div class="responsive-cell">
-    {{ oro_widget_render({
-        'widgetType': 'block',
-        'wid': 'conversation_messages_' ~ entity.id,
-        'alias': 'conversation_messages_' ~ entity.id,
-        'url': path('oro_conversation_messages_list', {id: entity.id}),
-        'contextsRendered': true
-    }) }}
-
-    <div class="comments-view-footer">
-        {% if is_granted('EDIT', entity) and is_granted('MANAGE_MESSAGES', entity) %}
-            {{ UI.clientButton({
-                'dataUrl': path(
-                    'oro_conversation_message_create', {
-                        id: entity.id
-                    }),
-                'aCss': 'btn btn-primary no-hash',
-                'iCss': 'fa-paper-plane',
-                'label' : 'oro.conversation.conversationmessage.action.add'|trans,
-                'widget' : {
-                    'type' : 'dialog',
-                    'multiple' : false,
-                    'reload-widget-alias': 'conversation_messages_' ~ entity.id,
-                    'options' : {
-                        'alias': 'add-message-dialog',
-                        'dialogOptions' : {
-                            'title' : 'oro.conversation.conversationmessage.action.add'|trans,
-                            'allowMaximize': false,
-                            'allowMinimize': false,
-                            'modal': true,
-                            'dblclick': 'maximize',
-                            'maximizedHeightDecreaseBy': 'minimize-bar'
-                        }
-                    }
-                },
-            }) }}
+<div class="widget-content form-horizontal box-content">
+    <div class="responsive-block conversation_data">
+        {# Display contexts targets in the activity list item view #}
+        {% if renderContexts is defined and renderContexts %}
+            <div class="activity-context-activity-list">
+                {{ AC.activity_contexts(entity, target, true) }}
+            </div>
         {% endif %}
+        {{ UI.renderProperty('oro.conversation.name.label'|trans, entity.name) }}
+        {% set ownerData %}
+            {% if entity.owner %}
+                {{ U.render_user_name(entity.owner) }}
+                {{ U.user_business_unit_name(entity.owner) }}
+            {% endif %}
+        {% endset %}
+        {{ UI.renderHtmlProperty('oro.conversation.owner.label'|trans, ownerData) }}
+        {% if entity.customerUser %}
+        {{ UI.renderHtmlProperty('oro.conversation.customer_user.label'|trans, U.render_user_name(entity.customerUser)) }}
+        {% endif %}
+        {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'|trans) }}
+        {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'|trans) }}
+    </div>
+
+    <div class="responsive-block">
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'wid': 'conversation_messages_' ~ entity.id,
+            'alias': 'conversation_messages_' ~ entity.id,
+            'url': path('oro_conversation_messages_list_inverse', {id: entity.id}),
+            'contextsRendered': true
+        }) }}
+
+        <div class="comments-view-footer">
+            {% if is_granted('EDIT', entity) and is_granted('MANAGE_MESSAGES', entity) %}
+                {{ UI.clientButton({
+                    'dataUrl': path(
+                        'oro_conversation_message_create', {
+                            id: entity.id
+                        }),
+                    'aCss': 'btn btn-primary no-hash',
+                    'iCss': 'fa-paper-plane',
+                    'label' : 'oro.conversation.conversationmessage.action.add'|trans,
+                    'widget' : {
+                        'type' : 'dialog',
+                        'multiple' : false,
+                        'reload-widget-alias': 'conversation_messages_' ~ entity.id,
+                        'options' : {
+                            'alias': 'add-message-dialog',
+                            'dialogOptions' : {
+                                'title' : 'oro.conversation.conversationmessage.action.add'|trans,
+                                'allowMaximize': false,
+                                'allowMinimize': false,
+                                'modal': true,
+                                'dblclick': 'maximize',
+                                'maximizedHeightDecreaseBy': 'minimize-bar'
+                            }
+                        }
+                    },
+                }) }}
+            {% endif %}
+        </div>
     </div>
 </div>

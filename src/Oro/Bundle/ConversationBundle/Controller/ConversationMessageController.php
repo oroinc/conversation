@@ -54,14 +54,22 @@ class ConversationMessageController extends AbstractController
     }
 
     #[Route(
-        path: '/{id}/widget/list',
-        name: 'oro_conversation_messages_list',
+        path: '/{id}/widget-list/direct',
+        name: 'oro_conversation_messages_list_direct',
         requirements: ['id' => '\d+'],
+        defaults: ['inverse' => false],
+        methods: ['GET', 'POST']
+    )]
+    #[Route(
+        path: '/{id}/widget-list/inverse',
+        name: 'oro_conversation_messages_list_inverse',
+        requirements: ['id' => '\d+'],
+        defaults: ['inverse' => true],
         methods: ['GET', 'POST']
     )]
     #[Template('@OroConversation/ConversationMessage/widget/getList.html.twig')]
     #[AclAncestor(id: 'oro_conversation_view')]
-    public function getListAction(Request $request, Conversation $conversation): array|RedirectResponse
+    public function getListAction(Request $request, Conversation $conversation, bool $inverse): array|RedirectResponse
     {
         $page = $request->query->get('page', 1);
         if ($page === 1) {
@@ -69,12 +77,19 @@ class ConversationMessageController extends AbstractController
                 ->setLastReadMessageForParticipantAndSendNotification($conversation, $this->getUser());
         }
 
-        return $this->container->get(ConversationMessageManager::class)->getMessages(
-            $conversation,
-            $page,
-            $request->query->get('perPage', 5),
-            'DESC',
-            true
+        return array_merge(
+            $this->container->get(ConversationMessageManager::class)->getMessages(
+                $conversation,
+                $page,
+                $request->query->get('perPage', 5),
+                'DESC',
+                $inverse,
+            ),
+            [
+                'route_name' => $inverse
+                    ? 'oro_conversation_messages_list_inverse'
+                    : 'oro_conversation_messages_list_direct'
+            ]
         );
     }
 

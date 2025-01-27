@@ -27,7 +27,8 @@ Feature: conversation CRUD
     And John Doe should be an owner
     And I should see "Context Amanda Cole Charlie Sheen John Doe"
     And I should see "Conversation Flow: Active"
-    And I should see "There are no conversation messages"
+    When I click "All messages"
+    Then I should see "There are no conversation messages"
     And I should see "Close"
 
   Scenario: Inline edit conversation in grid

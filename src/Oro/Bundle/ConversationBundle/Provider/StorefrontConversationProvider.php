@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\ConversationBundle\Provider;
 
+use Oro\Bundle\CustomerBundle\Entity\CustomerUser;
 use Oro\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\RFPBundle\Entity\Request;
 use Oro\Bundle\SaleBundle\Entity\Quote;
@@ -39,7 +40,11 @@ class StorefrontConversationProvider implements StorefrontConversationProviderIn
             return $this->urlGenerator->generate('oro_sale_quote_frontend_view', ['id' => $sourceId]);
         }
 
-        throw new \InvalidArgumentException('Unknown source class "' . $sourceClassName . '"');
+        if (CustomerUser::class === $sourceClassName) {
+            return $this->urlGenerator->generate('oro_customer_frontend_customer_user_view', ['id' => $sourceId]);
+        }
+
+        return '';
     }
 
     public function getSourceChoices(): array

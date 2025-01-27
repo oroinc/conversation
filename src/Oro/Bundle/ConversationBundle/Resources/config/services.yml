@@ -169,6 +169,15 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\ConversationBundle\Entity\ConversationMessage', event: prePersist }
 
+    oro_conversation.listener.storefront_conversations_navigation_listener:
+        class: Oro\Bundle\ConversationBundle\EventListener\StorefrontConversationsNavigationListener
+        arguments:
+            - '@oro_conversation.manager.conversation_participant'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro_menu.configure.commerce_quick_access, method: onNavigationConfigure }
+            - { name: kernel.event_listener, event: oro_menu.configure.commerce_quick_access_refreshing_teal, method: onNavigationConfigure }
+
     oro_conversation.configuration.provider.operations:
         class: Oro\Bundle\ConversationBundle\Action\Configuration\ConfigurationProviderDecorator
         decorates: oro_action.configuration.provider.operations
@@ -199,3 +208,11 @@ services:
         public: true
         arguments:
             - '@translator'
+
+    oro_conversation.data_provider.conversation_data_provider:
+        class: Oro\Bundle\ConversationBundle\Layout\DataProvider\ConversationDataProvider
+        arguments:
+            - '@oro_conversation.manager.conversation_participant'
+            - '@request_stack'
+        tags:
+            - { name: layout.data_provider, alias: oro_conversation_data_provider }
