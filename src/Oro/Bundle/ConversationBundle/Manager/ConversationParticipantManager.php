@@ -178,11 +178,15 @@ class ConversationParticipantManager
 
     public function getLastConversationsCountForUser(): int
     {
-        return $this->doctrine->getRepository(ConversationParticipant::class)
-            ->getLastConversationsCountForParticipant(
-                $this->tokenAccessor->getUser(),
-                $this->associationManager,
-                $this->aclHelper
-            );
+        if ($this->tokenAccessor->hasUser()) {
+            return $this->doctrine->getRepository(ConversationParticipant::class)
+                ->getLastConversationsCountForParticipant(
+                    $this->tokenAccessor->getUser(),
+                    $this->associationManager,
+                    $this->aclHelper
+                );
+        }
+
+        return 0;
     }
 }

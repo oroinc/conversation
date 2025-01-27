@@ -8,34 +8,6 @@
 {% oro_title_set({params : {"%entity.name%": entity.name|default('N/A'|trans) }}) %}
 
 {% block navButtons %}
-    {% if is_granted('EDIT', entity) and is_granted('MANAGE_MESSAGES', entity) %}
-    {{ UI.clientButton({
-        'dataUrl': path(
-            'oro_conversation_message_create', {
-                id: entity.id
-            }),
-        'aCss': 'btn btn-primary no-hash',
-        'iCss': 'fa-paper-plane',
-        'label' : 'oro.conversation.conversationmessage.action.add'|trans,
-        'widget' : {
-            'type' : 'dialog',
-            'multiple' : false,
-            'reload-grid-name' : 'conversation-messages-grid',
-            'options' : {
-                'alias': 'add-message-dialog',
-                'dialogOptions' : {
-                    'title' : 'oro.conversation.conversationmessage.action.add'|trans,
-                    'allowMaximize': false,
-                    'allowMinimize': false,
-                    'modal': true,
-                    'dblclick': 'maximize',
-                    'maximizedHeightDecreaseBy': 'minimize-bar'
-                }
-            }
-        },
-    }) }}
-    {% endif %}
-
     {% import '@OroActivity/macros.html.twig' as AC %}
     {% import '@OroUI/macros.html.twig' as UI %}
 
@@ -117,12 +89,95 @@
         </div>
     {%- endset -%}
 
+    {%- set messagesChat -%}
+        <div class="activity-list-widget conversation-chat-holder">
+            <div class="activity-list conversation-chat">
+                <div class="responsive-cell">
+                    {{ oro_widget_render({
+                        'widgetType': 'block',
+                        'wid': 'conversation_messages_' ~ entity.id,
+                        'alias': 'conversation_messages_' ~ entity.id,
+                        'url': path('oro_conversation_messages_list_direct', {id: entity.id}),
+                        'contextsRendered': true
+                    }) }}
+                </div>
+            </div>
+        </div>
+    {%- endset -%}
+
+    {% if not isMobileVersion() %}
+        {% set tabsOptions = {
+            verticalTabs: false,
+            useDropdown: false,
+        } %}
+    {% endif %}
+
+    {% set subblocks = [
+        {
+            'data' : [
+                tabPanel(
+                    [
+                        {
+                            'alias': ('tabbed-content-item-messages-')|uniqid,
+                            'label': 'oro.conversation.conversationmessage.chat_and_messages.chat'|trans,
+                            'url': '#',
+                            'content': messagesChat
+                        },
+                        {
+                            'alias': ('tabbed-content-item-grid-')|uniqid,
+                            'label': 'oro.conversation.conversationmessage.chat_and_messages.messages'|trans,
+                            'url': '#',
+                            'content': messagesGrid
+                        }
+                    ],
+                    tabsOptions|default({})
+                )
+            ]
+        }
+    ] %}
+
+    {% if is_granted('EDIT', entity) and is_granted('MANAGE_MESSAGES', entity) %}
+        {% set formId = 'conversation-add-message-form-' ~ entity.id %}
+        {% set bodyElementId = 'conversation-add-message-body-element-' ~ entity.id %}
+        {%- set addMessageForm -%}
+            <div class="conversation-message-form"
+                 data-nohash="true"
+                 data-page-component-module="oroui/js/app/components/view-component"
+                 data-page-component-options="{{
+                 {
+                     'view': 'oroconversation/js/app/views/conversation-message-view',
+                     'bodySelector': '#' ~ bodyElementId,
+                     'formSelector': '#' ~ form.vars.id,
+                     'reloadGridName': 'conversation-messages-grid',
+                     'reloadWidgetAlias': 'conversation_messages_' ~ entity.id
+                 }|json_encode
+                 }}">
+
+                <form id="{{ form.vars.id }}" name="{{ form.vars.name }}" action="{{ path('oro_conversation_message_create', {'id': entity.id, '_wid': 'conversation_message'}) }}" method="post">
+                    {{ form_row(form.body, {'id': bodyElementId}) }}
+                    {{ form_row(form.participant) }}
+                    {{ form_rest(form) }}
+                    <div class="control-group control-group-text" >
+                        <div class="pull-right">
+                            <button class="btn btn-success" type="submit"><span class="fa-paper-plane" aria-hidden="true"></span> {{ 'oro.conversation.conversationmessage.action.add'|trans }}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {%- endset -%}
+        {% set subblocks = subblocks|merge([
+                {
+                    'title': 'oro.conversation.conversationmessage.action.add'|trans,
+                    'data' : [addMessageForm]
+                }
+            ])
+        %}
+    {% endif %}
+
     {% set dataBlocks = [
         {
-            'title': 'oro.conversation.conversationmessage.messages.label'|trans,
-            'subblocks': [
-                {'data' : [messagesGrid]}
-            ]
+            'title': 'oro.conversation.conversationmessage.chat_and_messages.label'|trans,
+            'subblocks': subblocks
         }
     ] %}
 

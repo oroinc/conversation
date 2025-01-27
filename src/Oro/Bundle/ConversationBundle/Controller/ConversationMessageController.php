@@ -54,8 +54,8 @@ class ConversationMessageController extends AbstractController
     }
 
     #[Route(
-        path: '/{id}/widget/list',
-        name: 'oro_conversation_messages_list',
+        path: '/{id}/widget-list/direct',
+        name: 'oro_conversation_messages_list_direct',
         requirements: ['id' => '\d+'],
         methods: ['GET', 'POST']
     )]
@@ -66,18 +66,53 @@ class ConversationMessageController extends AbstractController
         $page = $request->query->get('page', 1);
         if ($page === 1) {
             $this->container->get('oro_conversation.manager.conversation_participant')
-                ->setLastReadMessageForParticipantAndSendNotification(
-                    $conversation,
-                    $this->getUser()
-                );
+                ->setLastReadMessageForParticipantAndSendNotification($conversation, $this->getUser());
         }
 
-        return $this->container->get('oro_conversation.manager.conversation_message')->getMessages(
-            $conversation,
-            $page,
-            $request->query->get('perPage', 5),
-            'DESC',
-            true
+        return array_merge(
+            $this->container->get('oro_conversation.manager.conversation_message')->getMessages(
+                $conversation,
+                $page,
+                $request->query->get('perPage', 5),
+                'DESC',
+                false,
+            ),
+            [
+                'route_name' => 'oro_conversation_messages_list_direct'
+            ]
+        );
+    }
+
+    /**
+     * @deprecated
+     */
+    #[Route(
+        path: '/{id}/widget-list/inverse',
+        name: 'oro_conversation_messages_list_inverse',
+        requirements: ['id' => '\d+'],
+        methods: ['GET', 'POST']
+    )]
+    #[Template('@OroConversation/ConversationMessage/widget/getList.html.twig')]
+    #[AclAncestor(id: 'oro_conversation_view')]
+    public function getListActionInverse(Request $request, Conversation $conversation): array|RedirectResponse
+    {
+        $page = $request->query->get('page', 1);
+        if ($page === 1) {
+            $this->container->get('oro_conversation.manager.conversation_participant')
+                ->setLastReadMessageForParticipantAndSendNotification($conversation, $this->getUser());
+        }
+
+        return array_merge(
+            $this->container->get('oro_conversation.manager.conversation_message')->getMessages(
+                $conversation,
+                $page,
+                $request->query->get('perPage', 5),
+                'DESC',
+                true,
+            ),
+            [
+                'route_name' => 'oro_conversation_messages_list_inverse'
+            ]
         );
     }
 

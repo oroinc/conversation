@@ -12,7 +12,7 @@ use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * Adds 'my conversation', 'have new messages columns and filters to the conversation datagrid.
+ * Adds 'my conversation', 'have new messages' columns and filters to the conversation datagrid.
  */
 class ConversationParticipantColumnListener
 {

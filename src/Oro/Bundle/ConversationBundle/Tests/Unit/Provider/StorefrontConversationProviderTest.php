@@ -3,6 +3,7 @@
 namespace Oro\Bundle\ConversationBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\ConversationBundle\Provider\StorefrontConversationProvider;
+use Oro\Bundle\CustomerBundle\Entity\CustomerUser;
 use Oro\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\RFPBundle\Entity\Request;
 use Oro\Bundle\SaleBundle\Entity\Quote;
@@ -32,11 +33,10 @@ class StorefrontConversationProviderTest extends TestCase
 
     public function testGetSourceUrlOnNonSupportClass(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
         $this->urlGenerator->expects(self::never())
             ->method('generate');
 
-        $this->provider->getSourceUrl(\stdClass::class, 23);
+        self::assertEquals('', $this->provider->getSourceUrl(\stdClass::class, 23));
     }
 
     public function testGetSourceUrlOnOrderClass(): void
@@ -57,6 +57,16 @@ class StorefrontConversationProviderTest extends TestCase
             ->willReturn('/some/route/order/21');
 
         self::assertEquals('/some/route/order/21', $this->provider->getSourceUrl(Request::class, 21));
+    }
+
+    public function testGetSourceUrlOnCustomerUserClass(): void
+    {
+        $this->urlGenerator->expects(self::once())
+            ->method('generate')
+            ->with('oro_customer_frontend_customer_user_view', ['id' => 33])
+            ->willReturn('/some/route/customerUser/33');
+
+        self::assertEquals('/some/route/customerUser/33', $this->provider->getSourceUrl(CustomerUser::class, 33));
     }
 
     public function testGetSourceChoices(): void

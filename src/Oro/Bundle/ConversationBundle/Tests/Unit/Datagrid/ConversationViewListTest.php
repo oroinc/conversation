@@ -36,7 +36,7 @@ class ConversationViewListTest extends TestCase
                 ],
                 'status' => [
                     'type' => 1,
-                    'value' => ['conversation_status.active']
+                    'value' => ['active']
                 ]
             ]
         );

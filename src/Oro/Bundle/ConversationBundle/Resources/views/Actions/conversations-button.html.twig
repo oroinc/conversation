@@ -15,17 +15,14 @@
 
     {% if hasConversations %}
         {% set linkLabel = 'oro.conversation.storefront.questions'|trans %}
-
-        <div class="{{ hasConversations ? 'dropdown' : '' }}" {{ UI.renderPageComponentAttributes(componentOptions) }}>
+        <div class="dropdown" {{ UI.renderPageComponentAttributes(componentOptions) }}>
             <button type="button" class="btn btn btn--neutral"
-                {% if hasConversations %}
                     data-toggle="dropdown"
                     id="{{ togglerId }}"
                     aria-haspopup="true"
                     aria-expanded="false"
                     data-modifiers="{{ {flip: {flipVariationsByContent: true}}|json_encode }}"
                     data-target="{{ togglerId }}"
-                {% endif %}
             >
                 {% if app.request.attributes.get('_layout')|default(false) and params.frontendOptions.options.icon is defined %}
                     {{ renderIcon.icon({
@@ -33,19 +30,12 @@
                         extraClass: params.frontendOptions.options.iconSize is defined ? params.frontendOptions.options.iconSize : ''
                     }) }}
                 {% endif %}
-                {% if not noLinkLabel %}
-                    {{- linkLabel|trim -}}
-                {% endif %}
-                {% if hasConversations %}
-                    {{ renderIcon.icon({
-                        name: 'chevron-down'
-                    }) }}
-                {% endif %}
+                {{ linkLabel|trim }}
+                {{ renderIcon.icon({
+                    name: 'chevron-down'
+                }) }}
             </button>
-
-            {% if hasConversations %}
-                <div class="dropdown-menu" data-role="conversations" aria-labelledby="{{ togglerId }}"></div>
-            {% endif %}
+            <div class="dropdown-menu" data-role="conversations" aria-labelledby="{{ togglerId }}"></div>
         </div>
     {% else %}
         {{ parent() }}

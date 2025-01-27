@@ -65,7 +65,13 @@ define(function(require) {
                 {
                     'conversations-grid': {
                         _parameters: {view: 'my_conversations'},
-                        _filter: {is_my_conversation: {value: 1}}
+                        _filter: {
+                            is_my_conversation: {value: 1},
+                            status: {
+                                type: 1,
+                                value: ['active']
+                            }
+                        }
                     }
                 }
             );

@@ -9,8 +9,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    const ROOT_NODE = 'oro_conversation';
-    const ENABLED_CONVERSATIONS = 'enable_conversation';
+    private const ROOT_NODE = 'oro_conversation';
+    private const ENABLED_CONVERSATIONS = 'enable_conversation';
 
     /**
      * {@inheritDoc}
@@ -23,9 +23,7 @@ class Configuration implements ConfigurationInterface
 
         SettingsBuilder::append(
             $rootNode,
-            [
-                self::ENABLED_CONVERSATIONS => ['value' => true]
-            ]
+            [self::ENABLED_CONVERSATIONS => ['value' => true]]
         );
 
         return $treeBuilder;

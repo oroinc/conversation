@@ -78,6 +78,10 @@ oro:
                 add: Add Message
             item.added: added on
             messages.label: Messages
+            chat_and_messages:
+                label: Chat and Messages
+                chat: Chat
+                messages: All messages
             saved.message: Message has been saved
 
         conversationparticipant:

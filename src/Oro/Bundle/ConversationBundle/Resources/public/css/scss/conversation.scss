@@ -59,3 +59,22 @@
         }
     }
 }
+
+.conversation_data {
+    border-right: 1px solid $activity-item-content-border-color;
+}
+
+.conversation-message-form {
+    .control-group {
+        > .control-label {
+            width: $form-horizontal-control-label-width / 2;
+        }
+    }
+}
+
+.conversation-chat-holder {
+    .conversation-chat {
+        max-width: 800px;
+        margin: auto;
+    }
+}

@@ -28,7 +28,7 @@ class ConversationViewList extends AbstractViewsList
                 ],
                 'status' => [
                     'type' => EnumFilterType::TYPE_IN,
-                    'value' => ['conversation_status.' . Conversation::STATUS_ACTIVE]
+                    'value' => [Conversation::STATUS_ACTIVE]
                 ]
             ],
             'sorters' => [],

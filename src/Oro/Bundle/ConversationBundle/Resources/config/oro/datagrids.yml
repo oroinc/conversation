@@ -3,6 +3,8 @@ datagrids:
         extended_entity_name: 'Oro\Bundle\ConversationBundle\Entity\Conversation'
         views_list: '@oro_conversation.datagrid.conversation_view_list'
         acl_resource: oro_conversation_view
+        options:
+            entity_pagination: true
         source:
             type: orm
             query:
@@ -159,17 +161,17 @@ datagrids:
                 label:         oro.grid.action.update
                 icon:          edit
                 link:          update_link
-        options:
-            entity_pagination: true
 
     conversation-messages-grid:
         extended_entity_name: 'Oro\Bundle\ConversationBundle\Entity\ConversationMessage'
         acl_resource: oro_conversation_view
+        options:
+            entity_pagination: true
         source:
             type: orm
             query:
                 select:
-                    - partial cm.{ id, participant }
+                    - cm
                     - cm.id
                     - cm.index
                     - cm.body
@@ -227,5 +229,3 @@ datagrids:
                 updatedAt:
                     type: datetime
                     data_name: cm.updatedAt
-        options:
-            entity_pagination: true

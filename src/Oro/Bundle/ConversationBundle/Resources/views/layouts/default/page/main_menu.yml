@@ -1,0 +1,6 @@
+layout:
+    actions:
+        - '@setOption':
+              id: main_menu_trigger
+              optionName: vars.extra.iconDot
+              optionValue: '=data["oro_conversation_data_provider"].isHaveNotReadConversations()'

@@ -74,10 +74,9 @@ Feature: conversation on storefront
       | Order SimpleOrder       | 1        | Order SimpleOrder |
       | Conversation from order | 1        | Order SimpleOrder |
     When I click view "Conversation from order" in grid
-    And I click "Add Message"
     When I fill form with:
       | Message  | From admin |
-    And I click "Save"
+    And I click "Add Message"
     Then I should see "Message created successfully" flash message
 
   Scenario: See the message on the storefront

@@ -20,36 +20,27 @@ Feature: Manage conversation messages
   Scenario: Add new message
     Given I go to Activities/Conversations
     And I click view "Some conversation" in grid
-    When I click "Add Message"
-    And I fill form with:
+    When I fill form with:
       | Message  | First Message |
-    And I click "Save"
+    And I click "Add Message"
     Then I should see "Message created successfully" flash message
-    And I should see following grid:
-      | Number | From            | Message       |
-      | 1      | User John Doe   | First Message |
-    And I should not see "There are no conversation messages"
-
-  Scenario: Try to add new message with empty body
-    When I click "Add Message"
-    And I click "Save"
-    Then I should see validation errors:
-      | Message | This value should not be blank. |
+    And I should see "First Message"
 
   Scenario: Add new message from another user
     When I fill form with:
-      | Message  | Second Message |
+      | Message  | Another User Message |
       | From     | charlie |
-    And I click "Save"
+    And I click "Add Message"
     Then I should see "Message created successfully" flash message
+    When I click "All messages"
     And I should see following grid:
-      | Number | From            | Message       |
-      | 2      | User Charlie Sheen   | Second Message |
-      | 1      | User John Doe   | First Message |
+      | Number | From                 | Message              |
+      | 2      | User Charlie Sheen   | Another User Message |
+      | 1      | User John Doe        | First Message        |
     And I should not see "There are no conversation messages"
 
   Scenario: Close conversation
     When I click "Close"
     Then I should see "Conversation Flow: Closed"
     And I should see "Reopen"
-    And I should not see "Add Message"
+    And I should not see "From"

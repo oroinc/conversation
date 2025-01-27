@@ -1,6 +1,6 @@
 <div class="conversation__title-container">
     <h3 class="conversation__title"><%- name %></h3>
-    <% if (sourceTitle) { %>
+    <% if (sourceTitle && sourceUrl) { %>
         <h5 class="conversation__source"><a href="<%- sourceUrl %>"><%- sourceTitle %></a></h5>
     <% } %>
 </div>
