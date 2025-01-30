@@ -17,7 +17,7 @@ class LoadMessages extends AbstractFixture implements DependentFixtureInterface,
     private ContainerInterface $container;
 
     #[\Override]
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null)
     {
         $this->container = $container;
     }

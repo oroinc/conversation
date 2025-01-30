@@ -173,7 +173,7 @@ class Conversation implements
         return $this->messagesNumber;
     }
 
-    public function setOwner(User $owner = null): self
+    public function setOwner(?User $owner = null): self
     {
         $this->owner = $owner;
 

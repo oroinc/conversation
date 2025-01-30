@@ -43,7 +43,7 @@ class ConversationParticipantManager
 
     public function getOrCreateParticipantObjectForConversation(
         Conversation $conversation,
-        object $participantTarget = null
+        ?object $participantTarget = null
     ): ?ConversationParticipant {
         if (null === $participantTarget) {
             $participantTarget = $this->tokenAccessor->getUser();
