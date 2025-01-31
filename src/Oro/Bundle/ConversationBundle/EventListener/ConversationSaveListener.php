@@ -94,6 +94,7 @@ class ConversationSaveListener
 
         $participants[] = $conversation->getCustomerUser();
         $this->addParticipants($conversation, $participants);
+        $this->conversationManager->ensureConversationHaveStatus($conversation);
     }
 
     private function addParticipants(Conversation $conversation, array $participants): void
