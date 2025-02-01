@@ -40,7 +40,7 @@ class ConversationManager
         PropertyAccessorInterface $propertyAccessor,
         ManagerRegistry $doctrine,
         StorefrontConversationProviderInterface $storefrontConversationProvider,
-        EntityAliasResolverRegistry  $aliasResolverRegistry
+        EntityAliasResolverRegistry $aliasResolverRegistry
     ) {
         $this->entityRoutingHelper = $entityRoutingHelper;
         $this->entityNameResolver = $entityNameResolver;

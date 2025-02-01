@@ -25,9 +25,9 @@ class ConversationType extends AbstractType
     private RequestStack $requestStack;
 
     public function __construct(
-        ManagerRegistry     $doctrine,
+        ManagerRegistry $doctrine,
         EntityRoutingHelper $entityRoutingHelper,
-        RequestStack        $requestStack
+        RequestStack $requestStack
     ) {
         $this->doctrine = $doctrine;
         $this->entityRoutingHelper = $entityRoutingHelper;
