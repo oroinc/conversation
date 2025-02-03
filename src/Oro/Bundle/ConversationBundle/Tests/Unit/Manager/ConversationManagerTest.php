@@ -7,13 +7,14 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ApiBundle\Provider\EntityAliasResolverRegistry;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Helper\EntityConfigHelper;
-use Oro\Bundle\ConversationBundle\Manager\ConversationManager;
 use Oro\Bundle\ConversationBundle\Provider\StorefrontConversationProviderInterface;
+use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationManager;
 use Oro\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\CustomerBundle\Entity\CustomerUser;
 use Oro\Bundle\CustomerBundle\Owner\Metadata\FrontendOwnershipMetadata;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
+use Oro\Bundle\EntityExtendBundle\Tests\Unit\Fixtures\TestEnumValue;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -55,10 +56,22 @@ class ConversationManagerTest extends TestCase
 
     public function testCreateConversationWithoutSourceEntityClassAndSourceEntityId(): void
     {
+        $status = new TestEnumValue('conversation_status', 'active', 1);
+        $em = $this->createMock(EntityManager::class);
+        $this->doctrine->expects(self::once())
+            ->method('getManagerForClass')
+            ->with(Conversation::class)
+            ->willReturn($em);
+        $em->expects(self::once())
+            ->method('find')
+            ->with('Extend\Entity\EV_Conversation_Status', 'active')
+            ->willReturn($status);
+
         $result = $this->manager->createConversation();
         self::assertNull($result->getName());
         self::assertNull($result->getCustomerUser());
         self::assertNull($result->getCustomer());
+        self::assertSame($status, $result->getStatus());
     }
 
     public function testCreateConversationWithoutSourceEntity(): void
@@ -71,10 +84,22 @@ class ConversationManagerTest extends TestCase
             ->with(\stdClass::class, 45)
             ->willReturn(null);
 
+        $status = new TestEnumValue('conversation_status', 'active', 1);
+        $em = $this->createMock(EntityManager::class);
+        $this->doctrine->expects(self::once())
+            ->method('getManagerForClass')
+            ->with(Conversation::class)
+            ->willReturn($em);
+        $em->expects(self::once())
+            ->method('find')
+            ->with('Extend\Entity\EV_Conversation_Status', 'active')
+            ->willReturn($status);
+
         $result = $this->manager->createConversation($sourceEntityClass, $sourceEntityId);
         self::assertNull($result->getName());
         self::assertNull($result->getCustomerUser());
         self::assertNull($result->getCustomer());
+        self::assertSame($status, $result->getStatus());
     }
 
     public function testCreateConversationWithNonAclProtectedEntity(): void
@@ -104,12 +129,24 @@ class ConversationManagerTest extends TestCase
             ->with($sourceEntityClass)
             ->willReturn(new FrontendOwnershipMetadata());
 
+        $status = new TestEnumValue('conversation_status', 'active', 1);
+        $em = $this->createMock(EntityManager::class);
+        $this->doctrine->expects(self::once())
+            ->method('getManagerForClass')
+            ->with(Conversation::class)
+            ->willReturn($em);
+        $em->expects(self::once())
+            ->method('find')
+            ->with('Extend\Entity\EV_Conversation_Status', 'active')
+            ->willReturn($status);
+
         $result = $this->manager->createConversation($sourceEntityClass, $sourceEntityId);
 
         self::assertInstanceOf(Conversation::class, $result);
         self::assertEquals('Test_entity Entity_label', $result->getName());
         self::assertNull($result->getCustomerUser());
         self::assertNull($result->getCustomer());
+        self::assertSame($status, $result->getStatus());
     }
 
     public function testCreateConversationWithAclProtectedEntity(): void
@@ -147,12 +184,24 @@ class ConversationManagerTest extends TestCase
                 'customerUserId'
             ));
 
+        $status = new TestEnumValue('conversation_status', 'active', 1);
+        $em = $this->createMock(EntityManager::class);
+        $this->doctrine->expects(self::once())
+            ->method('getManagerForClass')
+            ->with(Conversation::class)
+            ->willReturn($em);
+        $em->expects(self::once())
+            ->method('find')
+            ->with('Extend\Entity\EV_Conversation_Status', 'active')
+            ->willReturn($status);
+
         $result = $this->manager->createConversation($sourceEntityClass, $sourceEntityId);
 
         self::assertInstanceOf(Conversation::class, $result);
         self::assertEquals('Test_entity Entity_label', $result->getName());
         self::assertSame($customerUser, $result->getCustomerUser());
         self::assertSame($customer, $result->getCustomer());
+        self::assertSame($status, $result->getStatus());
     }
 
     public function testCreateConversationWithCustomerUserSource(): void
@@ -182,12 +231,24 @@ class ConversationManagerTest extends TestCase
         $this->metadataProvider->expects(self::never())
             ->method('getMetadata');
 
+        $status = new TestEnumValue('conversation_status', 'active', 1);
+        $em = $this->createMock(EntityManager::class);
+        $this->doctrine->expects(self::once())
+            ->method('getManagerForClass')
+            ->with(Conversation::class)
+            ->willReturn($em);
+        $em->expects(self::once())
+            ->method('find')
+            ->with('Extend\Entity\EV_Conversation_Status', 'active')
+            ->willReturn($status);
+
         $result = $this->manager->createConversation($sourceEntityClass, $sourceEntityId);
 
         self::assertInstanceOf(Conversation::class, $result);
         self::assertEquals('Test_entity Entity_label', $result->getName());
         self::assertSame($customerUser, $result->getCustomerUser());
         self::assertSame($customer, $result->getCustomer());
+        self::assertSame($status, $result->getStatus());
     }
 
     public function testSaveConversation(): void

@@ -13,6 +13,7 @@ use Oro\Bundle\CustomerBundle\Entity\CustomerUser;
 use Oro\Bundle\CustomerBundle\Owner\Metadata\FrontendOwnershipMetadata;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -52,7 +53,7 @@ class ConversationManager
 
     public function createConversation(?string $sourceEntityClass = null, ?int $sourceEntityId = null): Conversation
     {
-        $conversation = new Conversation();
+        $conversation = $this->getNewConversation();
         if ($sourceEntityClass && $sourceEntityId) {
             $sourceEntity = $this->entityRoutingHelper->getEntity($sourceEntityClass, $sourceEntityId);
             if ($sourceEntity) {
@@ -60,8 +61,18 @@ class ConversationManager
                 $this->setCustomerUserToConversation($conversation, $sourceEntity);
             }
         }
+        $this->ensureConversationHaveStatus($conversation);
 
         return $conversation;
+    }
+
+    public function ensureConversationHaveStatus(Conversation $conversation): void
+    {
+        if (!$conversation->getStatus()) {
+            $status = $this->doctrine->getManagerForClass(Conversation::class)
+                ->find(ExtendHelper::buildEnumValueClassName('conversation_status'), 'active');
+            $conversation->setStatus($status);
+        }
     }
 
     public function saveConversation(Conversation $conversation): Conversation
@@ -150,5 +161,10 @@ class ConversationManager
                 $conversation->setCustomer($customerUser->getCustomer());
             }
         }
+    }
+
+    protected function getNewConversation(): Conversation
+    {
+        return new Conversation();
     }
 }

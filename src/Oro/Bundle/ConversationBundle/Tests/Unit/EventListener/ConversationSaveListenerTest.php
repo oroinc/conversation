@@ -86,6 +86,10 @@ class ConversationSaveListenerTest extends TestCase
             ->with($source)
             ->willReturn('source_name');
 
+        $this->conversationManager->expects(self::once())
+            ->method('ensureConversationHaveStatus')
+            ->with($conversation);
+
         $this->activityManager->expects(self::once())
             ->method('addActivityTargets')
             ->with($conversation, [$owner, $source, $customerUser]);
