@@ -51,9 +51,6 @@ navigation:
                     oro_customer_frontend_customer_user_profiles_and_addresses:
                         children:
                             frontend_conversation_list: ~
-            commerce_quick_access:
-                children:
-                    frontend_conversation_list_quick_access: ~
             commerce_quick_access_refreshing_teal:
                 children:
                     frontend_conversation_list_quick_access: ~
