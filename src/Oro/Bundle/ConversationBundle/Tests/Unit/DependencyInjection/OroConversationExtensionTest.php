@@ -23,7 +23,7 @@ class OroConversationExtensionTest extends TestCase
                     'settings' => [
                         'resolved' => true,
                         'enable_conversation' => [
-                            'value' => true,
+                            'value' => false,
                             'scope' => 'app'
                         ]
                     ]

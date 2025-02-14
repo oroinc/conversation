@@ -16,7 +16,7 @@ class Configuration implements ConfigurationInterface
 
         SettingsBuilder::append(
             $rootNode,
-            ['enable_conversation' => ['value' => true]]
+            ['enable_conversation' => ['value' => false]]
         );
 
         return $treeBuilder;

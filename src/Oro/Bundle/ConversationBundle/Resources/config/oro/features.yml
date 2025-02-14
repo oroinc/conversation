@@ -22,6 +22,12 @@ features:
             - Oro\Bundle\ConversationBundle\Entity\ConversationParticipant
             - Extend\Entity\EV_Conversation_Status
             - Extend\Entity\EV_Conversation_Message_Type
+        frontend_api_resources:
+            - Oro\Bundle\ConversationBundle\Entity\Conversation
+            - Oro\Bundle\ConversationBundle\Entity\ConversationMessage
+            - Oro\Bundle\ConversationBundle\Entity\ConversationParticipant
+            - Extend\Entity\EV_Conversation_Status
+            - Extend\Entity\EV_Conversation_Message_Type
         workflows:
             - conversation_flow
         operations:

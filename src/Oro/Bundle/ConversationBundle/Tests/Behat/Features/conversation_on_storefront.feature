@@ -11,6 +11,17 @@ Feature: conversation on storefront
       | Admin | first_session  |
       | Buyer | second_session |
 
+  Scenario: Enable Conversations
+    Given I proceed as the Admin
+    And I login as administrator
+    And I go to System/ Configuration
+    And I follow "Commerce/Customer/Interactions" on configuration sidebar
+    And uncheck "Use default" for "Enable Conversations" field
+    And I check "Enable Conversations"
+    When I save form
+    Then I should see "Configuration saved" flash message
+    And the "Enable Conversations" checkbox should be checked
+
   Scenario: Create Conversation from order
     Given I proceed as the Buyer
     And I signed in as AmandaRCole@example.org on the store frontend

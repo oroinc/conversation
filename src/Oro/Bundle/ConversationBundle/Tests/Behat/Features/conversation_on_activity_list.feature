@@ -6,6 +6,9 @@ Feature: Conversation on activity list
   As a Administrator
   I need to be able to work with Conversations in the activity list
 
+  Scenario: Feature Background
+    Given set configuration property "oro_conversation.enable_conversation" to "1"
+
   Scenario: Create new Conversation
     Given I login as administrator
     And I go to System/User Management/Users

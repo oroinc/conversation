@@ -1,0 +1,4 @@
+oro_conversation:
+    settings:
+        enable_conversation:
+            value: true

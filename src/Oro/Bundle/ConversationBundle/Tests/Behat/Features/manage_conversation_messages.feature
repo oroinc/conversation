@@ -6,6 +6,9 @@ Feature: Manage conversation messages
   As Administrator
   I need to be able to manage conversation messages from the conversation view page
 
+  Scenario: Feature Background
+    Given set configuration property "oro_conversation.enable_conversation" to "1"
+
   Scenario: Create new Conversation
     Given I login as administrator
     And I go to Activities/Conversations
