@@ -15,7 +15,7 @@
         "psr-4": {
             "Oro\\Bundle\\ConversationBundle\\": "src/Oro/Bundle/ConversationBundle"
         },
-        "exclude-from-classmap": ["/Tests/"]
+        "exclude-from-classmap": ["**/Tests/"]
     },
     "require": {
         "oro/platform": "6.1.*",
