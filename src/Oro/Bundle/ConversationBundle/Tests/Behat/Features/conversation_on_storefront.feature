@@ -102,3 +102,25 @@ Feature: conversation on storefront
     Then I should see "From admin"
     And I should see "John Doe"
     And I should see "JD"
+
+  Scenario: Remove Order should not break the backoffice
+    Given I proceed as the Admin
+    And I go to Sales/Orders
+    When I click delete SimpleOrder in grid
+    And I confirm deletion
+    Then there is one record in grid
+    When I go to Activities/Conversations
+    Then I should see following grid:
+      | Name                    | Messages | Initiated from    |
+      | Conversation from order | 2        |                   |
+      | conv1                   | 1        |                   |
+      | Order SimpleOrder       | 1        |                   |
+    When I click view "Conversation from order" in grid
+    Then I should see "Conversation from order"
+
+  Scenario: See conversations list on storefront after the source entity was removed
+    Given I proceed as the Buyer
+    When I click "Conversations"
+    Then I should see "conv1"
+    And I should see "Order SimpleOrder"
+    And I should see "Conversation from order"

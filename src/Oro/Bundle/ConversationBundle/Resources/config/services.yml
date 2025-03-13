@@ -9,7 +9,6 @@ services:
             - '@oro_customer.owner.frontend_ownership_metadata_provider'
             - '@property_accessor'
             - '@doctrine'
-            - '@oro_conversation.provider.storefront_conversation_provider'
             - '@oro_api.entity_alias_resolver_registry'
 
     oro_conversation.manager.conversation_message:
@@ -141,6 +140,13 @@ services:
             - '@?oro_organizationpro.helper'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\ConversationBundle\Entity\Conversation', event: prePersist }
+            - { name: doctrine.event_listener, event: onFlush }
+
+    oro_conversation.listener.source_delete_listener:
+        class: Oro\Bundle\ConversationBundle\EventListener\SourceDeleteListener
+        arguments:
+            - '@oro_activity.manager'
+        tags:
             - { name: doctrine.event_listener, event: onFlush }
 
     oro_conversation.websocket.processor:

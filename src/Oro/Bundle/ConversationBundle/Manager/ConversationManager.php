@@ -8,7 +8,6 @@ use Oro\Bundle\ApiBundle\Provider\EntityAliasResolverRegistry;
 use Oro\Bundle\ApiBundle\Request\RequestType;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Helper\EntityConfigHelper;
-use Oro\Bundle\ConversationBundle\Provider\StorefrontConversationProviderInterface;
 use Oro\Bundle\CustomerBundle\Entity\CustomerUser;
 use Oro\Bundle\CustomerBundle\Owner\Metadata\FrontendOwnershipMetadata;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
@@ -23,33 +22,15 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class ConversationManager
 {
-    private EntityRoutingHelper $entityRoutingHelper;
-    private EntityNameResolver $entityNameResolver;
-    private EntityConfigHelper $entityConfigHelper;
-    private OwnershipMetadataProviderInterface $metadataProvider;
-    private PropertyAccessorInterface $propertyAccessor;
-    private ManagerRegistry $doctrine;
-    private StorefrontConversationProviderInterface $storefrontConversationProvider;
-    private EntityAliasResolverRegistry  $aliasResolverRegistry;
-
     public function __construct(
-        EntityRoutingHelper $entityRoutingHelper,
-        EntityNameResolver $entityNameResolver,
-        EntityConfigHelper $entityConfigHelper,
-        OwnershipMetadataProviderInterface $metadataProvider,
-        PropertyAccessorInterface $propertyAccessor,
-        ManagerRegistry $doctrine,
-        StorefrontConversationProviderInterface $storefrontConversationProvider,
-        EntityAliasResolverRegistry $aliasResolverRegistry
+        private EntityRoutingHelper $entityRoutingHelper,
+        private EntityNameResolver $entityNameResolver,
+        private EntityConfigHelper $entityConfigHelper,
+        private OwnershipMetadataProviderInterface $metadataProvider,
+        private PropertyAccessorInterface $propertyAccessor,
+        private ManagerRegistry $doctrine,
+        private EntityAliasResolverRegistry $aliasResolverRegistry
     ) {
-        $this->entityRoutingHelper = $entityRoutingHelper;
-        $this->entityNameResolver = $entityNameResolver;
-        $this->entityConfigHelper = $entityConfigHelper;
-        $this->metadataProvider = $metadataProvider;
-        $this->propertyAccessor = $propertyAccessor;
-        $this->doctrine = $doctrine;
-        $this->storefrontConversationProvider = $storefrontConversationProvider;
-        $this->aliasResolverRegistry = $aliasResolverRegistry;
     }
 
     public function createConversation(?string $sourceEntityClass = null, ?int $sourceEntityId = null): Conversation
@@ -74,15 +55,6 @@ class ConversationManager
             $status = $this->doctrine->getManagerForClass(EnumOption::class)->find(EnumOption::class, $enumOptionId);
             $conversation->setStatus($status);
         }
-    }
-
-    public function saveConversation(Conversation $conversation): Conversation
-    {
-        $em = $this->doctrine->getManagerForClass(Conversation::class);
-        $em->persist($conversation);
-        $em->flush();
-
-        return $conversation;
     }
 
     public function getConversationName(object $sourceEntity): ?string
@@ -125,18 +97,6 @@ class ConversationManager
             ->setMaxResults(1)
             ->getQuery()
             ->getScalarResult();
-    }
-
-    public function getSourceTitle(string $sourceEntityClass, int $sourceEntityId): string
-    {
-        return $this->entityNameResolver->getName(
-            $this->entityRoutingHelper->getEntity($sourceEntityClass, $sourceEntityId)
-        );
-    }
-
-    public function getStorefrontSourceUrl(string $sourceEntityClass, int $sourceEntityId): string
-    {
-        return $this->storefrontConversationProvider->getSourceUrl($sourceEntityClass, $sourceEntityId);
     }
 
     public function setCustomerUserToConversation(

@@ -7,7 +7,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ApiBundle\Provider\EntityAliasResolverRegistry;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Helper\EntityConfigHelper;
-use Oro\Bundle\ConversationBundle\Provider\StorefrontConversationProviderInterface;
 use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationManager;
 use Oro\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\CustomerBundle\Entity\CustomerUser;
@@ -27,7 +26,6 @@ class ConversationManagerTest extends TestCase
     private EntityConfigHelper|MockObject $entityConfigHelper;
     private OwnershipMetadataProviderInterface|MockObject $metadataProvider;
     private ManagerRegistry|MockObject $doctrine;
-    private StorefrontConversationProviderInterface|MockObject $storefrontConversationProvider;
     private EntityAliasResolverRegistry|MockObject  $aliasResolverRegistry;
 
     private ConversationManager $manager;
@@ -40,7 +38,6 @@ class ConversationManagerTest extends TestCase
         $this->entityConfigHelper = $this->createMock(EntityConfigHelper::class);
         $this->metadataProvider = $this->createMock(OwnershipMetadataProviderInterface::class);
         $this->doctrine = $this->createMock(ManagerRegistry::class);
-        $this->storefrontConversationProvider = $this->createMock(StorefrontConversationProviderInterface::class);
         $this->aliasResolverRegistry = $this->createMock(EntityAliasResolverRegistry::class);
 
         $this->manager = new ConversationManager(
@@ -50,7 +47,6 @@ class ConversationManagerTest extends TestCase
             $this->metadataProvider,
             PropertyAccess::createPropertyAccessor(),
             $this->doctrine,
-            $this->storefrontConversationProvider,
             $this->aliasResolverRegistry
         );
     }
@@ -252,25 +248,6 @@ class ConversationManagerTest extends TestCase
         self::assertSame($status, $result->getStatus());
     }
 
-    public function testSaveConversation(): void
-    {
-        $conversation = new Conversation();
-
-        $em = $this->createMock(EntityManager::class);
-        $this->doctrine->expects(self::once())
-            ->method('getManagerForClass')
-            ->with(Conversation::class)
-            ->willReturn($em);
-
-        $em->expects(self::once())
-            ->method('persist')
-            ->with($conversation);
-        $em->expects(self::once())
-            ->method('flush');
-
-        $this->manager->saveConversation($conversation);
-    }
-
     public function testGetConversationName(): void
     {
         $conversation = new Conversation();
@@ -286,40 +263,5 @@ class ConversationManagerTest extends TestCase
             ->willReturn('Entity_label');
 
         self::assertEquals('Label Entity_label', $this->manager->getConversationName($conversation));
-    }
-
-    public function testGetSourceTitle(): void
-    {
-        $sourceEntityClass = \stdClass::class;
-        $sourceEntityId = 2;
-        $sourceEntity = new \stdClass();
-
-        $this->entityNameResolver->expects(self::once())
-            ->method('getName')
-            ->with($sourceEntity)
-            ->willReturn('Test_entity');
-
-        $this->entityRoutingHelper->expects(self::once())
-            ->method('getEntity')
-            ->with($sourceEntityClass, $sourceEntityId)
-            ->willReturn($sourceEntity);
-
-        self::assertEquals('Test_entity', $this->manager->getSourceTitle($sourceEntityClass, $sourceEntityId));
-    }
-
-    public function testGetStorefrontSourceUrl(): void
-    {
-        $sourceEntityClass = \stdClass::class;
-        $sourceEntityId = 2;
-
-        $this->storefrontConversationProvider->expects(self::once())
-            ->method('getSourceUrl')
-            ->with($sourceEntityClass, $sourceEntityId)
-            ->willReturn('http://test.com');
-
-        self::assertEquals(
-            'http://test.com',
-            $this->manager->getStorefrontSourceUrl($sourceEntityClass, $sourceEntityId)
-        );
     }
 }

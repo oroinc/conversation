@@ -27,7 +27,9 @@ services:
     oro_conversation.api.compute_source_data:
         class: Oro\Bundle\ConversationBundle\Api\Processor\ComputeSourceValue
         arguments:
-            - '@oro_conversation.manager.conversation'
+            - '@oro_entity.entity_name_resolver'
+            - '@doctrine'
+            - '@oro_conversation.provider.storefront_conversation_provider'
         tags:
             - { name: oro.api.processor, action: customize_loaded_data, class: Oro\Bundle\ConversationBundle\Entity\Conversation }
 
