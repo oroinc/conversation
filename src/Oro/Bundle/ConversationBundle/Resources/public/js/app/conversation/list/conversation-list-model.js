@@ -4,7 +4,7 @@ import ConversationStatusModel from '../../models/conversation-status-model';
 
 const ConversationListModel = BaseModel.extend({
     defaults: {
-        id: '',
+        id: null,
         updatedAt: '',
         name: '',
         sourceTitle: '',

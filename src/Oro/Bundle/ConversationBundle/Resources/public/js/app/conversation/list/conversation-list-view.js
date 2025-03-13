@@ -19,7 +19,7 @@ const ConversationListView = BaseCollectionView.extend({
             conversation: this.model
         });
 
-        this.listenToOnce(this.collection, 'sync', this.onConversationInitSynced);
+        this.listenTo(this.collection, 'sync', this.onConversationInitSynced);
 
         return ConversationListView.__super__.initialize.call(this, options);
     },
@@ -27,7 +27,13 @@ const ConversationListView = BaseCollectionView.extend({
     onConversationInitSynced(collection) {
         const selectedConversationId = getSelectedFromLocation();
 
-        if (this.model && collection.length) {
+        if (!this.model) {
+            return;
+        }
+
+        const notSelected = this.model.get('selected').id === null ||
+            (selectedConversationId !== this.model.get('selected').id);
+        if (notSelected && collection.length) {
             this.model.setSelected(
                 collection.get(selectedConversationId) ? collection.get(selectedConversationId) : collection.first()
             );
