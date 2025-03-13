@@ -1,5 +1,5 @@
 {% import '@OroUI/macros.html.twig' as UI %}
-
+{% if feature_enabled('conversation') %}
 {{ UI.clientLink({
     'dataUrl': path('oro_conversation_create', oro_action_params(entity, 'activity')),
     'aCss': 'dropdown-item no-hash',
@@ -26,3 +26,4 @@
         }
     }
 }) }}
+{% endif %}

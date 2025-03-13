@@ -75,6 +75,9 @@ class ConversationManager
         }
     }
 
+    /**
+     * @deprecated
+     */
     public function saveConversation(Conversation $conversation): Conversation
     {
         $em = $this->doctrine->getManagerForClass(Conversation::class);
@@ -126,6 +129,9 @@ class ConversationManager
             ->getScalarResult();
     }
 
+    /**
+     * @deprecated
+     */
     public function getSourceTitle(string $sourceEntityClass, int $sourceEntityId): string
     {
         return $this->entityNameResolver->getName(
@@ -133,6 +139,9 @@ class ConversationManager
         );
     }
 
+    /**
+     * @deprecated
+     */
     public function getStorefrontSourceUrl(string $sourceEntityClass, int $sourceEntityId): string
     {
         return $this->storefrontConversationProvider->getSourceUrl($sourceEntityClass, $sourceEntityId);
