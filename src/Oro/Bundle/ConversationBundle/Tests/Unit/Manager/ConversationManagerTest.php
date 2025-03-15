@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\ConversationBundle\Tests\Unit\Manager;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ApiBundle\Provider\EntityAliasResolverRegistry;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
@@ -54,7 +54,7 @@ class ConversationManagerTest extends TestCase
     public function testCreateConversationWithoutSourceEntityClassAndSourceEntityId(): void
     {
         $status = new EnumOption('conversation_status', 'active', 1);
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createMock(EntityManagerInterface::class);
         $this->doctrine->expects(self::once())
             ->method('getManagerForClass')
             ->with(EnumOption::class)
@@ -82,7 +82,7 @@ class ConversationManagerTest extends TestCase
             ->willReturn(null);
 
         $status = new EnumOption('conversation_status', 'active', 1);
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createMock(EntityManagerInterface::class);
         $this->doctrine->expects(self::once())
             ->method('getManagerForClass')
             ->with(EnumOption::class)
@@ -127,7 +127,7 @@ class ConversationManagerTest extends TestCase
             ->willReturn(new FrontendOwnershipMetadata());
 
         $status = new EnumOption('conversation_status', 'active', 1);
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createMock(EntityManagerInterface::class);
         $this->doctrine->expects(self::once())
             ->method('getManagerForClass')
             ->with(EnumOption::class)
@@ -182,7 +182,7 @@ class ConversationManagerTest extends TestCase
             ));
 
         $status = new EnumOption('conversation_status', 'active', 1);
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createMock(EntityManagerInterface::class);
         $this->doctrine->expects(self::once())
             ->method('getManagerForClass')
             ->with(EnumOption::class)
@@ -229,7 +229,7 @@ class ConversationManagerTest extends TestCase
             ->method('getMetadata');
 
         $status = new EnumOption('conversation_status', 'active', 1);
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createMock(EntityManagerInterface::class);
         $this->doctrine->expects(self::once())
             ->method('getManagerForClass')
             ->with(EnumOption::class)

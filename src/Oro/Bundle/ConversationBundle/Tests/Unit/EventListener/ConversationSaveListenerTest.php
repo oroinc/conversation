@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\ConversationBundle\Tests\Unit\EventListener;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
@@ -140,7 +140,7 @@ class ConversationSaveListenerTest extends TestCase
         $conversation2->addMessage($message2);
 
         $uow = $this->createMock(UnitOfWork::class);
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createMock(EntityManagerInterface::class);
 
         $em->expects(self::once())
             ->method('getUnitOfWork')
@@ -196,7 +196,7 @@ class ConversationSaveListenerTest extends TestCase
         $conversation2->addMessage($message2);
 
         $uow = $this->createMock(UnitOfWork::class);
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createMock(EntityManagerInterface::class);
         $organizationHelper = $this->createMock('Oro\Bundle\OrganizationProBundle\Helper\OrganizationProHelper');
         $organizationHelper->expects(self::exactly(2))
             ->method('isGlobalOrganizationExists')

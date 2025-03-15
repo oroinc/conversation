@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\ConversationBundle\Tests\Unit\EventListener;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
@@ -24,7 +24,7 @@ class SourceDeleteListenerTest extends TestCase
 
         $activityManager = $this->createMock(ActivityManager::class);
 
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createMock(EntityManagerInterface::class);
         $repo = $this->createMock(EntityRepository::class);
         $uow = $this->createMock(UnitOfWork::class);
 

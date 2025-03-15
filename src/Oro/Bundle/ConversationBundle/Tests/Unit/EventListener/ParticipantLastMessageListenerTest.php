@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\ConversationBundle\Tests\Unit\EventListener;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
@@ -19,7 +19,7 @@ class ParticipantLastMessageListenerTest extends TestCase
         $message->setIndex(3);
         $participant->setLastReadMessage($message);
 
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createMock(EntityManagerInterface::class);
         $uow = $this->createMock(UnitOfWork::class);
 
         $em->expects(self::once())

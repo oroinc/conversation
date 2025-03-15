@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\ConversationBundle\Tests\Unit\Form\Handler;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
 use Oro\Bundle\ConversationBundle\Form\Handler\ConversationMessageHandler;
@@ -97,7 +97,7 @@ class ConversationMessageHandlerTest extends TestCase
             ->method('setMessageParticipant')
             ->with($data, $participant);
 
-        $em = $this->createMock(EntityManager::class);
+        $em = $this->createMock(EntityManagerInterface::class);
         $em->expects(self::once())
             ->method('persist')
             ->with($data);
