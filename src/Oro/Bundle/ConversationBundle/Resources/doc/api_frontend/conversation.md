@@ -214,21 +214,21 @@ Retrieve the IDs of conversation messages.
 
 #### get_subresource
 
-Retrieve the record of the organization a specific case belongs to.
+Retrieve a record of the organization a specific conversation belongs to.
 
 #### get_relationship
 
-Retrieve the ID of the organization that a specific case belongs to.
+Retrieve the ID of the organization that a specific conversation belongs to.
 
 ### owner
 
 #### get_subresource
 
-Retrieve the records of the user who is an owner of a specific case record.
+Retrieve a record of the user who is an owner of a specific conversation record.
 
 #### get_relationship
 
-Retrieve the ID of the user who is an owner of a specific case record.
+Retrieve the ID of the user who is an owner of a specific conversation record.
 
 ### participants
 
@@ -264,7 +264,7 @@ Retrieve the ID of the status of the conversation.
 
 #### get_subresource
 
-Retrieve the record of the customer that a specific conversation belongs to.
+Retrieve a record of the customer that a specific conversation belongs to.
 
 #### get_relationship
 
@@ -274,7 +274,7 @@ Retrieve the ID of the customer that a specific conversation belongs to.
 
 #### get_subresource
 
-Retrieve the record of the customer user that a specific conversation belongs to.
+Retrieve a record of the customer user that a specific conversation belongs to.
 
 #### get_relationship
 
@@ -284,7 +284,7 @@ Retrieve the ID of the customer user that a specific conversation belongs to.
 
 #### get_subresource
 
-Retrieve the record of the customer user that a specific conversation belongs to.
+Retrieve a record of the customer user that a specific conversation belongs to.
 
 #### get_relationship
 

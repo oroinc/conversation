@@ -276,7 +276,7 @@ The status of the conversation (Active, Closed).
 
 #### get_subresource
 
-Retrieve the record of the customer that a specific conversation belongs to.
+Retrieve a record of the customer that a specific conversation belongs to.
 
 #### get_relationship
 
@@ -303,7 +303,7 @@ Example:
 
 #### get_subresource
 
-Retrieve the record of the customer user that a specific conversation belongs to.
+Retrieve a record of the customer user that a specific conversation belongs to.
 
 #### get_relationship
 
@@ -381,15 +381,15 @@ Remove messages from the conversation.
 
 #### get_subresource
 
-Retrieve the record of the organization a specific case belongs to.
+Retrieve a record of the organization a specific conversation belongs to.
 
 #### get_relationship
 
-Retrieve the ID of the organization that a specific case belongs to.
+Retrieve the ID of the organization that a specific conversation belongs to.
 
 #### update_relationship
 
-Replace the organization that a specific case belongs to.
+Replace the organization that a specific conversation belongs to.
 
 {@request:json_api}
 Example:
@@ -408,15 +408,15 @@ Example:
 
 #### get_subresource
 
-Retrieve the records of the user who is an owner of a specific case record.
+Retrieve a record of the user who is an owner of a specific conversation record.
 
 #### get_relationship
 
-Retrieve the ID of the user who is an owner of a specific case record.
+Retrieve the ID of the user who is an owner of a specific conversation record.
 
 #### update_relationship
 
-Replace the owner of a specific case record.
+Replace the owner of a specific conversation record.
 
 {@request:json_api}
 Example:
