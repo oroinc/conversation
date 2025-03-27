@@ -12,7 +12,7 @@ use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganizatio
 class LoadConversations extends AbstractFixture implements DependentFixtureInterface
 {
     #[\Override]
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadOrganization::class,
@@ -21,7 +21,7 @@ class LoadConversations extends AbstractFixture implements DependentFixtureInter
     }
 
     #[\Override]
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $owner = $this->getReference('user');
         $organization = $this->getReference('organization');

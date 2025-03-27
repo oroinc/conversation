@@ -10,20 +10,14 @@ use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
 use Oro\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrders;
 use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadMessages extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
-    private ContainerInterface $container;
+    use ContainerAwareTrait;
 
     #[\Override]
-    public function setContainer(?ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
-    #[\Override]
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadOrganization::class,
@@ -33,7 +27,7 @@ class LoadMessages extends AbstractFixture implements DependentFixtureInterface,
     }
 
     #[\Override]
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $conversationParticipantManager = $this->container->get('oro_conversation.manager.conversation_participant');
 
