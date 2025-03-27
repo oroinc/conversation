@@ -46,7 +46,7 @@ class ConversationTest extends RestJsonApiTestCase
     {
         $conversation = $this->getReference('conversation-2')->getId();
         $response = $this->get(
-            ['entity' => 'conversations', 'id' => $conversation]
+            ['entity' => 'conversations', 'id' => (string)$conversation]
         );
 
         $this->assertResponseContains('get_conversation.yml', $response);
@@ -65,9 +65,7 @@ class ConversationTest extends RestJsonApiTestCase
         $this->assertResponseContains($responseContent, $response);
 
         /** @var Conversation $conversation */
-        $conversation = $this->getEntityManager()
-            ->find(Conversation::class, $conversationId);
-
+        $conversation = $this->getEntityManager()->find(Conversation::class, $conversationId);
         self::assertEquals($data['data']['attributes']['name'], $conversation->getName());
     }
 
@@ -82,8 +80,36 @@ class ConversationTest extends RestJsonApiTestCase
 
         $this->assertResponseValidationErrors(
             [
-                ['title' => 'not blank constraint', 'source' => ['pointer' => '/data/attributes/name']],
-                ['title' => 'not blank constraint', 'source' => ['pointer' => '/data/relationships/customerUser/data']]
+                [
+                    'title' => 'not blank constraint',
+                    'detail' => 'This value should not be blank.',
+                    'source' => ['pointer' => '/data/attributes/name']
+                ],
+                [
+                    'title' => 'not blank constraint',
+                    'detail' => 'This value should not be blank.',
+                    'source' => ['pointer' => '/data/relationships/customerUser/data']
+                ]
+            ],
+            $response
+        );
+    }
+
+    public function testTryToCreateWhenCustomerUserDoesNotBelongsToCustomer(): void
+    {
+        $data = $this->getRequestData('create_conversation.yml');
+        $data['data']['relationships']['customer']['data']['id'] = '<toString(@customer.level_1_1->id)>';
+        $response = $this->post(
+            ['entity' => 'conversations'],
+            $data,
+            [],
+            false
+        );
+
+        $this->assertResponseValidationError(
+            [
+                'title' => 'customer owner constraint',
+                'detail' => 'The customer user does not belong to the customer.'
             ],
             $response
         );
@@ -92,36 +118,63 @@ class ConversationTest extends RestJsonApiTestCase
     public function testUpdate(): void
     {
         $conversationId = $this->getReference('conversation-2')->getId();
-
         $data = [
             'data' => [
-                'type'          => 'conversations',
-                'id'            => (string)$conversationId,
-                'attributes'    => [
-                    'name' => 'test_edited_conversation',
+                'type' => 'conversations',
+                'id' => (string)$conversationId,
+                'attributes' => [
+                    'name' => 'test_edited_conversation'
                 ]
             ]
         ];
         $this->patch(
-            ['entity' => 'conversations', 'id' => $conversationId],
+            ['entity' => 'conversations', 'id' => (string)$conversationId],
             $data
         );
 
-        $conversation = $this->getEntityManager()
-            ->find(Conversation::class, $conversationId);
+        /** @var Conversation $conversation */
+        $conversation = $this->getEntityManager()->find(Conversation::class, $conversationId);
         self::assertEquals('test_edited_conversation', $conversation->getName());
+    }
+
+    public function testTryToUpdateWhenCustomerUserDoesNotBelongsToCustomer(): void
+    {
+        $conversationId = $this->getReference('conversation-2')->getId();
+        $response = $this->patch(
+            ['entity' => 'conversations', 'id' => (string)$conversationId],
+            [
+                'data' => [
+                    'type' => 'conversations',
+                    'id' => (string)$conversationId,
+                    'relationships' => [
+                        'customer' => [
+                            'data' => ['type' => 'customers', 'id' => '<toString(@customer.level_1_1->id)>']
+                        ]
+                    ]
+                ]
+            ],
+            [],
+            false
+        );
+
+        $this->assertResponseValidationError(
+            [
+                'title' => 'customer owner constraint',
+                'detail' => 'The customer user does not belong to the customer.'
+            ],
+            $response
+        );
     }
 
     public function testDelete(): void
     {
-        $conversation = $this->getReference('conversation-2')->getId();
-
+        $conversationId = $this->getReference('conversation-2')->getId();
         $this->delete(
-            ['entity' => 'conversations', 'id' => $conversation]
+            ['entity' => 'conversations', 'id' => (string)$conversationId]
         );
 
-        $deletedConversation = $this->getEntityManager()
-            ->find(Conversation::class, $conversation);
+        /** @var Conversation|null $conversation */
+        $deletedConversation = $this->getEntityManager()->find(Conversation::class, $conversationId);
         self::assertTrue(null === $deletedConversation);
     }
 
@@ -132,9 +185,7 @@ class ConversationTest extends RestJsonApiTestCase
             ['filter[customerUser]' => $this->getReference('grzegorz.brzeczyszczykiewicz@example.com')->getId()]
         );
 
-        $count = $this->getEntityManager()
-            ->getRepository(Conversation::class)
-            ->count([]);
+        $count = $this->getEntityManager()->getRepository(Conversation::class)->count([]);
         self::assertEquals(0, $count);
     }
 }
