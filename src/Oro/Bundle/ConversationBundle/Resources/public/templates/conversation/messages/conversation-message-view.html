@@ -6,7 +6,7 @@
     <h5 class="conversation__message-author"><%- participant.author %></h5>
     <div class="conversation__message-body"><%= body %></div>
     <div class="conversation__message-additional">
-        <div class="conversation__message-datetime"><%- dateTimeFormatter.formatTime(updatedAt) %></div>
+        <div class="conversation__message-datetime"><%- dateTimeFormatter.getDateTimeByFormat(updatedAt, 'time') %></div>
         <% if (createdAt && participant.isMe) { %>
             <div class="conversation__message-status"><%= oroui.renderIcon({
                 name: 'double-check',
