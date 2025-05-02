@@ -1,7 +1,6 @@
 import {SyncMachine} from 'chaplin';
 import {updateLocationWithParams} from '../utils/location-util';
 import BaseModel from 'oroui/js/app/models/base/model';
-import ConversationListModel from '../conversation/list/conversation-list-model';
 
 /**
  * @class ConversationModel
@@ -30,7 +29,6 @@ const ConversationModel = BaseModel.extend({
     },
 
     initialize() {
-        this.set('selected', new ConversationListModel());
         this.syncStateChange(this.onSyncStateChange);
     },
 
@@ -60,7 +58,7 @@ const ConversationModel = BaseModel.extend({
 
     unsetSelected() {
         if (this.get('id')) {
-            this.set('id', '');
+            this.set('id', null);
             this.unset('name');
             this.unset('sourceUrl');
             this.unset('sourceTitle');

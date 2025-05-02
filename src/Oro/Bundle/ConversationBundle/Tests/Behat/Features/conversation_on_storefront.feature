@@ -124,3 +124,29 @@ Feature: conversation on storefront
     Then I should see "conv1"
     And I should see "Order SimpleOrder"
     And I should see "Conversation from order"
+
+  Scenario: Check mobile view
+    Given I set window size to 375x840
+    And I reload the page
+    And I click "Conversation Back"
+    Then I click on "Conversation SimpleOrder"
+    And I should see "Order SimpleOrder"
+    And I click "Conversation Back"
+    Then I should see "Conversations"
+    And I set window size to 1920x1080
+
+  Scenario: Create new conversation from storefront conversation page
+    Given I proceed as the Admin
+    And I go to Activities/Conversations
+    And I check all records in grid
+    And I click "Delete" link from select all mass action dropdown
+    And confirm deletion
+    Then I proceed as the Buyer
+    And I reload the page
+    And I click "New Conversation"
+    When I fill form with:
+      | Subject      | Test Conv |
+      | Your Message | Test Message |
+    And I press "SendPopupButton"
+    Then I click on "Conversation Test Conv"
+    And I should see "Test Conv"

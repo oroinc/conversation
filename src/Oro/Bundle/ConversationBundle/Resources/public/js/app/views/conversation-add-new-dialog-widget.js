@@ -115,11 +115,7 @@ const ConversationAddNewDialogWidget = FrontendDialogWidget.extend({
                 this.options.mediatorEvents.forEach(event => mediator.trigger(event));
             }
             this.model?.unsync();
-            this.model?.once('synced', model => {
-                if (model.get('selected').id) {
-                    model.get('selected').collection.setSelectedById(data.id);
-                }
-            });
+            this.model?.once('synced', model => model.get('selected').collection.setSelectedById(data.id));
             this.trigger('conversation:created');
             this.widget && this.widget.dialog('close');
         }).always(() => {

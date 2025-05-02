@@ -1,4 +1,3 @@
-import {getSelectedFromLocation} from '../../utils/location-util';
 import BaseCollectionView from 'oroui/js/app/views/base/collection-view';
 import ConversationListItemView from './conversation-list-item-view';
 import ConversationListCollection from './conversation-list-collection';
@@ -15,33 +14,25 @@ const ConversationListView = BaseCollectionView.extend({
     },
 
     initialize(options) {
-        this.collection = new ConversationListCollection([], {
-            conversation: this.model
-        });
-
-        this.listenTo(this.collection, 'sync', this.onConversationInitSynced);
+        if (!options.collection) {
+            this.collection = new ConversationListCollection([], {
+                conversation: this.model
+            });
+        }
 
         return ConversationListView.__super__.initialize.call(this, options);
     },
 
-    onConversationInitSynced(collection) {
-        const selectedConversationId = getSelectedFromLocation();
-
-        if (!this.model) {
-            return;
-        }
-
-        const notSelected = this.model.get('selected').id === null ||
-            (selectedConversationId !== this.model.get('selected').id);
-        if (notSelected && collection.length) {
-            this.model.setSelected(
-                collection.get(selectedConversationId) ? collection.get(selectedConversationId) : collection.first()
-            );
-        }
-    },
-
     selectFirst() {
         this.model.setSelected(this.collection.first());
+    },
+
+    selectConversation(id) {
+        if (this.collection.get(id)) {
+            this.model.setSelected(this.collection.get(id));
+        } else {
+            this.selectFirst();
+        }
     },
 
     render() {
