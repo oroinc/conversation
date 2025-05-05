@@ -21,3 +21,16 @@ oro_behat_extension:
 
         Conversations Block:
             selector: '.conversation'
+
+        Conversation SimpleOrder:
+            selector:
+                type: 'xpath'
+                locator: './/*[contains(concat(" ",normalize-space(@class)," ")," conversation__list-item ")][contains(normalize-space(),"Order SimpleOrder")]'
+
+        Conversation Test Conv:
+            selector:
+                type: 'xpath'
+                locator: './/*[contains(concat(" ",normalize-space(@class)," ")," conversation__list-item ")][contains(normalize-space(),"Test Conv")]'
+
+        Conversation Back:
+            selector: '[data-role="back"]'
