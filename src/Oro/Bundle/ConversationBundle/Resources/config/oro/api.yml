@@ -56,7 +56,7 @@ api:
 
         Oro\Bundle\ConversationBundle\Entity\ConversationMessage:
             documentation_resource: '@OroConversationBundle/Resources/doc/api/conversationmessage.md'
-            disable_meta_properties: ['title']
+            disable_meta_properties: [ title ]
             actions:
                 delete: false
                 delete_list: false
@@ -74,7 +74,7 @@ api:
 
         Oro\Bundle\ConversationBundle\Entity\ConversationParticipant:
             documentation_resource: '@OroConversationBundle/Resources/doc/api/conversationparticipant.md'
-            disable_meta_properties: ['title']
+            disable_meta_properties: [ title ]
             actions:
                 create: false
                 delete: false
