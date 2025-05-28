@@ -293,7 +293,7 @@
     }
 
     &__message-body {
-        word-break: break-word;
+        overflow-wrap: break-word;
         overflow: hidden;
 
         p {
