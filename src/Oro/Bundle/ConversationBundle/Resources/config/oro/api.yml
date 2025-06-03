@@ -39,11 +39,9 @@ api:
             filters:
                 fields:
                     source:
+                        data_type: integer
                         type: nestedAssociation
                         allow_array: true
-                        options:
-                            fieldName: source
-                        data_type: integer
             subresources:
                 participants:
                     actions:
@@ -57,10 +55,6 @@ api:
         Oro\Bundle\ConversationBundle\Entity\ConversationMessage:
             documentation_resource: '@OroConversationBundle/Resources/doc/api/conversationmessage.md'
             disable_meta_properties: [ title ]
-            actions:
-                delete: false
-                delete_list: false
-                update: false
             inner_join_associations: [ conversation ]
             fields:
                 # this field was added to check access to message by its conversation
@@ -71,14 +65,14 @@ api:
                 index:
                     form_options:
                         mapped: false
+            actions:
+                delete: false
+                delete_list: false
+                update: false
 
         Oro\Bundle\ConversationBundle\Entity\ConversationParticipant:
             documentation_resource: '@OroConversationBundle/Resources/doc/api/conversationparticipant.md'
             disable_meta_properties: [ title ]
-            actions:
-                create: false
-                delete: false
-                delete_list: false
             fields:
                 isMe:
                     data_type: boolean
@@ -99,6 +93,10 @@ api:
                     data_type: association:manyToOne:conversationParticipant
                     form_options:
                         mapped: false
+            actions:
+                create: false
+                delete: false
+                delete_list: false
             subresources:
                 conversation:
                     actions:
