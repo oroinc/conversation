@@ -10,6 +10,7 @@ use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Helper\EntityConfigHelper;
 use Oro\Bundle\CustomerBundle\Entity\CustomerUser;
 use Oro\Bundle\CustomerBundle\Owner\Metadata\FrontendOwnershipMetadata;
+use Oro\Bundle\EntityBundle\Provider\EntityNameProviderInterface;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\EntityExtendBundle\Entity\EnumOption;
@@ -63,7 +64,7 @@ class ConversationManager
             return sprintf(
                 '%s %s',
                 $this->entityConfigHelper->getLabel($sourceEntity),
-                $this->entityNameResolver->getName($sourceEntity)
+                $this->entityNameResolver->getName($sourceEntity, EntityNameProviderInterface::SHORT)
             );
         }
 
