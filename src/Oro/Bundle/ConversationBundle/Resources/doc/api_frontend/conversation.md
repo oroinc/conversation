@@ -204,7 +204,7 @@ URL to the conversation starting entity
 
 #### get_subresource
 
-Retrieve the list of conversation messages.
+Retrieve a list of conversation messages.
 
 #### get_relationship
 
@@ -234,11 +234,11 @@ Retrieve the ID of the user who is an owner of a specific conversation record.
 
 #### get_subresource
 
-Retrieve the list of the conversation participants.
+Retrieve a list of the conversation participants.
 
 #### get_relationship
 
-Retrieve the list IDs of the conversation participants.
+Retrieve the IDs of the conversation participants.
 
 ### source
 
