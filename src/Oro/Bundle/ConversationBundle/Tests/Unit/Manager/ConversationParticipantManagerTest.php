@@ -23,14 +23,13 @@ class ConversationParticipantManagerTest extends TestCase
 {
     use EntityTrait;
 
-    private ManagerRegistry|MockObject $doctrine;
-    private TokenAccessorInterface|MockObject $tokenAccessor;
-    private AssociationManager|MockObject $associationManager;
-    private ParticipantInfoProvider|MockObject $participantInfoInfoProvider;
-    private DateTimeFormatterInterface|MockObject $dateTimeFormatter;
-    private WebSocketSendProcessor|MockObject $webSocketSendProcessor;
-    private AclHelper|MockObject $aclHelper;
-
+    private ManagerRegistry&MockObject $doctrine;
+    private TokenAccessorInterface&MockObject $tokenAccessor;
+    private AssociationManager&MockObject $associationManager;
+    private ParticipantInfoProvider&MockObject $participantInfoInfoProvider;
+    private DateTimeFormatterInterface&MockObject $dateTimeFormatter;
+    private WebSocketSendProcessor&MockObject $webSocketSendProcessor;
+    private AclHelper&MockObject $aclHelper;
     private ConversationParticipantManager $conversationParticipantManager;
 
     #[\Override]

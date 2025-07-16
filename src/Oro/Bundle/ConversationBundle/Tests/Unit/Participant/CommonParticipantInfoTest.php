@@ -19,10 +19,9 @@ class CommonParticipantInfoTest extends TestCase
 {
     use EntityTrait;
 
-    private EntityNameResolver|MockObject $nameResolver;
-    private TokenAccessorInterface|MockObject $tokenAccessor;
-    private EntityConfigHelper|MockObject $entityConfigHelper;
-
+    private EntityNameResolver&MockObject $nameResolver;
+    private TokenAccessorInterface&MockObject $tokenAccessor;
+    private EntityConfigHelper&MockObject $entityConfigHelper;
     private User $user;
     private CommonParticipantInfo $participantInfo;
 

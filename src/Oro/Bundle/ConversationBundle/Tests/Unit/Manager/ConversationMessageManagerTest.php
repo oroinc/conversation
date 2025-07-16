@@ -19,11 +19,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ConversationMessageManagerTest extends TestCase
 {
-    private ManagerRegistry|MockObject $doctrine;
-    private ConversationParticipantManager|MockObject $participantManager;
-    private ParticipantInfoProvider|MockObject $participantInfoInfoProvider;
-    private AuthorizationCheckerInterface|MockObject $authorizationChecker;
-
+    private ManagerRegistry&MockObject $doctrine;
+    private ConversationParticipantManager&MockObject $participantManager;
+    private ParticipantInfoProvider&MockObject $participantInfoInfoProvider;
+    private AuthorizationCheckerInterface&MockObject $authorizationChecker;
     private ConversationMessageManager $conversationMessageManager;
 
     #[\Override]

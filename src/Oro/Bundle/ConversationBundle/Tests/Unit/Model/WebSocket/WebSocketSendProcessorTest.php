@@ -10,9 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 class WebSocketSendProcessorTest extends TestCase
 {
-    private WebsocketClientInterface|MockObject $websocketClient;
-    private ConnectionChecker|MockObject $connectionChecker;
-
+    private WebsocketClientInterface&MockObject $websocketClient;
+    private ConnectionChecker&MockObject $connectionChecker;
     private WebSocketSendProcessor $processor;
 
     #[\Override]

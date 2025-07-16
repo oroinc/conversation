@@ -11,9 +11,8 @@ use Symfony\Component\DependencyInjection\Container;
 
 class ParticipantInfoProviderTest extends TestCase
 {
-    private ParticipantInfoInterface|MockObject $userParticipantInfoProvider;
-    private ParticipantInfoInterface|MockObject $commonProvider;
-
+    private ParticipantInfoInterface&MockObject $userParticipantInfoProvider;
+    private ParticipantInfoInterface&MockObject $commonProvider;
     private ParticipantInfoProvider $provider;
 
     #[\Override]

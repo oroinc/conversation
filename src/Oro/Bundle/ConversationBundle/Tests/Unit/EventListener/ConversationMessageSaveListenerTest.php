@@ -22,15 +22,15 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ConversationMessageSaveListenerTest extends TestCase
 {
-    private AuthorizationCheckerInterface|MockObject $authorizationChecker;
-    private HtmlTagHelper|MockObject $htmlTagHelper;
-    private ActivityManager|MockObject $activityManager;
-    private EnumOptionsProvider|MockObject $enumOptionsProvider;
-    private ConversationParticipantManager|MockObject $participantManager;
-    private TokenAccessorInterface|MockObject $tokenAccessor;
-
+    private AuthorizationCheckerInterface&MockObject $authorizationChecker;
+    private HtmlTagHelper&MockObject $htmlTagHelper;
+    private ActivityManager&MockObject $activityManager;
+    private EnumOptionsProvider&MockObject $enumOptionsProvider;
+    private ConversationParticipantManager&MockObject $participantManager;
+    private TokenAccessorInterface&MockObject $tokenAccessor;
     private ConversationMessageSaveListener $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);

@@ -12,8 +12,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EntityConfigHelperTest extends TestCase
 {
-    private ConfigManager|MockObject $configManager;
-
+    private ConfigManager&MockObject $configManager;
     private EntityConfigHelper $entityConfigHelper;
 
     #[\Override]

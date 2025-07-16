@@ -15,16 +15,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ConversationMessageHandlerTest extends TestCase
 {
-    private ConversationMessageManager|MockObject $conversationMessageManager;
-
-    private ConversationMessageHandler|MockObject $handler;
-    private ManagerRegistry|MockObject $doctrine;
+    private ConversationMessageManager&MockObject $conversationMessageManager;
+    private ManagerRegistry&MockObject $doctrine;
+    private ConversationMessageHandler $handler;
 
     #[\Override]
     protected function setUp(): void
     {
         $this->conversationMessageManager = $this->createMock(ConversationMessageManager::class);
         $this->doctrine = $this->createMock(ManagerRegistry::class);
+
         $this->handler = new ConversationMessageHandler($this->conversationMessageManager, $this->doctrine);
     }
 

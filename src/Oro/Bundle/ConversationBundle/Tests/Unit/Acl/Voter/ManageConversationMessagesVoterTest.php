@@ -17,8 +17,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class ManageConversationMessagesVoterTest extends TestCase
 {
-    private WorkflowManager|MockObject $workflowManager;
-
+    private WorkflowManager&MockObject $workflowManager;
     private ManageConversationMessagesVoter $voter;
 
     #[\Override]

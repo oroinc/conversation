@@ -26,14 +26,14 @@ class ConversationSaveListenerTest extends TestCase
 {
     use EntityTrait;
 
-    private EntityRoutingHelper|MockObject $entityRoutingHelper;
-    private ActivityManager|MockObject $activityManager;
-    private ConversationManager|MockObject $conversationManager;
-    private ConversationParticipantManager|MockObject $participantManager;
-    private WebSocketSendProcessor|MockObject $webSocketSendProcessor;
-
+    private EntityRoutingHelper&MockObject $entityRoutingHelper;
+    private ActivityManager&MockObject $activityManager;
+    private ConversationManager&MockObject $conversationManager;
+    private ConversationParticipantManager&MockObject $participantManager;
+    private WebSocketSendProcessor&MockObject $webSocketSendProcessor;
     private ConversationSaveListener $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityRoutingHelper = $this->createMock(EntityRoutingHelper::class);

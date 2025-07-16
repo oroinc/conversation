@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ConversationActivityListProviderTest extends TestCase
 {
-    private DoctrineHelper|MockObject $doctrineHelper;
+    private DoctrineHelper&MockObject $doctrineHelper;
     private ActivityAssociationHelper $activityAssociationHelper;
     private ConversationActivityListProvider $provider;
 

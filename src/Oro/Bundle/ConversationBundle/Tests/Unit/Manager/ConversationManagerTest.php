@@ -21,12 +21,12 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ConversationManagerTest extends TestCase
 {
-    private EntityRoutingHelper|MockObject $entityRoutingHelper;
-    private EntityNameResolver|MockObject $entityNameResolver;
-    private EntityConfigHelper|MockObject $entityConfigHelper;
-    private OwnershipMetadataProviderInterface|MockObject $metadataProvider;
-    private ManagerRegistry|MockObject $doctrine;
-    private EntityAliasResolverRegistry|MockObject  $aliasResolverRegistry;
+    private EntityRoutingHelper&MockObject $entityRoutingHelper;
+    private EntityNameResolver&MockObject $entityNameResolver;
+    private EntityConfigHelper&MockObject $entityConfigHelper;
+    private OwnershipMetadataProviderInterface&MockObject $metadataProvider;
+    private ManagerRegistry&MockObject $doctrine;
+    private EntityAliasResolverRegistry&MockObject  $aliasResolverRegistry;
 
     private ConversationManager $manager;
 

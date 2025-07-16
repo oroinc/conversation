@@ -11,11 +11,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class ConversationDataProviderTest extends TestCase
 {
-    private ConversationParticipantManager|MockObject $manager;
-    private RequestStack|MockObject $requestStack;
-
+    private ConversationParticipantManager&MockObject $manager;
+    private RequestStack&MockObject $requestStack;
     private ConversationDataProvider $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->manager = $this->createMock(ConversationParticipantManager::class);

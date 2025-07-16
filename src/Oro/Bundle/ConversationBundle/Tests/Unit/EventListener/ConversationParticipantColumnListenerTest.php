@@ -16,9 +16,8 @@ use PHPUnit\Framework\TestCase;
 
 class ConversationParticipantColumnListenerTest extends TestCase
 {
-    private TokenAccessorInterface|MockObject $tokenAccessor;
-    private AssociationManager|MockObject $associationManager;
-
+    private TokenAccessorInterface&MockObject $tokenAccessor;
+    private AssociationManager&MockObject $associationManager;
     private ConversationParticipantColumnListener $listener;
 
     #[\Override]

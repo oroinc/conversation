@@ -16,8 +16,7 @@ class ConversationFormTemplateDataProviderTest extends TestCase
 {
     use EntityTrait;
 
-    private RouterInterface|MockObject $router;
-
+    private RouterInterface&MockObject $router;
     private ConversationFormTemplateDataProvider $formTemplateDataProvider;
 
     #[\Override]

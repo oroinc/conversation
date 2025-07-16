@@ -12,13 +12,13 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigurationProviderDecoratorTest extends TestCase
 {
-    private ConfigurationProviderInterface|MockObject $innerProvider;
-    private StorefrontConversationProviderInterface|MockObject $storefrontConversationProvider;
-    private ThemeConfigurationProvider|MockObject $themeConfigurationProvider;
-    private ThemeManager|MockObject $themeManager;
-
+    private ConfigurationProviderInterface&MockObject $innerProvider;
+    private StorefrontConversationProviderInterface&MockObject $storefrontConversationProvider;
+    private ThemeConfigurationProvider&MockObject $themeConfigurationProvider;
+    private ThemeManager&MockObject $themeManager;
     private ConfigurationProviderDecorator $decorator;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->innerProvider = $this->createMock(ConfigurationProviderInterface::class);

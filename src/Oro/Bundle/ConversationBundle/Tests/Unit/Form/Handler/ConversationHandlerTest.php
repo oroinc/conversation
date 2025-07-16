@@ -13,8 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ConversationHandlerTest extends TestCase
 {
-    private ManagerRegistry|MockObject $doctrine;
+    private ManagerRegistry&MockObject $doctrine;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->doctrine = $this->createMock(ManagerRegistry::class);

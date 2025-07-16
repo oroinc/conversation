@@ -14,11 +14,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class StorefrontConversationsNavigationListenerTest extends TestCase
 {
-    private ConversationParticipantManager|MockObject $manager;
-    private RequestStack|MockObject $requestStack;
-
+    private ConversationParticipantManager&MockObject $manager;
+    private RequestStack&MockObject $requestStack;
     private StorefrontConversationsNavigationListener $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->manager = $this->createMock(ConversationParticipantManager::class);

@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class UserParticipantInfoTest extends TestCase
 {
-    private PictureSourcesProviderInterface|MockObject $pictureSourcesProvider;
+    private PictureSourcesProviderInterface&MockObject $pictureSourcesProvider;
     private UserParticipantInfo $userParticipantInfo;
 
     #[\Override]
