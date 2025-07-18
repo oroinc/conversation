@@ -11,6 +11,7 @@ use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationManager;
 use Oro\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\CustomerBundle\Entity\CustomerUser;
 use Oro\Bundle\CustomerBundle\Owner\Metadata\FrontendOwnershipMetadata;
+use Oro\Bundle\EntityBundle\Provider\EntityNameProviderInterface;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\EntityExtendBundle\Entity\EnumOption;
@@ -118,7 +119,7 @@ class ConversationManagerTest extends TestCase
 
         $this->entityNameResolver->expects(self::once())
             ->method('getName')
-            ->with($entity)
+            ->with($entity, EntityNameProviderInterface::SHORT)
             ->willReturn('Entity_label');
 
         $this->metadataProvider->expects(self::once())
@@ -169,7 +170,7 @@ class ConversationManagerTest extends TestCase
 
         $this->entityNameResolver->expects(self::once())
             ->method('getName')
-            ->with($entity)
+            ->with($entity, EntityNameProviderInterface::SHORT)
             ->willReturn('Entity_label');
 
         $this->metadataProvider->expects(self::once())
@@ -222,7 +223,7 @@ class ConversationManagerTest extends TestCase
 
         $this->entityNameResolver->expects(self::once())
             ->method('getName')
-            ->with($customerUser)
+            ->with($customerUser, EntityNameProviderInterface::SHORT)
             ->willReturn('Entity_label');
 
         $this->metadataProvider->expects(self::never())
@@ -259,7 +260,7 @@ class ConversationManagerTest extends TestCase
 
         $this->entityNameResolver->expects(self::once())
             ->method('getName')
-            ->with($conversation)
+            ->with($conversation, EntityNameProviderInterface::SHORT)
             ->willReturn('Entity_label');
 
         self::assertEquals('Label Entity_label', $this->manager->getConversationName($conversation));

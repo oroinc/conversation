@@ -49,9 +49,9 @@
                     {% set sourceEntity = oro_entity_reference(entity.sourceEntityClass, entity.sourceEntityId) %}
                     {{ sourceEntity|oro_conversation_entity_type }}
                     {% if is_granted('VIEW', sourceEntity) %}
-                        <a class="user" href="{{ oro_entity_object_view_link(sourceEntity) }}">{{ sourceEntity|oro_format_name }}</a>
+                        <a class="user" href="{{ oro_entity_object_view_link(sourceEntity) }}">{{ sourceEntity|oro_format_name(null, 'short') }}</a>
                     {% else %}
-                        {{ sourceEntity|oro_format_name }}
+                        {{ sourceEntity|oro_format_name(null, 'short') }}
                     {% endif %}
                     </li>
                 {% endif %}
