@@ -3,15 +3,12 @@
 namespace Oro\Bundle\ConversationBundle\Tests\Functional\Api\RestJsonApi;
 
 use Oro\Bundle\ApiBundle\Tests\Functional\RestJsonApiTestCase;
-use Oro\Bundle\ConfigBundle\Tests\Functional\Traits\ConfigManagerAwareTestTrait;
 use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
 use Oro\Bundle\ConversationBundle\Tests\Functional\Api\DataFixtures\LoadMessages;
 use Symfony\Component\HttpFoundation\Response;
 
 class ConversationMessagesTest extends RestJsonApiTestCase
 {
-    use ConfigManagerAwareTestTrait;
-
     #[\Override]
     protected function setUp(): void
     {
