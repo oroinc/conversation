@@ -10,7 +10,7 @@ use Oro\Component\ChainProcessor\ContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
 
 /**
- * Computes values for "sourceTitle" and "sourceUrl" fields of a conversation.
+ * Computes values of "sourceTitle" and "sourceUrl" fields for Conversation entity.
  */
 class ComputeSourceValue implements ProcessorInterface
 {
