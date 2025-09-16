@@ -17,7 +17,7 @@ use Oro\Bundle\FormBundle\Model\AutocompleteRequest;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Attribute\Acl;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -58,7 +58,7 @@ class ConversationController extends AbstractController
 
     #[Route(path: '/view/{id}', name: 'oro_conversation_view', requirements: ['id' => '\d+'])]
     #[Acl(id: 'oro_conversation_view', type: 'entity', class: Conversation::class, permission: 'VIEW')]
-    #[Template]
+    #[Template('@OroConversation/Conversation/view.html.twig')]
     public function viewAction(Conversation $conversation): array
     {
         $this->container->get(ConversationParticipantManager::class)
@@ -94,7 +94,7 @@ class ConversationController extends AbstractController
     }
 
     #[Route(path: '/update/{id}', name: 'oro_conversation_update', requirements: ['id' => '\d+'])]
-    #[Template]
+    #[Template('@OroConversation/Conversation/update.html.twig')]
     #[Acl(id: 'oro_conversation_update', type: 'entity', class: Conversation::class, permission: 'EDIT')]
     public function updateAction(Request $request, Conversation $conversation): array|RedirectResponse
     {
