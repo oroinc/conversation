@@ -1,39 +1,35 @@
-define(function(require) {
-    'use strict';
+import BaseView from 'oroui/js/app/views/base/view';
+import template
+    from 'tpl-loader!oroconversation/templates/conversation-notification/conversation-notification-icon-view.html';
 
-    const BaseView = require('oroui/js/app/views/base/view');
+const ConversationNotificationCountView = BaseView.extend({
+    autoRender: true,
 
-    const ConversationNotificationCountView = BaseView.extend({
-        autoRender: true,
+    listen: {
+        'change:unreadMessagesCount model': 'render'
+    },
 
-        listen: {
-            'change:unreadMessagesCount model': 'render'
-        },
+    template,
 
-        template: require(
-            'tpl-loader!oroconversation/templates/conversation-notification/conversation-notification-icon-view.html'
-        ),
+    /**
+     * @inheritdoc
+     */
+    constructor: function ConversationNotificationCountView(options) {
+        ConversationNotificationCountView.__super__.constructor.call(this, options);
+    },
 
-        /**
-         * @inheritdoc
-         */
-        constructor: function ConversationNotificationCountView(options) {
-            ConversationNotificationCountView.__super__.constructor.call(this, options);
-        },
+    /**
+     * @inheritdoc
+     */
+    getTemplateData: function() {
+        const data = ConversationNotificationCountView.__super__.getTemplateData.call(this);
 
-        /**
-         * @inheritdoc
-         */
-        getTemplateData: function() {
-            const data = ConversationNotificationCountView.__super__.getTemplateData.call(this);
-
-            if (data.unreadMessagesCount === void 0) {
-                data.unreadMessagesCount = 0;
-            }
-
-            return data;
+        if (data.unreadMessagesCount === void 0) {
+            data.unreadMessagesCount = 0;
         }
-    });
 
-    return ConversationNotificationCountView;
+        return data;
+    }
 });
+
+export default ConversationNotificationCountView;
