@@ -75,11 +75,12 @@
             .info {
                 min-height: 12px;
 
-                // stylelint-disable-next-line selector-max-compound-selectors
+                // stylelint-disable selector-max-compound-selectors
                 .title,
                 .empty-subject {
                     cursor: pointer;
                 }
+                // stylelint-enable selector-max-compound-selectors
             }
 
             .description {
@@ -95,13 +96,14 @@
                 margin-top: 12px;
                 line-height: 1.15;
 
-                // stylelint-disable-next-line selector-max-compound-selectors
+                // stylelint-disable selector-max-compound-selectors
                 .reply-action,
                 .reply-all-action,
                 .forward-action {
                     display: none;
                     margin-left: 12px;
                 }
+                // stylelint-enable selector-max-compound-selectors
             }
 
             &.highlight {
