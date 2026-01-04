@@ -10,7 +10,7 @@ use Oro\Bundle\SyncBundle\Client\WebsocketClientInterface;
  */
 class WebSocketSendProcessor
 {
-    const TOPIC = 'oro/conversation_event/%s/%s';
+    public const TOPIC = 'oro/conversation_event/%s/%s';
 
     public function __construct(
         private WebsocketClientInterface $websocketClient,
