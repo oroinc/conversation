@@ -9,8 +9,8 @@ use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
 use Oro\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrders;
 use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Oro\Component\DependencyInjection\ContainerAwareInterface;
+use Oro\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadMessages extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {

@@ -12,6 +12,6 @@ class SetLastReadDateAsNullableForParticipant implements Migration
     public function up(Schema $schema, QueryBag $queries): void
     {
         $table = $schema->getTable('oro_conversation_participant');
-        $table->changeColumn('last_read_date', ['notnull' => false]);
+        $table->modifyColumn('last_read_date', ['notnull' => false]);
     }
 }
