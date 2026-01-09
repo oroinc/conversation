@@ -45,7 +45,7 @@ class ConversationParticipantColumnListener
             $query->getRootAlias() . '.participants',
             'participant',
             'WITH',
-            'participant.'. $targets[User::class] . ' = :user'
+            'participant.' . $targets[User::class] . ' = :user'
         );
         $config->offsetSetByPath(DatagridConfiguration::DATASOURCE_BIND_PARAMETERS_PATH, ['user']);
         $event->getDatagrid()->getParameters()->set('user', $user);

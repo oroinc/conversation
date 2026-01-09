@@ -17,7 +17,8 @@ class ParticipantExclusionProvider extends AbstractExclusionProvider
     {
 
         $mapping = $metadata->getAssociationMapping($associationName);
-        if (!$mapping['isOwningSide']
+        if (
+            !$mapping['isOwningSide']
             || $mapping['sourceEntity'] !== ConversationParticipant::class
             || $mapping['type'] !== ClassMetadata::MANY_TO_ONE
         ) {

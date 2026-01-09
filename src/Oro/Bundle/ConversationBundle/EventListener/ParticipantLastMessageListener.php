@@ -15,7 +15,8 @@ class ParticipantLastMessageListener
     {
         $unitOfWork = $event->getObjectManager()->getUnitOfWork();
         foreach ($unitOfWork->getScheduledEntityUpdates() as $entity) {
-            if ($entity instanceof ConversationParticipant
+            if (
+                $entity instanceof ConversationParticipant
                 && $this->isLastMessageChanged($unitOfWork, $entity)
                 && $entity->getLastReadMessage()
             ) {

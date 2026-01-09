@@ -46,7 +46,8 @@ class ConversationSaveListener
                         }
 
                         $globalOrganization = $this->getGlobalOrganizationId();
-                        if ($globalOrganization
+                        if (
+                            $globalOrganization
                             && !in_array($globalOrganization, $userMessages[$target->getId()], true)
                         ) {
                             $userMessages[$target->getId()][] = $globalOrganization;

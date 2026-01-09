@@ -42,7 +42,8 @@ class ConfigurationProviderDecorator implements ConfigurationProviderInterface
             return $result;
         }
 
-        if (array_key_exists(self::ACTION_NAME, $result)
+        if (
+            array_key_exists(self::ACTION_NAME, $result)
             //conversation functionality does not support old themes
             && !$this->themeManager->themeHasParent($currentTheme, ['default_50', 'default_51'])
         ) {

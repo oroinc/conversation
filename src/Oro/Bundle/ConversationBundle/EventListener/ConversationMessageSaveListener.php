@@ -48,7 +48,8 @@ class ConversationMessageSaveListener
         }
 
         $conversation = $message->getConversation();
-        if ($this->tokenAccessor->hasUser()
+        if (
+            $this->tokenAccessor->hasUser()
             && !$this->authorizationChecker->isGranted(
                 ManageConversationMessagesVoter::PERMISSION_NAME,
                 $conversation

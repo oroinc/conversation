@@ -27,7 +27,7 @@ class ConversationManagerTest extends TestCase
     private EntityConfigHelper&MockObject $entityConfigHelper;
     private OwnershipMetadataProviderInterface&MockObject $metadataProvider;
     private ManagerRegistry&MockObject $doctrine;
-    private EntityAliasResolverRegistry&MockObject  $aliasResolverRegistry;
+    private EntityAliasResolverRegistry&MockObject $aliasResolverRegistry;
 
     private ConversationManager $manager;
 
