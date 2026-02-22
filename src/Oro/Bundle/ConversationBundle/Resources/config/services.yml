@@ -115,6 +115,8 @@ services:
             - '@oro_platform.twig.service_locator'
         tags:
             - { name: twig.extension }
+            - { name: container.service_subscriber, id: oro_conversation.participant_info.provider, key: Oro\Bundle\ConversationBundle\Participant\ParticipantInfoProvider }
+            - { name: container.service_subscriber, id: oro_conversation.helper.entity_config_helper, key: Oro\Bundle\ConversationBundle\Helper\EntityConfigHelper }
 
     oro_conversation.acl.voter.manage_messages:
         class: Oro\Bundle\ConversationBundle\Acl\Voter\ManageConversationMessagesVoter

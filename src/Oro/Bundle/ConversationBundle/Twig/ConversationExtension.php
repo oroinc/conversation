@@ -5,7 +5,7 @@ namespace Oro\Bundle\ConversationBundle\Twig;
 use Oro\Bundle\ConversationBundle\Helper\EntityConfigHelper;
 use Oro\Bundle\ConversationBundle\Model\WebSocket\WebSocketSendProcessor;
 use Oro\Bundle\ConversationBundle\Participant\ParticipantInfoProvider;
-use Oro\Bundle\SecurityBundle\Authentication\TokenAccessor;
+use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -23,8 +23,9 @@ use Twig\TwigFunction;
  */
 class ConversationExtension extends AbstractExtension implements ServiceSubscriberInterface
 {
-    public function __construct(private ContainerInterface $container)
-    {
+    public function __construct(
+        private readonly ContainerInterface $container
+    ) {
     }
 
     #[\Override]
@@ -46,23 +47,23 @@ class ConversationExtension extends AbstractExtension implements ServiceSubscrib
 
     public function getParticipantType(object $participant): string
     {
-        return $this->container->get('oro_conversation.participant_info.provider')->getTypeString($participant);
+        return $this->getParticipantInfoProvider()->getTypeString($participant);
     }
 
     public function getEntityType(object $entity): string
     {
-        return $this->container->get('oro_conversation.helper.entity_config_helper')->getLabel($entity);
+        return $this->getEntityConfigHelper()->getLabel($entity);
     }
 
     /**
-     * Return unique identificator for websocket event. This identification
+     * Return unique identifier for websocket event. This identification
      * is used in notification widget to show message about new conversation messages
      */
     public function getConversationWSChannel(): string
     {
-        $tokenAccessor = $this->container->get('oro_security.token_accessor');
+        $tokenAccessor = $this->getTokenAccessor();
         $currentUser = $tokenAccessor->getUser();
-        if (!$currentUser || !$currentUser instanceof User) {
+        if (!$currentUser instanceof User) {
             return '';
         }
 
@@ -76,9 +77,24 @@ class ConversationExtension extends AbstractExtension implements ServiceSubscrib
     public static function getSubscribedServices(): array
     {
         return [
-            'oro_conversation.participant_info.provider' => ParticipantInfoProvider::class,
-            'oro_conversation.helper.entity_config_helper' => EntityConfigHelper::class,
-            'oro_security.token_accessor' => TokenAccessor::class,
+            ParticipantInfoProvider::class,
+            EntityConfigHelper::class,
+            TokenAccessorInterface::class
         ];
+    }
+
+    private function getParticipantInfoProvider(): ParticipantInfoProvider
+    {
+        return $this->container->get(ParticipantInfoProvider::class);
+    }
+
+    private function getEntityConfigHelper(): EntityConfigHelper
+    {
+        return $this->container->get(EntityConfigHelper::class);
+    }
+
+    private function getTokenAccessor(): TokenAccessorInterface
+    {
+        return $this->container->get(TokenAccessorInterface::class);
     }
 }
