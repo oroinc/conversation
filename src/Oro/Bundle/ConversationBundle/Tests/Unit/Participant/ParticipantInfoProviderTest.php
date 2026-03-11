@@ -152,4 +152,51 @@ class ParticipantInfoProviderTest extends TestCase
             $this->provider->getParticipantInfo($entity)
         );
     }
+
+    public function testGetParticipantInfoForNullEntity(): void
+    {
+        $this->userParticipantInfoProvider->expects(self::never())
+            ->method('isItMe');
+        $this->userParticipantInfoProvider->expects(self::never())
+            ->method('getTitle');
+        $this->userParticipantInfoProvider->expects(self::never())
+            ->method('getAcronym');
+        $this->userParticipantInfoProvider->expects(self::never())
+            ->method('getAvatarImage');
+        $this->userParticipantInfoProvider->expects(self::never())
+            ->method('getAvatarIcon');
+        $this->userParticipantInfoProvider->expects(self::never())
+            ->method('getPosition');
+        $this->userParticipantInfoProvider->expects(self::never())
+            ->method('getTypeString');
+
+        $this->commonProvider->expects(self::never())
+            ->method('isItMe');
+        $this->commonProvider->expects(self::never())
+            ->method('getTitle');
+        $this->commonProvider->expects(self::never())
+            ->method('getAcronym');
+        $this->commonProvider->expects(self::never())
+            ->method('getAvatarImage');
+        $this->commonProvider->expects(self::never())
+            ->method('getAvatarIcon');
+        $this->commonProvider->expects(self::never())
+            ->method('getPosition');
+        $this->commonProvider->expects(self::never())
+            ->method('getTypeString');
+
+
+        self::assertEquals(
+            [
+                'isOwnMessage' => false,
+                'title' =>  '',
+                'titleAcronym' =>  '',
+                'avatarImage' =>  [],
+                'avatarIcon' =>  '',
+                'position' => ParticipantInfoProvider::MESSAGE_POSITION_LEFT,
+                'type' =>  ''
+            ],
+            $this->provider->getParticipantInfo(null)
+        );
+    }
 }

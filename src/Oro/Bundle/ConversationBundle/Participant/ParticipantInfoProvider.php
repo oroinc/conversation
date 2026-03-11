@@ -13,17 +13,26 @@ class ParticipantInfoProvider
     public const MESSAGE_POSITION_LEFT = 'left';
     public const MESSAGE_POSITION_RIGHT = 'right';
 
-    private ContainerInterface $participantInfoProviders;
-    private ParticipantInfoInterface $commonProvider;
-
-    public function __construct(ContainerInterface $participantInfoProviders, ParticipantInfoInterface $commonProvider)
-    {
-        $this->participantInfoProviders = $participantInfoProviders;
-        $this->commonProvider = $commonProvider;
+    public function __construct(
+        private ContainerInterface $participantInfoProviders,
+        private ParticipantInfoInterface $commonProvider
+    ) {
     }
 
-    public function getParticipantInfo(object $participant): array
+    public function getParticipantInfo(?object $participant): array
     {
+        if (null === $participant) {
+            return [
+                'isOwnMessage' => false,
+                'title' =>  '',
+                'titleAcronym' =>  '',
+                'avatarImage' =>  [],
+                'avatarIcon' =>  '',
+                'position' => ParticipantInfoProvider::MESSAGE_POSITION_LEFT,
+                'type' =>  ''
+            ];
+        }
+
         $provider = $this->getParticipantProvider($participant);
 
         return [

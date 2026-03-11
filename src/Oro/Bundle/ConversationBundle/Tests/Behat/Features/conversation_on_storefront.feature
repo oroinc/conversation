@@ -150,3 +150,10 @@ Feature: conversation on storefront
     And I press "SendPopupButton"
     Then I click on "Conversation Test Conv"
     And I should see "Test Conv"
+
+  Scenario: Check the backoffice with empty participation
+    Given I proceed as the Admin
+    When I go to Customers/ Customer Users
+    And I click delete "AmandaRCole@example.org" in grid
+    And I click "Yes, Delete"
+    Then I should see "Customer User deleted" flash message
