@@ -11,6 +11,17 @@ Feature: conversation on storefront
       | Admin | first_session  |
       | Buyer | second_session |
 
+  Scenario: Enable Conversations
+    Given I proceed as the Admin
+    And I login as administrator
+    And I go to System/ Configuration
+    And I follow "Commerce/Customer/Interactions" on configuration sidebar
+    And uncheck "Use default" for "Enable Conversations" field
+    And I check "Enable Conversations"
+    When I save form
+    Then I should see "Configuration saved" flash message
+    And the "Enable Conversations" checkbox should be checked
+
   Scenario: Create Conversation from order
     Given I proceed as the Buyer
     And I signed in as AmandaRCole@example.org on the store frontend
@@ -113,3 +124,10 @@ Feature: conversation on storefront
     Then I should see "conv1"
     And I should see "Order SimpleOrder"
     And I should see "Conversation from order"
+
+  Scenario: Check the backoffice with empty participation
+    Given I proceed as the Admin
+    When I go to Customers/ Customer Users
+    And I click delete "AmandaRCole@example.org" in grid
+    And I click "Yes, Delete"
+    Then I should see "Customer User deleted" flash message

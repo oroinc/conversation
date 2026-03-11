@@ -27,7 +27,7 @@
     {{ avatar }}
 {% endif %}
 <div class="comment-content conversation-message">
-    {% if message.object.participant is not null  %}
+    {% if message.object.participant is not null and message.participant.type %}
         <div class="comment-author-info {% if 'right' == message.participant.position %}my-author{% endif %}">
             {{ message.participant.type }} <a class="user" href="{{ oro_entity_object_view_link(message.object.participant.getConversationParticipantTarget()) }}">{{ message.participant.title }}</a>
             {{ 'oro.conversation.conversationmessage.item.added'|trans }}
