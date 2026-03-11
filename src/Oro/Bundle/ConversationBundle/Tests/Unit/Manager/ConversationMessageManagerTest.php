@@ -6,6 +6,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ConversationBundle\Acl\Voter\ManageConversationMessagesVoter;
 use Oro\Bundle\ConversationBundle\Entity\Conversation;
 use Oro\Bundle\ConversationBundle\Entity\ConversationMessage;
+use Oro\Bundle\ConversationBundle\Entity\ConversationParticipant;
 use Oro\Bundle\ConversationBundle\Entity\Repository\ConversationMessageRepository;
 use Oro\Bundle\ConversationBundle\Manager\ConversationMessageManager;
 use Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager;
@@ -150,5 +151,51 @@ class ConversationMessageManagerTest extends TestCase
         self::assertInstanceOf(ConversationMessage::class, $result);
         self::assertEquals($conversation, $result->getConversation());
         self::assertEquals($participant, $result->getParticipant());
+    }
+
+    public function testGetMessagesWhenParticipantTargetIsNull(): void
+    {
+        $conversation = new Conversation();
+        $message = new ConversationMessage();
+        $message->setBody('Message with participant target null');
+        $message->setCreatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+        $message->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+        $message->setConversation($conversation);
+
+        $participant = $this->getMockBuilder(ConversationParticipant::class)
+            ->addMethods(['getConversationParticipantTarget'])
+            ->getMock();
+        $participant->expects(self::once())
+            ->method('getConversationParticipantTarget')
+            ->willReturn(null);
+        $message->setParticipant($participant);
+
+        $messageRepo = $this->createMock(ConversationMessageRepository::class);
+        $this->doctrine->expects(self::once())
+            ->method('getRepository')
+            ->with(ConversationMessage::class)
+            ->willReturn($messageRepo);
+        $messageRepo->expects(self::once())
+            ->method('getMessages')
+            ->with($conversation, 0, 11, 'ASC')
+            ->willReturn([$message]);
+
+        $this->participantInfoInfoProvider->expects(self::once())
+            ->method('getParticipantInfo')
+            ->with(null)
+            ->willReturn([]);
+
+        self::assertEquals(
+            [
+                'conversation' => $conversation,
+                'messages' => [
+                    ['object' => $message, 'participant' => []],
+                ],
+                'hasMore' => false,
+                'page' => 1,
+                'perPage' => 10,
+            ],
+            $this->conversationMessageManager->getMessages($conversation)
+        );
     }
 }
