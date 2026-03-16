@@ -50,7 +50,9 @@ navigation:
                 children:
                     oro_customer_menu_customer_user_index:
                         children:
-                            frontend_conversation_list: ~
+                            oro_customer_frontend_customer_user_account:
+                                children:
+                                    frontend_conversation_list: ~
             oro_customer_menu_refreshing_teal:
                 children:
                     oro_customer_frontend_customer_user_profiles_and_addresses:
