@@ -3,9 +3,6 @@ api:
         Extend\Entity\EV_Conversation_Message_Type:
             alias: conversationmessagetype
             plural_alias: conversationmessagestypes
-        Extend\Entity\EV_Conversation_Status:
-            alias: conversationstatus
-            plural_alias: conversationstatuses
 
     entities:
         Extend\Entity\EV_Conversation_Message_Type:
