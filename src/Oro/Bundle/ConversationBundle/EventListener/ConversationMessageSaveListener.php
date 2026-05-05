@@ -10,6 +10,7 @@ use Oro\Bundle\ConversationBundle\Manager\ConversationParticipantManager;
 use Oro\Bundle\EntityExtendBundle\Provider\EnumOptionsProvider;
 use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
 use Oro\Bundle\UIBundle\Tools\HtmlTagHelper;
+use Oro\Bundle\UserBundle\Entity\AbstractUser;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -59,10 +60,7 @@ class ConversationMessageSaveListener
             );
         }
 
-        if (!str_contains($message->getBody(), '<p>')) {
-            $message->setBody('<p>' . str_replace("\n", '</p><p>', $message->getBody()) . '</p>');
-        }
-        $message->setBody($this->htmlTagHelper->sanitize($message->getBody()));
+        $this->sanitizeMessage($message);
 
         if (!$message->getId()) {
             $this->ensureMessageTypeWasSet($message);
@@ -128,5 +126,20 @@ class ConversationMessageSaveListener
         $participant->setLastReadDate(new \DateTime('now', new \DateTimeZone('UTC')));
 
         return $participant;
+    }
+
+    private function sanitizeMessage(ConversationMessage $message): void
+    {
+        $messageBody = $message->getBody();
+        $body = $this->htmlTagHelper->sanitize($messageBody);
+        $isAdminUser = $this->authorizationChecker->isGranted(AbstractUser::ROLE_ADMINISTRATOR);
+
+        if (!$isAdminUser) {
+            $body = $this->htmlTagHelper->escapeAll($body);
+        }
+
+        $body = str_replace("\n", "", nl2br($body));
+
+        $message->setBody($body);
     }
 }
