@@ -14,6 +14,7 @@ use Oro\Bundle\ConversationBundle\Tests\Unit\Fixture\ConversationParticipantExte
 use Oro\Bundle\EntityExtendBundle\Provider\EnumValueProvider;
 use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
 use Oro\Bundle\UIBundle\Tools\HtmlTagHelper;
+use Oro\Bundle\UserBundle\Entity\AbstractUser;
 use Oro\Bundle\UserBundle\Entity\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -84,6 +85,7 @@ class ConversationMessageSaveListenerTest extends TestCase
         $messageType = new ConversationMessageType(1, ConversationMessage::TYPE_TEXT);
 
         $user = new User();
+
         $participant = new ConversationParticipantExtended();
         $participant->setConversation($conversation);
         $participant->setConversationParticipantTarget($user);
@@ -92,10 +94,16 @@ class ConversationMessageSaveListenerTest extends TestCase
             ->method('hasUser')
             ->willReturn(true);
 
-        $this->authorizationChecker->expects(self::once())
+        $this->authorizationChecker->expects(self::exactly(2))
             ->method('isGranted')
-            ->with(ManageConversationMessagesVoter::PERMISSION_NAME, $conversation)
-            ->willReturn(true);
+            ->willReturnCallback(function (string $attribute, mixed $subject = null) use ($conversation): bool {
+                return match (true) {
+                    $attribute === ManageConversationMessagesVoter::PERMISSION_NAME &&
+                    $subject === $conversation => true,
+                    $attribute === AbstractUser::ROLE_ADMINISTRATOR => false,
+                    default => false,
+                };
+            });
 
         $this->enumValueProvider->expects(self::once())
             ->method('getEnumValueByCode')
@@ -113,8 +121,12 @@ class ConversationMessageSaveListenerTest extends TestCase
 
         $this->htmlTagHelper->expects(self::once())
             ->method('sanitize')
-            ->with('<p><script>alert();</script>Message</p><p> #1</p>')
-            ->willReturn('<p>>Message</p><p> #1</p>');
+            ->with("<script>alert();</script>Message\n #1")
+            ->willReturn("Message\n #1");
+
+        $this->htmlTagHelper->expects(self::once())
+            ->method('escapeAll')
+            ->willReturnArgument(0);
 
         $this->listener->prePersist($message);
 
@@ -123,6 +135,72 @@ class ConversationMessageSaveListenerTest extends TestCase
         self::assertEquals(13, $message->getParticipant()->getLastReadMessageIndex());
         self::assertInstanceOf(\DateTime::class, $message->getParticipant()->getLastReadDate());
         self::assertSame($user, $message->getParticipant()->getConversationParticipantTarget());
-        self::assertEquals('<p>>Message</p><p> #1</p>', $message->getBody());
+        self::assertEquals("Message<br /> #1", $message->getBody());
+    }
+
+    public function testPrePersistMessageOnNewMessageFromNoneAdminUser(): void
+    {
+        $conversation = new Conversation();
+        $conversation->setName('conv1');
+        $conversation->setMessagesNumber(12);
+        $message = new ConversationMessageExtended();
+        $message->setConversation($conversation);
+        $message->setBody("<div><script>alert();</script>Message\n #1</div>");
+
+        $messageType = new ConversationMessageType(1, ConversationMessage::TYPE_TEXT);
+
+        $user = new User();
+
+        $participant = new ConversationParticipantExtended();
+        $participant->setConversation($conversation);
+        $participant->setConversationParticipantTarget($user);
+
+        $this->tokenAccessor->expects($this->once())
+            ->method('hasUser')
+            ->willReturn(true);
+
+        $this->authorizationChecker->expects(self::exactly(2))
+            ->method('isGranted')
+            ->willReturnCallback(function (string $attribute, mixed $subject = null) use ($conversation): bool {
+                return match (true) {
+                    $attribute === ManageConversationMessagesVoter::PERMISSION_NAME &&
+                    $subject === $conversation => true,
+                    $attribute === AbstractUser::ROLE_ADMINISTRATOR => false,
+                    default => false,
+                };
+            });
+
+        $this->enumValueProvider->expects(self::once())
+            ->method('getEnumValueByCode')
+            ->with(ConversationMessage::MESSAGE_TYPE_ENUM_CODE, ConversationMessage::TYPE_TEXT)
+            ->willReturn($messageType);
+
+        $this->participantManager->expects(self::once())
+            ->method('getOrCreateParticipantObjectForConversation')
+            ->with($conversation)
+            ->willReturn($participant);
+
+        $this->activityManager->expects(self::once())
+            ->method('addActivityTarget')
+            ->with($conversation, $user);
+
+        $this->htmlTagHelper->expects(self::once())
+            ->method('sanitize')
+            ->with("<div><script>alert();</script>Message\n #1</div>")
+            ->willReturn("<div>Message\n #1</div>");
+
+        $this->htmlTagHelper->expects(self::once())
+            ->method('escapeAll')
+            ->with("<div>Message\n #1</div>")
+            ->willReturn("&lt;div&gt;Message\n #1&lt;/div&gt;");
+
+        $this->listener->prePersist($message);
+
+        self::assertSame($messageType, $message->getType());
+        self::assertEquals(13, $message->getConversation()->getMessagesNumber());
+        self::assertEquals(13, $message->getParticipant()->getLastReadMessageIndex());
+        self::assertInstanceOf(\DateTime::class, $message->getParticipant()->getLastReadDate());
+        self::assertSame($user, $message->getParticipant()->getConversationParticipantTarget());
+        self::assertEquals("&lt;div&gt;Message<br /> #1&lt;/div&gt;", $message->getBody());
     }
 }

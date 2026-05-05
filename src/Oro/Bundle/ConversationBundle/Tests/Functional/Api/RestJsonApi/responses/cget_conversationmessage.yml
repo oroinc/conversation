@@ -4,7 +4,7 @@ data:
         id: '<toString(@conversationmessage-1-1->id)>'
         attributes:
             index: 1
-            body: '<p>Message 1</p>'
+            body: 'Message 1'
             createdAt: '@conversationmessage-1-1->createdAt->format("Y-m-d\TH:i:s\Z")'
             updatedAt: '@conversationmessage-1-1->updatedAt->format("Y-m-d\TH:i:s\Z")'
         relationships:
@@ -25,7 +25,7 @@ data:
         id: '<toString(@conversationmessage-1-2->id)>'
         attributes:
             index: 2
-            body: '<p>Message 2</p>'
+            body: 'Message 2'
             createdAt: '@conversationmessage-1-2->createdAt->format("Y-m-d\TH:i:s\Z")'
             updatedAt: '@conversationmessage-1-2->updatedAt->format("Y-m-d\TH:i:s\Z")'
         relationships:
@@ -46,7 +46,7 @@ data:
         id: '<toString(@conversationmessage-1-3->id)>'
         attributes:
             index: 3
-            body: '<p>Message 3</p>'
+            body: 'Message 3'
             createdAt: '@conversationmessage-1-3->createdAt->format("Y-m-d\TH:i:s\Z")'
             updatedAt: '@conversationmessage-1-3->updatedAt->format("Y-m-d\TH:i:s\Z")'
         relationships:
@@ -67,7 +67,7 @@ data:
         id: '<toString(@conversationmessage-1-4->id)>'
         attributes:
             index: 4
-            body: '<p>Message 4</p>'
+            body: 'Message 4'
             createdAt: '@conversationmessage-1-4->createdAt->format("Y-m-d\TH:i:s\Z")'
             updatedAt: '@conversationmessage-1-4->updatedAt->format("Y-m-d\TH:i:s\Z")'
         relationships:
@@ -88,7 +88,7 @@ data:
         id: '<toString(@conversationmessage-1-5->id)>'
         attributes:
             index: 5
-            body: '<p>Message 5</p>'
+            body: 'Message 5'
             createdAt: '@conversationmessage-1-5->createdAt->format("Y-m-d\TH:i:s\Z")'
             updatedAt: '@conversationmessage-1-5->updatedAt->format("Y-m-d\TH:i:s\Z")'
         relationships:
@@ -109,7 +109,7 @@ data:
         id: '<toString(@conversationmessage-1-6->id)>'
         attributes:
             index: 6
-            body: '<p>Message 6</p>'
+            body: 'Message 6'
             createdAt: '@conversationmessage-1-6->createdAt->format("Y-m-d\TH:i:s\Z")'
             updatedAt: '@conversationmessage-1-6->updatedAt->format("Y-m-d\TH:i:s\Z")'
         relationships:
@@ -130,7 +130,7 @@ data:
         id: '<toString(@conversationmessage-1-7->id)>'
         attributes:
             index: 7
-            body: '<p>Message 7</p>'
+            body: 'Message 7'
             createdAt: '@conversationmessage-1-7->createdAt->format("Y-m-d\TH:i:s\Z")'
             updatedAt: '@conversationmessage-1-7->updatedAt->format("Y-m-d\TH:i:s\Z")'
         relationships:
@@ -151,7 +151,7 @@ data:
         id: '<toString(@conversationmessage-1-8->id)>'
         attributes:
             index: 8
-            body: '<p>Message 8</p>'
+            body: 'Message 8'
             createdAt: '@conversationmessage-1-8->createdAt->format("Y-m-d\TH:i:s\Z")'
             updatedAt: '@conversationmessage-1-8->updatedAt->format("Y-m-d\TH:i:s\Z")'
         relationships:
@@ -172,7 +172,7 @@ data:
         id: '<toString(@conversationmessage-1-9->id)>'
         attributes:
             index: 9
-            body: '<p>Message 9</p>'
+            body: 'Message 9'
             createdAt: '@conversationmessage-1-9->createdAt->format("Y-m-d\TH:i:s\Z")'
             updatedAt: '@conversationmessage-1-9->updatedAt->format("Y-m-d\TH:i:s\Z")'
         relationships:
@@ -193,7 +193,7 @@ data:
         id: '<toString(@conversationmessage-1-10->id)>'
         attributes:
             index: 10
-            body: '<p>Message 10</p>'
+            body: 'Message 10'
             createdAt: '@conversationmessage-1-10->createdAt->format("Y-m-d\TH:i:s\Z")'
             updatedAt: '@conversationmessage-1-10->updatedAt->format("Y-m-d\TH:i:s\Z")'
         relationships:
