@@ -61,6 +61,7 @@ use Oro\Bundle\UserBundle\Entity\User;
             'action_link_widget'   => 'oro_add_conversation_link',
         ],
         'grid'      => ['default' => 'conversations-grid'],
+        'email' => ['available_in_template' => true],
     ]
 )]
 class Conversation implements
@@ -80,36 +81,38 @@ class Conversation implements
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?int $id = null;
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
-    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
+    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true], 'email' => ['available_in_template' => true]])]
     private ?string $name = null;
 
     #[ORM\Column(name: 'messages_number', type: Types::INTEGER)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?int $messagesNumber = 0;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
+    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true], 'email' => ['available_in_template' => true]])]
     private ?User $owner = null;
 
     #[ORM\ManyToOne(targetEntity: Organization::class)]
     #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
+    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true], 'email' => ['available_in_template' => true]])]
     private ?Organization $organization = null;
 
     #[ORM\Column(name: 'source_entity_class', type: Types::STRING, length: 255, nullable: true)]
-    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
+    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true], 'email' => ['available_in_template' => true]])]
     private ?string $sourceEntityClass = null;
 
     #[ORM\Column(name: 'source_entity_id', type: Types::INTEGER, nullable: true)]
-    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
+    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true], 'email' => ['available_in_template' => true]])]
     private ?int $sourceEntityId = null;
 
     #[ORM\ManyToOne(targetEntity: ConversationMessage::class)]
     #[ORM\JoinColumn(name: 'last_message_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
+    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true], 'email' => ['available_in_template' => true]])]
     private ?ConversationMessage $lastMessage = null;
 
     /**
@@ -122,7 +125,7 @@ class Conversation implements
         orphanRemoval: true
     )]
     #[ORM\OrderBy(['index' => Criteria::DESC])]
-    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
+    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true], 'email' => ['available_in_template' => true]])]
     private ?Collection $messages = null;
 
     /**
@@ -134,7 +137,7 @@ class Conversation implements
         cascade: ['persist', 'remove'],
         orphanRemoval: true
     )]
-    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true]])]
+    #[ConfigField(defaultValues: ['dataaudit' => ['auditable' => true], 'email' => ['available_in_template' => true]])]
     private ?Collection $participants = null;
 
     public function __construct()
