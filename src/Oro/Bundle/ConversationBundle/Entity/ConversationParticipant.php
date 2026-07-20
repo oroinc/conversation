@@ -9,6 +9,7 @@ use Oro\Bundle\ConversationBundle\Entity\Repository\ConversationParticipantRepos
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
@@ -22,7 +23,10 @@ use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
  */
 #[ORM\Entity(repositoryClass: ConversationParticipantRepository::class)]
 #[ORM\Table(name: 'oro_conversation_participant')]
-#[Config(defaultValues: ['entity' => ['icon' => 'fa-commenting-o']])]
+#[Config(defaultValues: [
+    'entity' => ['icon' => 'fa-commenting-o'],
+    'email' => ['available_in_template' => true],
+])]
 class ConversationParticipant implements DatesAwareInterface, ExtendEntityInterface
 {
     use DatesAwareTrait;
@@ -31,20 +35,25 @@ class ConversationParticipant implements DatesAwareInterface, ExtendEntityInterf
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Conversation::class, cascade: ['persist'], inversedBy: 'participants')]
     #[ORM\JoinColumn(name: 'conversation_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?Conversation $conversation = null;
 
     #[ORM\ManyToOne(targetEntity: ConversationMessage::class, cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'last_read_message_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?ConversationMessage $lastReadMessage = null;
 
     #[ORM\Column(name: 'last_read_message_index', type: Types::INTEGER)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?int $lastReadMessageIndex = 0;
 
     #[ORM\Column(name: 'last_read_date', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?\DateTime $lastReadDate = null;
 
     public function getId(): ?int

@@ -9,6 +9,7 @@ use Oro\Bundle\ConversationBundle\Entity\Repository\ConversationMessageRepositor
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\EnumOptionInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
@@ -22,7 +23,10 @@ use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
  */
 #[ORM\Entity(repositoryClass: ConversationMessageRepository::class)]
 #[ORM\Table(name: 'oro_conversation_message')]
-#[Config(defaultValues: ['entity' => ['icon' => 'fa-commenting-o']])]
+#[Config(defaultValues: [
+    'entity' => ['icon' => 'fa-commenting-o'],
+    'email' => ['available_in_template' => true],
+])]
 class ConversationMessage implements DatesAwareInterface, ExtendEntityInterface
 {
     use DatesAwareTrait;
@@ -35,20 +39,25 @@ class ConversationMessage implements DatesAwareInterface, ExtendEntityInterface
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?int $id = null;
 
     #[ORM\Column(name: 'index', type: Types::INTEGER)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?int $index = 0;
 
     #[ORM\Column(name: 'body', type: Types::TEXT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private string $body = '';
 
     #[ORM\ManyToOne(targetEntity: Conversation::class, cascade: ['persist'], inversedBy: 'messages')]
     #[ORM\JoinColumn(name: 'conversation_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?Conversation $conversation = null;
 
     #[ORM\ManyToOne(targetEntity: ConversationParticipant::class, cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'participant_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     private ?ConversationParticipant $participant = null;
 
     public function getId(): ?int

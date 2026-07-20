@@ -188,7 +188,12 @@ class OroConversationBundleInstaller implements
             $schema,
             'oro_conversation',
             'status',
-            'conversation_status'
+            'conversation_status',
+            false,
+            false,
+            [
+                'email' => ['available_in_template' => true],
+            ]
         );
 
         $enumOptionIds = array_map(
@@ -208,7 +213,12 @@ class OroConversationBundleInstaller implements
             $schema,
             'oro_conversation_message',
             'type',
-            'conversation_message_type'
+            'conversation_message_type',
+            false,
+            false,
+            [
+                'email' => ['available_in_template' => true],
+            ]
         );
 
         $enumOptionIds = array_map(
