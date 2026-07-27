@@ -22,7 +22,7 @@ $conversation-message-own-initials-color: get-color('text', 'secondary') !defaul
 $conversation-message-own-background-color: get-color('primary', 'main') !default;
 $conversation-message-own-color: get-color('text', 'inverse') !default;
 
-$conversation-send-message-inner-background-color: get-color('neutral', 'white') !default;
+$conversation-send-message-inner-background-color: get-color('neutral', 'white-100') !default;
 
 $conversation-message-additional-color: get-color('neutral', 'grey3') !default;
 
