@@ -16,6 +16,9 @@ features:
             - Oro\Bundle\ConversationBundle\Entity\ConversationParticipant
             - Extend\Entity\EV_Conversation_Status
             - Extend\Entity\EV_Conversation_Message_Type
+        datagrids:
+            - conversation-messages-grid
+            - conversations-grid
         api_resources:
             - Oro\Bundle\ConversationBundle\Entity\Conversation
             - Oro\Bundle\ConversationBundle\Entity\ConversationMessage
