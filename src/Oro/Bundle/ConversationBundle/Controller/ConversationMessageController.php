@@ -38,7 +38,7 @@ class ConversationMessageController extends AbstractController
         methods: ['GET', 'POST']
     )]
     #[Template('@OroConversation/ConversationMessage/dialog/update.html.twig')]
-    #[AclAncestor(id: 'oro_conversation_edit')]
+    #[AclAncestor(id: 'oro_conversation_update')]
     public function createAction(Request $request, Conversation $conversation): array|RedirectResponse
     {
         if (!$this->isGranted(ManageConversationMessagesVoter::PERMISSION_NAME, $conversation)) {
@@ -95,7 +95,7 @@ class ConversationMessageController extends AbstractController
 
     #[Route(path: '/participants-grid-dialog', name: 'oro_conversation_messages_participants_grid_dialog')]
     #[Template('@OroDataGrid/Grid/dialog/multi.html.twig')]
-    #[AclAncestor('oro_conversation_edit')]
+    #[AclAncestor('oro_conversation_update')]
     public function gridDialogAction(): array
     {
         $targetClasses = $this->container->get(ConversationParticipantManager::class)->getParticipantTargetClasses();
@@ -112,7 +112,7 @@ class ConversationMessageController extends AbstractController
         path: '/participants/search/autocomplete',
         name: 'oro_conversation_messages_participants_autocomplete_search'
     )]
-    #[AclAncestor('oro_conversation_edit')]
+    #[AclAncestor('oro_conversation_update')]
     public function autocompleteAction(Request $request): JsonResponse
     {
         $autocompleteRequest = new AutocompleteRequest($request);
