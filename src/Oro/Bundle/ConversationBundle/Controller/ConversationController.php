@@ -103,7 +103,7 @@ class ConversationController extends AbstractController
 
     #[Route(path: '/source-grid-dialog', name: 'oro_conversation_source_grid_dialog')]
     #[Template('@OroDataGrid/Grid/dialog/multi.html.twig')]
-    #[AclAncestor('oro_conversation_edit')]
+    #[AclAncestor('oro_conversation_update')]
     public function gridDialogAction(): array
     {
         $activityManager = $this->container->get(ActivityManager::class);
@@ -119,7 +119,7 @@ class ConversationController extends AbstractController
     }
 
     #[Route(path: '/source/search/autocomplete', name: 'oro_conversation_source_autocomplete_search')]
-    #[AclAncestor('oro_conversation_edit')]
+    #[AclAncestor('oro_conversation_update')]
     public function autocompleteAction(Request $request): JsonResponse
     {
         $autocompleteRequest = new AutocompleteRequest($request);
